@@ -27,7 +27,6 @@ class AssetsLoader {
 	}
 
 	public getResource(key: string): LoaderResource {
-		console.log('getResource', this.resources);
 		return this.resources[key];
 	}
 

@@ -1,14 +1,15 @@
-import { ScreenRotation } from "d.ts/screen";
+import { ScreenRotation } from "../types/screen";
 
 export const ASSETS_IS_LOADED = '@ASSETS/isLoaded';
+export const SCREEN_RESIZE_ACTION = '@SCREEN/resize';
 
 export interface GameState {
 	assetsIsLoaded: boolean,
 	screenRotation: ScreenRotation,
 }
 
-interface AssetsIsLoadedAction {
-	type: typeof ASSETS_IS_LOADED,
+interface BaseAction {
+	type: typeof ASSETS_IS_LOADED | typeof SCREEN_RESIZE_ACTION,
 }
 
-export type GameActionTypes = AssetsIsLoadedAction;
+export type GameActionTypes = BaseAction;

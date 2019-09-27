@@ -6,8 +6,10 @@ import AssetsLoader from './AssetsLoader';
 import { StoreType } from '../store';
 import { ASSETS_IS_LOADED } from './types';
 import { onEvent } from '../utils/store.subscribe';
-import { renderBackground } from '../containers/background/action';
+import { renderBackgroundAction } from '../containers/background/action';
 import BackgroundContainer from '../containers/background/Background.container';
+import { screenResizeAction } from './actions';
+import isMobile from 'ismobilejs';
 
 @injectable()
 class Game {
@@ -17,7 +19,7 @@ class Game {
 	protected config: Config;
 	protected assetsLoader: AssetsLoader;
 	protected backgroundContainer: BackgroundContainer;
-	
+
 
 	constructor(
 		@inject(TYPES.Store) store: StoreType,
@@ -41,6 +43,12 @@ class Game {
 	}
 
 	protected initListeners(): void {
+		if (isMobile().any) {
+			window.addEventListener('orientationchange', this.onScreenResize);
+		} else {
+			window.addEventListener('resize', this.onScreenResize);
+		}
+
 		this.store.subscribe(onEvent(ASSETS_IS_LOADED, this.initBackground));
 	}
 
@@ -49,7 +57,11 @@ class Game {
 	}
 
 	protected initBackground = () => {
-		this.store.dispatch(renderBackground());
+		this.store.dispatch(renderBackgroundAction());
+	}
+
+	protected onScreenResize = () => {
+		this.store.dispatch(screenResizeAction())
 	}
 
 }

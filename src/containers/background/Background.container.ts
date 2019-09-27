@@ -44,6 +44,7 @@ class BackgroundContainer {
 	protected renderContainer = () => {
 		const bgAsset = this.assetsLoader.getResource('magic_forest_bg.jpg');
 		this.baseSprite = new Sprite(bgAsset.texture);
+		this.baseSprite.anchor.set(0.5, 0.5);
 		this.container.addChild(this.baseSprite);
 	}
 
