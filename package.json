@@ -1,0 +1,37 @@
+{
+    "name": "getting_started_with_webpack_and_es6_modules",
+    "version": "0.1.0",
+    "description": "Getting started with webpack and ES6 modules",
+    "scripts": {
+        "start": "cross-env NODE_ENV=development webpack-dev-server --open",
+        "watch": "webpack --watch",
+        "build": "webpack"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "@types/lodash": "^4.14.140",
+        "es6-promisify": "^6.0.2",
+        "inversify": "^5.0.1",
+        "lodash": "^4.17.15",
+        "path": "^0.12.7",
+        "pixi.js": "^5.1.5",
+        "redux": "^4.0.4",
+        "reflect-metadata": "^0.1.13",
+        "three-orbitcontrols": "^2.108.1"
+    },
+    "devDependencies": {
+        "@types/node": "^12.7.8",
+        "clean-webpack-plugin": "^3.0.0",
+        "copy-webpack-plugin": "^5.0.4",
+        "cross-env": "^6.0.0",
+        "css-loader": "^3.2.0",
+        "file-loader": "^4.2.0",
+        "html-webpack-plugin": "^3.2.0",
+        "style-loader": "^1.0.0",
+        "ts-loader": "^6.1.2",
+        "typescript": "^3.6.3",
+        "webpack": "^4.40.2",
+        "webpack-cli": "^3.3.9",
+        "webpack-dev-server": "^3.8.1"
+    }
+}

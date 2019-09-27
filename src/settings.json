@@ -1,0 +1,10 @@
+{
+	"assetsImgPath": "/assets/img",
+	"assetsImages": [
+		"magic_forest_bg.jpg",
+		"magic_forest_bonfire.png",
+		"magic_forest_bow.png",
+		"magic_forest_button.png"
+	],
+	"size": "origin"
+}
