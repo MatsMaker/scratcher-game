@@ -3,9 +3,11 @@ import {
   GameActionTypes,
   ASSETS_IS_LOADED
 } from './types'
+import { ScreenRotation } from '../d.ts/screen';
 
 const initialState: GameState = {
   assetsIsLoaded: false,
+  screenRotation: ScreenRotation.LANDSCAPE,
 }
 
 export function gameReducer(

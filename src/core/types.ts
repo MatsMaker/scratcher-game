@@ -1,7 +1,10 @@
+import { ScreenRotation } from "d.ts/screen";
+
 export const ASSETS_IS_LOADED = '@ASSETS/isLoaded';
 
 export interface GameState {
-  assetsIsLoaded: boolean,
+	assetsIsLoaded: boolean,
+	screenRotation: ScreenRotation,
 }
 
 interface AssetsIsLoadedAction {
