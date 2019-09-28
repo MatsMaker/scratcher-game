@@ -1,10 +1,11 @@
 {
-	"assetsImgPath": "/assets/img",
-	"assetsImages": [
-		"magic_forest_bg.jpg",
-		"magic_forest_bonfire.png",
-		"magic_forest_bow.png",
-		"magic_forest_button.png"
+	"assetsPath": "/assets",
+	"assetsList": [
+		"img/magic_forest_bg.jpg",
+		"img/magic_forest_bonfire.png",
+		"img/magic_forest_bow.png",
+		"img/magic_forest_button.png",
+		"spine/char_spine_v5/Red.json"
 	],
 	"size": "origin"
 }

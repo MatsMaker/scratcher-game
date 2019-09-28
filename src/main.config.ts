@@ -13,6 +13,7 @@ import Game from './core/game/Game';
 import ViewPort from './core/viewPort/ViewPort';
 
 import BackgroundContainer from './containers/background/Background.container';
+import CharContainer from './containers/char/Char.container';
 
 import StartGameStage from './stages/StartGame.stage';
 
@@ -32,6 +33,7 @@ main.bind<AssetsLoader>(TYPES.AssetsLoader).to(AssetsLoader);
 main.bind<Game>(TYPES.Game).to(Game);
 
 main.bind<BackgroundContainer>(TYPES.BackgroundContainer).to(BackgroundContainer);
+main.bind<CharContainer>(TYPES.CharContainer).to(CharContainer);
 main.bind<FieldContainer>(TYPES.FieldContainer).to(FieldContainer);
 
 main.bind<StartGameStage>(TYPES.StartGameStage).to(StartGameStage);

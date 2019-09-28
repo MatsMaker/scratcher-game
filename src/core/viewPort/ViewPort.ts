@@ -37,6 +37,14 @@ class ViewPort {
 		return this.app.stage;
 	}
 
+	public updateLayersOrder = (): void => {
+		this.app.stage.children.sort(function (a, b) {			
+			a.zIndex = a.zIndex || 0;
+			b.zIndex = b.zIndex || 0;
+			return b.zIndex - a.zIndex
+		});
+	}
+
 	protected init = (): void => {
 		this.initListeners();
 		this.resize();

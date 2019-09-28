@@ -15,11 +15,11 @@ class Config {
 	}
 
 	public getAssetsList(): Array<string> {
-		return this.settings.assetsImages;
+		return this.settings.assetsList;
 	}
 
-	public getAssetsImgPath(): string {
-		return this.settings.assetsImgPath;
+	public getAssetsPath(): string {
+		return this.settings.assetsPath;
 	}
 
 }

@@ -34,14 +34,14 @@ class BackgroundContainer {
 		this.init();
 	}
 
-	protected init() {
+	protected init = (): void => {
 		this.initListeners();
 
 		this.container = new Container();
 		this.container.name = 'background';
 	}
 
-	protected initListeners(): void {
+	protected initListeners = (): void => {
 		this.store.subscribe(onEvent(RENDER_BACKGROUND,
 			() => this.viewPort.ticker.addOnce(this.render)));
 		this.store.subscribe(onEvent(RE_RENDER_BACKGROUND,
@@ -51,7 +51,7 @@ class BackgroundContainer {
 	}
 
 	protected renderContainer = () => {
-		const bgAsset = this.assetsLoader.getResource('magic_forest_bg.jpg');
+		const bgAsset = this.assetsLoader.getResource('img/magic_forest_bg');
 		this.baseSprite = new Sprite(bgAsset.texture);
 		this.baseSprite.anchor.set(0.5, 0.5);
 		this.container.addChild(this.baseSprite);
@@ -60,7 +60,10 @@ class BackgroundContainer {
 
 	protected render = () => {
 		this.renderContainer();
+		console.log('bg');
+		
 		this.viewPort.stage.addChild(this.container);
+		this.viewPort.updateLayersOrder();
 	}
 
 	protected reRender = () => {

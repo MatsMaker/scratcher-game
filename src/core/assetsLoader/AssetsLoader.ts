@@ -6,6 +6,7 @@ import TYPES from '../../types';
 import Config from '../config/Config';
 import { StoreType } from '../../store';
 import { assetsIsLoadedAction } from './actions';
+import { removeExtension } from '../../utils/loader';
 
 @injectable()
 class AssetsLoader {
@@ -26,11 +27,11 @@ class AssetsLoader {
 		this.initListeners();
 	}
 
-	public getResource(key: string): LoaderResource {
+	public getResource = (key: string): LoaderResource => {
 		return this.resources[key];
 	}
 
-	public load() {
+	public load = (): void => {
 		this.prepareAssets();
 		this.loader.load();
 	}
@@ -40,12 +41,20 @@ class AssetsLoader {
 	}
 
 	protected prepareAssets(): void {
-		const assetsImgPath: string = this.config.getAssetsImgPath();
-		const assetsImgList: Array<string> = this.config.getAssetsList();
-		_.forEach(assetsImgList, (img: string) => {
-			const imgPath: string = path.resolve(assetsImgPath, img);
-			this.loader.add(img, imgPath);
+		const assetsPath: string = this.config.getAssetsPath();
+		const assetsList: Array<string> = this.config.getAssetsList();
+		_.forEach(assetsList, (imgItem: string) => {
+			const imgPath: string = path.resolve(assetsPath, imgItem);
+			const imgName: string = AssetsLoader.getNameByPath(imgItem);
+			this.loader.add(imgName, imgPath);
 		});
+	}
+
+	static getNameByPath(assetsPath: string): string {
+		if (assetsPath.indexOf('spine/') === 0) {
+			return assetsPath;
+		}
+		return removeExtension(assetsPath);
 	}
 
 	// @ts-ignore
