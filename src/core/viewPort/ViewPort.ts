@@ -5,18 +5,23 @@ import { StoreType } from '../../store';
 import TYPES from '../../types';
 import { waitReRenderViewPort } from './utils';
 import { viewPortResizeAction } from './actions';
+import { Application } from 'pixi.js';
+import { onEvent } from '../../utils/store.subscribe';
+import { VIEW_PORT_RESIZE_ACTION } from './types';
 
 
 @injectable()
 class ViewPort {
 
 	protected store: StoreType;
+	protected app: Application;
 
 	constructor(
 		@inject(TYPES.Store) store: StoreType,
+		@inject(TYPES.Application) app: Application,
 	) {
 		this.store = store;
-		console.log('!!!!!!!!!!');
+		this.app = app;
 		this.init();
 	}
 
@@ -34,6 +39,17 @@ class ViewPort {
 				waitReRenderViewPort(this.onScreenResized)
 			});
 		}
+		this.store.subscribe(onEvent(VIEW_PORT_RESIZE_ACTION, () => {
+			this.resizeCanvas();
+		}));
+	}
+
+	protected resizeCanvas = (): void => {
+		const { viewPort } = this.store.getState();
+		console.log('!!!!!!!!');
+		
+		this.app.view.style.height = String(viewPort.height) + 'px';
+		this.app.view.style.width = String(viewPort.width) + 'px';
 	}
 
 	protected onScreenResized = _.debounce(() => {

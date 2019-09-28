@@ -5,7 +5,7 @@ import Config from '../../core/config/Config';
 import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import { StoreType } from 'store';
 import { onEvent } from '../../utils/store.subscribe';
-import { RENDER_BACKGROUND, RE_RENDER_BACKGROUND } from './types';
+import { RENDER_BACKGROUND } from './types';
 import { insideSize } from '../../utils/sprite';
 import { VIEW_PORT_RESIZE_ACTION } from '../../core/viewPort/types';
 import { reRenderBackgroundAction } from './action';
@@ -43,8 +43,8 @@ class BackgroundContainer {
 	protected initListeners(): void {
 		this.store.subscribe(onEvent(RENDER_BACKGROUND,
 			() => this.app.ticker.addOnce(this.render)));
-		this.store.subscribe(onEvent(RE_RENDER_BACKGROUND,
-			() => this.app.ticker.addOnce(this.reRender)));
+		// this.store.subscribe(onEvent(RE_RENDER_BACKGROUND,
+		// 	() => this.app.ticker.addOnce(this.reRender)));
 		this.store.subscribe(onEvent(VIEW_PORT_RESIZE_ACTION,
 			() => this.store.dispatch(reRenderBackgroundAction())));
 	}
