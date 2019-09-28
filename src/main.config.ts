@@ -18,8 +18,8 @@ import StartGameStage from './stages/StartGame.stage';
 
 
 const main = new Container({ defaultScope: "Singleton" });
-main.bind<StoreType>(TYPES.Store).toConstantValue(store);
 main.bind<Config>(TYPES.Config).toConstantValue(new Config(settings));
+main.bind<StoreType>(TYPES.Store).toConstantValue(store);
 main.bind<Application>(TYPES.Application).toConstantValue(new Application({
 	width: window.innerWidth,
 	height: window.innerHeight,

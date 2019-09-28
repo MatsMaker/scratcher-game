@@ -8,6 +8,7 @@ export interface BaseAction {
 
 export interface ViewPortState {
 	rotation: OrientationType,
+	ratio: number,
 	width: number,
 	height: number,
 	centerHeight: number,

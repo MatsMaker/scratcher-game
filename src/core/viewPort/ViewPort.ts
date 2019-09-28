@@ -5,9 +5,10 @@ import { StoreType } from '../../store';
 import TYPES from '../../types';
 import { waitReRenderViewPort } from './utils';
 import { viewPortResizeAction } from './actions';
-import { Application } from 'pixi.js';
+import { Application, Container, Ticker } from 'pixi.js';
 import { onEvent } from '../../utils/store.subscribe';
 import { VIEW_PORT_RESIZE_ACTION } from './types';
+import Config from '../../core/config/Config';
 
 
 @injectable()
@@ -15,18 +16,31 @@ class ViewPort {
 
 	protected store: StoreType;
 	protected app: Application;
+	protected config: Config;
 
 	constructor(
 		@inject(TYPES.Store) store: StoreType,
 		@inject(TYPES.Application) app: Application,
+		@inject(TYPES.Config) config: Config,
 	) {
 		this.store = store;
 		this.app = app;
+		this.config = config;
 		this.init();
+	}
+
+	public get ticker(): Ticker {
+		return this.app.ticker;
+	}
+
+	public get stage(): Container {
+		return this.app.stage;
 	}
 
 	protected init = (): void => {
 		this.initListeners();
+		this.resize();
+		document.body.appendChild(this.app.view);
 	}
 
 	protected initListeners = (): void => {
@@ -40,16 +54,14 @@ class ViewPort {
 			});
 		}
 		this.store.subscribe(onEvent(VIEW_PORT_RESIZE_ACTION, () => {
-			this.resizeCanvas();
+			this.resize();
 		}));
 	}
 
-	protected resizeCanvas = (): void => {
+	protected resize = (): void => {
 		const { viewPort } = this.store.getState();
-		console.log('!!!!!!!!');
-		
-		this.app.view.style.height = String(viewPort.height) + 'px';
-		this.app.view.style.width = String(viewPort.width) + 'px';
+		this.app.resize();
+		this.app.renderer.resize(viewPort.width, viewPort.height);
 	}
 
 	protected onScreenResized = _.debounce(() => {

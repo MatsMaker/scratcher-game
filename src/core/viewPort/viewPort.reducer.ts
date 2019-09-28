@@ -7,6 +7,7 @@ import * as viewPort from './utils';
 
 const initialState: ViewPortState = {
   rotation: viewPort.getRotation(),
+  ratio: viewPort.getWidth() / viewPort.getHeight(),
   width: viewPort.getWidth(),
   height: viewPort.getHeight(),
   centerHeight: viewPort.getHeightCenter(),
@@ -23,6 +24,7 @@ export function viewPortReducer(
       return {
         width: viewPort.getWidth(),
         height: viewPort.getHeight(),
+        ratio: viewPort.getWidth() / viewPort.getHeight(),
         rotation: viewPort.getRotation(),
         centerHeight: viewPort.getHeightCenter(),
         centerWidth: viewPort.getWidthCenter(),

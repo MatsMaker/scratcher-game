@@ -10,11 +10,6 @@ class Config {
 		this.settings = settings;
 	}
 
-
-	public set(key: string, value: any) {
-		this.settings[key] = value;
-	}
-
 	public get(key: string) {
 		return this.settings[key];
 	}
