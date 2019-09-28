@@ -1,4 +1,4 @@
-export enum ScreenRotation {
+export enum ViewPortRotation {
 	LANDSCAPE = 'landscape',
 	PORTRAIT = 'portrait',
 }

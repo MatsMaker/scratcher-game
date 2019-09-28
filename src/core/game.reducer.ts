@@ -3,11 +3,9 @@ import {
   GameActionTypes,
   ASSETS_IS_LOADED
 } from './types'
-import { getScreenRotation } from '../utils/screen';
 
 const initialState: GameState = {
   assetsIsLoaded: false,
-  screenRotation: getScreenRotation(),
 }
 
 export function gameReducer(

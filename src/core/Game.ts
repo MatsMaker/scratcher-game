@@ -8,8 +8,10 @@ import { ASSETS_IS_LOADED } from './types';
 import { onEvent } from '../utils/store.subscribe';
 import { renderBackgroundAction } from '../containers/background/action';
 import BackgroundContainer from '../containers/background/Background.container';
-import { screenResizeAction } from './actions';
+import { viewPortResizeAction } from '../store/actions';
 import isMobile from 'ismobilejs';
+import * as _ from 'lodash';
+import { waitReRenderViewPort } from '../utils/viewPort';
 
 @injectable()
 class Game {
@@ -44,9 +46,13 @@ class Game {
 
 	protected initListeners(): void {
 		if (isMobile().any) {
-			window.addEventListener('orientationchange', this.onScreenResize);
+			window.addEventListener('orientationchange', () => {
+				waitReRenderViewPort(this.onScreenResized)
+			});
 		} else {
-			window.addEventListener('resize', this.onScreenResize);
+			window.addEventListener('resize', () => {
+				waitReRenderViewPort(this.onScreenResized)
+			});
 		}
 
 		this.store.subscribe(onEvent(ASSETS_IS_LOADED, this.initBackground));
@@ -60,10 +66,9 @@ class Game {
 		this.store.dispatch(renderBackgroundAction());
 	}
 
-	protected onScreenResize = () => {
-		this.store.dispatch(screenResizeAction())
+	protected onScreenResized = () => {
+		this.store.dispatch(viewPortResizeAction());
 	}
-
 }
 
 export default Game;
