@@ -3,7 +3,7 @@ import { isDevelopment } from './utils/build';
 import { removeLoader } from './utils/loader';
 import main from './main.config';
 import TYPES from './types';
-import Game from './core/Game';
+import Game from './core/game/Game';
 
 if (isDevelopment()) {
 	PIXI.useDeprecated();
@@ -13,4 +13,4 @@ if (isDevelopment()) {
 
 removeLoader();
 const game = main.get<Game>(TYPES.Game);
-game.start();
+game.launch();

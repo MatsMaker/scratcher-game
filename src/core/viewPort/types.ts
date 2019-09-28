@@ -1,4 +1,4 @@
-import { ViewPortRotation } from "types/viewPort";
+import { OrientationType } from "../../types/orientation";
 
 export const VIEW_PORT_RESIZE_ACTION = '@VIEW_PORT/resize';
 
@@ -7,7 +7,7 @@ export interface BaseAction {
 }
 
 export interface ViewPortState {
-	rotation: ViewPortRotation,
+	rotation: OrientationType,
 	width: number,
 	height: number,
 	centerHeight: number,

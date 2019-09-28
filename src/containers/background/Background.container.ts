@@ -1,13 +1,13 @@
 import { Application, Container, Sprite } from 'pixi.js';
 import { injectable, inject } from 'inversify';
 import TYPES from '../../types';
-import Config from '../../core/Config';
-import AssetsLoader from '../../core/AssetsLoader';
+import Config from '../../core/config/Config';
+import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import { StoreType } from 'store';
 import { onEvent } from '../../utils/store.subscribe';
 import { RENDER_BACKGROUND, RE_RENDER_BACKGROUND } from './types';
 import { insideSize } from '../../utils/sprite';
-import { VIEW_PORT_RESIZE_ACTION } from '../../store/types';
+import { VIEW_PORT_RESIZE_ACTION } from '../../core/viewPort/types';
 import { reRenderBackgroundAction } from './action';
 
 @injectable()
@@ -29,7 +29,7 @@ class BackgroundContainer {
 		this.store = store;
 		this.config = config;
 		this.app = app;
-		this.assetsLoader = assetsLoader;
+		this.assetsLoader = assetsLoader;				
 		this.init();
 	}
 

@@ -3,7 +3,7 @@ import {
   VPActionTypes,
   VIEW_PORT_RESIZE_ACTION,
 } from './types'
-import * as viewPort from '../utils/viewPort';
+import * as viewPort from './utils';
 
 const initialState: ViewPortState = {
   rotation: viewPort.getRotation(),

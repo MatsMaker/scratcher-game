@@ -1,11 +1,5 @@
 import { injectable } from 'inversify';
-
-export interface GSettings {
-	assetsImgPath: string;
-	assetsImages: Array<string>;
-	size: string;
-	[key: string]: any;
-}
+import { GSettings } from './types';
 
 @injectable()
 class Config {

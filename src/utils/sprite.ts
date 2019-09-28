@@ -1,26 +1,26 @@
 import { Sprite } from "pixi.js";
-import { ViewPortState } from "../store/types";
-import { ViewPortRotation } from "../types/viewPort";
+import { ViewPortState } from "../core/viewPort/types";
+import { OrientationType } from "../types/orientation";
 
-export function spriteType(sprite: Sprite): ViewPortRotation {
-	return (sprite.width > sprite.height) ? ViewPortRotation.LANDSCAPE : ViewPortRotation.PORTRAIT;
+export function spriteType(sprite: Sprite): OrientationType {
+	return (sprite.width > sprite.height) ? OrientationType.LANDSCAPE : OrientationType.PORTRAIT;
 }
 
 export function insideSize(sprite: Sprite, viewPort: ViewPortState): Array<number> {
 	const spaceWidth = viewPort.width - sprite.width;
 	const spaceHeight = viewPort.height - sprite.height;
-	// console.log('ration: ', spaceWidth, spaceHeight, ' viewPort: ', viewPort.width, viewPort.height, ' sprite: ', sprite.width, sprite.height);
+	console.log('ration: ', spaceWidth, spaceHeight, ' viewPort: ', viewPort.width, viewPort.height, ' sprite: ', sprite.width, sprite.height);
 	if (
 		spaceWidth > 0 && spaceHeight > 0
 	) {
-		// console.log('extend');
+		console.log('extend');
 		if (spaceWidth < spaceHeight) {
-			// console.log('by height');
+			console.log('by height');
 			const ratio = viewPort.height / sprite.height;
 			return [ratio * sprite.width, viewPort.height];
 		}
 		if (spaceWidth > spaceHeight) {
-			// console.log('by width');
+			console.log('by width');
 			const ratio = viewPort.width / sprite.width;
 			return [viewPort.width, sprite.width * ratio];
 		}
@@ -28,14 +28,14 @@ export function insideSize(sprite: Sprite, viewPort: ViewPortState): Array<numbe
 	if (
 		spaceWidth < 1 || spaceHeight < 1
 	) {
-		// console.log('compress');
+		console.log('compress');
 		if (spaceWidth > spaceHeight) {
-			// console.log('by height');
+			console.log('by height');
 			const ratio = viewPort.height / sprite.height;
 			return [(ratio % 1) * sprite.width, viewPort.height];
 		}
 		if (spaceWidth < spaceHeight) {
-			// console.log('by width');
+			console.log('by width');
 			const ratio = viewPort.width / sprite.width;
 			return [sprite.width, sprite.height * (ratio % 1)];
 		}
