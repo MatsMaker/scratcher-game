@@ -1,17 +1,18 @@
 import { injectable, inject } from 'inversify';
-import { Sprite } from 'pixi.js';
 import ABaseContainer from '../AContainer/ABaseContainer';
 import TYPES from '../../types/MainConfig';
 import { StoreType } from '../../store';
 import ViewPort from '../../core/viewPort/ViewPort';
 import Config from '../../core/config/Config';
 import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
+import { SpriteEntity } from '../../entities/Sprite.entities';
 
 @injectable()
 class WinnerFrameContainer extends ABaseContainer {
 
 	protected name = 'WINNER_FRAME'
-	protected frameSprite: Sprite;
+	protected frameSprite: SpriteEntity
+	protected scratchSprite: SpriteEntity
 	protected position: Array<number> = [528, 140];
 
 	constructor(
@@ -29,19 +30,31 @@ class WinnerFrameContainer extends ABaseContainer {
 	}
 
 	protected renderContent = (): void => {
+		const { position } = this;
 		const bgAsset = this.assetsLoader.getResource('img/magic_forest_winner_frame');
-		this.frameSprite = new Sprite(bgAsset.texture);
-		this.container.addChild(this.frameSprite);
+		this.frameSprite = new SpriteEntity(this.viewPort, {
+			texture: bgAsset.texture,
+			position,
+		});
+		this.container.addChild(this.frameSprite.sprite);
+
+		const scratchAsset = this.assetsLoader.getResource('img/magic_forest_scratch_frame_big');
+		const scratchPosition = [
+			position[0] + 87,
+			position[1] + 228
+		];
+		this.scratchSprite = new SpriteEntity(this.viewPort, {
+			texture: scratchAsset.texture,
+			position: scratchPosition,
+		});
+		this.container.addChild(this.scratchSprite.sprite);
+
 		this.reRender();
 	}
 
 	protected reRender = (): void => {
-		this.frameSprite.position.set(
-			...this.viewPort.convertPointToSaveArea(this.position)
-		)
-		this.frameSprite.scale.set(
-			this.viewPort.getRatioOfSaveArea()
-		)
+		this.frameSprite.reRender();
+		this.scratchSprite.reRender();
 	}
 
 }

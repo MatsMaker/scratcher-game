@@ -100,7 +100,7 @@ class ViewPort {
 
 	protected onScreenResized = _.debounce(() => {
 		this.store.dispatch(viewPortResizeAction());
-	}, 400)
+	}, 100)
 }
 
 export default ViewPort
