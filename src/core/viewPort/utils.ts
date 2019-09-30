@@ -1,3 +1,4 @@
+import { AreaSizeType } from "core/config/types";
 import { OrientationType } from "../../types/orientation";
 
 export function waitReRenderViewPort(cb: Function) {
@@ -17,10 +18,17 @@ export function getHeight() {
 	return window.innerHeight;
 }
 
-export function getWidthCenter(): number {
-	return window.innerWidth / 2;
-}
-
-export function getHeightCenter(): number {
-	return window.innerHeight / 2;
+export function insideSizeArea(inner: AreaSizeType, wrapper: AreaSizeType): AreaSizeType {
+	const ratio = inner.width / inner.height;
+	if (wrapper.width / wrapper.height >= ratio) {
+		return {
+			width: wrapper.height * ratio,
+			height: wrapper.height
+		}
+	} else {
+		return {
+			width: wrapper.width,
+			height: wrapper.width / ratio
+		};
+	}
 }

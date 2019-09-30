@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { GSettings } from './types';
+import { GSettings, AreaSizeType } from './types';
 
 @injectable()
 class Config {
@@ -14,11 +14,18 @@ class Config {
 		return this.settings[key];
 	}
 
-	public getAssetsList(): Array<string> {
+	public getSaveAreaSize = (): AreaSizeType => {
+		return {
+			width: Number(this.settings.saveArea.width),
+			height: Number(this.settings.saveArea.height)
+		};
+	}
+
+	public getAssetsList = (): Array<string> => {
 		return this.settings.assetsList;
 	}
 
-	public getAssetsPath(): string {
+	public getAssetsPath = (): string => {
 		return this.settings.assetsPath;
 	}
 

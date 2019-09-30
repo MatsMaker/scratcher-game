@@ -30,10 +30,14 @@ class CharContainer {
 		this.init();
 	}
 
+	get view(): PIXI.Container {
+		return this.container;
+	}
+
 	protected init = (): void => {
 		this.container = new PIXI.Container();
+		this.container.visible = false;
 		this.container.name = 'char';
-		this.container.zIndex = 100;
 		this.initListeners();
 	}
 
@@ -44,6 +48,7 @@ class CharContainer {
 		this.char.skeleton.setSlotsToSetupPose();
 		this.reRenderChar();
 		this.container.addChild(this.char);
+		this.animateIdle();
 	}
 
 	protected initListeners = (): void => {
@@ -54,14 +59,16 @@ class CharContainer {
 	}
 
 	protected renderChar = (): void => {
-		console.log('ch');
-		this.viewPort.stage.addChild(this.container);		
-		this.viewPort.updateLayersOrder();
+		this.container.visible = true;		
 	};
 
 	protected reRenderChar = (): void => {
 		const { viewPort } = this.store.getState();
 		this.char.position.set(viewPort.centerWidth, viewPort.centerHeight);
+	}
+
+	protected animateIdle = (): void => {
+		this.char.state.setAnimation(0, 'red_idle_loop', true);
 	}
 
 }

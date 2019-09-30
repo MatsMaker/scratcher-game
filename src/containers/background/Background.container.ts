@@ -34,10 +34,15 @@ class BackgroundContainer {
 		this.init();
 	}
 
+	get view(): Container {
+		return this.container;
+	}
+
 	protected init = (): void => {
 		this.initListeners();
 
 		this.container = new Container();
+		this.container.visible = false;
 		this.container.name = 'background';
 	}
 
@@ -59,11 +64,8 @@ class BackgroundContainer {
 	}
 
 	protected render = () => {
-		this.renderContainer();
-		console.log('bg');
-		
-		this.viewPort.stage.addChild(this.container);
-		this.viewPort.updateLayersOrder();
+		this.renderContainer();		
+		this.container.visible = true;
 	}
 
 	protected reRender = () => {

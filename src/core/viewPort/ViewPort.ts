@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { StoreType } from '../../store';
 import TYPES from '../../types';
 import { waitReRenderViewPort } from './utils';
-import { viewPortResizeAction } from './actions';
+import { viewPortResizeAction, setAreaSizeAction } from './actions';
 import { Application, Container, Ticker } from 'pixi.js';
 import { onEvent } from '../../utils/store.subscribe';
 import { VIEW_PORT_RESIZE_ACTION } from './types';
@@ -19,13 +19,13 @@ class ViewPort {
 	protected config: Config;
 
 	constructor(
+		@inject(TYPES.Config) config: Config,
 		@inject(TYPES.Store) store: StoreType,
 		@inject(TYPES.Application) app: Application,
-		@inject(TYPES.Config) config: Config,
 	) {
+		this.config = config;
 		this.store = store;
 		this.app = app;
-		this.config = config;
 		this.init();
 	}
 
@@ -38,7 +38,7 @@ class ViewPort {
 	}
 
 	public updateLayersOrder = (): void => {
-		this.app.stage.children.sort(function (a, b) {			
+		this.app.stage.children.sort(function (a, b) {
 			a.zIndex = a.zIndex || 0;
 			b.zIndex = b.zIndex || 0;
 			return b.zIndex - a.zIndex
@@ -47,6 +47,8 @@ class ViewPort {
 
 	protected init = (): void => {
 		this.initListeners();
+		const saveAreaSize = this.config.getSaveAreaSize();
+		this.store.dispatch(setAreaSizeAction(saveAreaSize));
 		this.resize();
 		document.body.appendChild(this.app.view);
 	}
