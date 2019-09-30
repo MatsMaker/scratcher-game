@@ -7,7 +7,7 @@ import ViewPort from "../../core/viewPort/ViewPort";
 import AssetsLoader from "../../core/assetsLoader/AssetsLoader";
 import { StoreType } from "../../store";
 import { onEvent } from "../../utils/store.subscribe";
-import { RENDER_CHAR } from "./types";
+import { RENDER_CHAR, RE_RENDER_CHAR } from "./types";
 
 
 @injectable()
@@ -18,6 +18,7 @@ class CharContainer {
 	protected viewPort: ViewPort;
 	protected container: PIXI.Container;
 	protected char: PIXI.spine.Spine;
+	protected position: Array<number> = [110, 210];
 
 	constructor(
 		@inject(TYPES.Store) store: StoreType,
@@ -56,15 +57,21 @@ class CharContainer {
 			this.initChart();
 			this.renderChar();
 		}))
+		this.store.subscribe(onEvent(RE_RENDER_CHAR, () => {
+			this.reRenderChar();
+		}));
 	}
 
 	protected renderChar = (): void => {
-		this.container.visible = true;		
+		this.container.visible = true;
 	};
 
 	protected reRenderChar = (): void => {
 		const { viewPort } = this.store.getState();
-		this.char.position.set(viewPort.centerWidth, viewPort.centerHeight);
+		this.char.position.set(
+			...this.viewPort.convertPointToSaveArea(this.position)
+		);
+		this.char.scale.set(viewPort.saveRatio);
 	}
 
 	protected animateIdle = (): void => {

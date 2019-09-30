@@ -1,5 +1,5 @@
 import { OrientationType } from "../../types/orientation";
-import { AreaSizeType } from "core/config/types";
+import { AreaSizeType } from "../../core/config/types";
 
 export const VIEW_PORT_RESIZE_ACTION = '@VIEW_PORT/resize';
 export const VIEW_PORT_SET_SAVE_AREA = '@VIEW_PORT/set_save_area'
@@ -15,6 +15,7 @@ export interface ViewPortBaseState {
 	height: number,
 	centerWidth: number,
 	centerHeight: number,
+	saveRatio: number,
 	saveWidth: number,
 	saveHeight: number,
 	saveStartX: number,
@@ -28,3 +29,10 @@ export interface ViewPortState extends ViewPortBaseState{
 }
 
 export type VPActionTypes = BaseAction;
+
+
+export interface SaveAreaType extends AreaSizeType {
+	x: number,
+	y: number,
+	ratio: number,
+}

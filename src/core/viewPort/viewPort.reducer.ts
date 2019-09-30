@@ -12,7 +12,7 @@ import { AreaSizeType } from 'core/config/types';
 function getNewViewPortState(cnfgSaveArea: AreaSizeType): ViewPortBaseState {
   const width = viewPortUtil.getWidth();
   const height = viewPortUtil.getHeight();
-  const saveArea = viewPortUtil.insideSizeArea({ width, height }, cnfgSaveArea);
+  const saveArea = viewPortUtil.insideSizeArea(cnfgSaveArea, { width, height });
   return {
     rotation: viewPortUtil.getRotation(),
     ratio: width / height,
@@ -20,10 +20,11 @@ function getNewViewPortState(cnfgSaveArea: AreaSizeType): ViewPortBaseState {
     height,
     centerWidth: width / 2,
     centerHeight: height / 2,
+    saveRatio: saveArea.ratio,
     saveWidth: saveArea.width,
     saveHeight: saveArea.height,
-    saveStartX: width - saveArea.width / 2,
-    saveStartY: height - saveArea.height / 2,
+    saveStartX: saveArea.x,
+    saveStartY: saveArea.y,
     saveCenterWidth: width / 2,
     saveCenterHeight: height / 2
   }
@@ -38,6 +39,7 @@ const initialState: ViewPortState = {
   height: 600,
   centerWidth: 400,
   centerHeight: 300,
+  saveRatio: 1,
   saveWidth: 800,
   saveHeight: 600,
   saveStartX: 0,

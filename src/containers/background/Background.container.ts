@@ -6,9 +6,6 @@ import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import { StoreType } from 'store';
 import { onEvent } from '../../utils/store.subscribe';
 import { RENDER_BACKGROUND, RE_RENDER_BACKGROUND } from './types';
-import { insideSize } from '../../utils/sprite';
-import { VIEW_PORT_RESIZE_ACTION } from '../../core/viewPort/types';
-import { reRenderBackgroundAction } from './action';
 import ViewPort from '../../core/viewPort/ViewPort';
 
 @injectable()
@@ -30,7 +27,7 @@ class BackgroundContainer {
 		this.store = store;
 		this.config = config;
 		this.assetsLoader = assetsLoader;
-		this.viewPort = viewPort;				
+		this.viewPort = viewPort;
 		this.init();
 	}
 
@@ -51,29 +48,26 @@ class BackgroundContainer {
 			() => this.viewPort.ticker.addOnce(this.render)));
 		this.store.subscribe(onEvent(RE_RENDER_BACKGROUND,
 			() => this.viewPort.ticker.addOnce(this.reRender)));
-		this.store.subscribe(onEvent(VIEW_PORT_RESIZE_ACTION,
-			() => this.store.dispatch(reRenderBackgroundAction())));
 	}
 
 	protected renderContainer = () => {
 		const bgAsset = this.assetsLoader.getResource('img/magic_forest_bg');
 		this.baseSprite = new Sprite(bgAsset.texture);
-		this.baseSprite.anchor.set(0.5, 0.5);
 		this.container.addChild(this.baseSprite);
 		this.reRender();
 	}
 
 	protected render = () => {
-		this.renderContainer();		
+		this.renderContainer();
 		this.container.visible = true;
 	}
 
 	protected reRender = () => {
 		const { viewPort } = this.store.getState();
-		const nextSize = insideSize(this.baseSprite, viewPort);
-		this.baseSprite.width = nextSize[0];
-		this.baseSprite.height = nextSize[1];
-		this.baseSprite.position.set(viewPort.saveCenterWidth, viewPort.saveCenterHeight);
+		this.baseSprite.position.set(
+			...this.viewPort.convertPointToSaveArea([0, 0]),
+		);
+		this.baseSprite.scale.set(viewPort.saveRatio);
 	}
 
 }

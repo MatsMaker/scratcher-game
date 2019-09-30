@@ -45,6 +45,24 @@ class ViewPort {
 		});
 	}
 
+	public convertPointToSaveArea = ([x, y]: Array<number>): Array<number> => {
+		const { viewPort } = this.store.getState();
+		return [
+			viewPort.saveStartX + x,
+			viewPort.saveStartY + y
+		]
+	}
+
+	public convertXtoSaveArea = (x: number): number => {
+		const { viewPort } = this.store.getState();
+		return viewPort.saveStartX + x;
+	}
+
+	public convertYtoSaveArea = (y: number): number => {
+		const { viewPort } = this.store.getState();
+		return viewPort.saveStartY + y;
+	}
+
 	protected init = (): void => {
 		this.initListeners();
 		const saveAreaSize = this.config.getSaveAreaSize();

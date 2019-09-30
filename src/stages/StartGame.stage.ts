@@ -2,10 +2,12 @@ import { injectable, inject } from 'inversify';
 import BackgroundContainer from '../containers/background/Background.container';
 import TYPES from '../types';
 import { StoreType } from '../store';
-import { renderBackgroundAction } from '../containers/background/action';
+import { renderBackgroundAction, reRenderBackgroundAction } from '../containers/background/action';
 import CharContainer from '../containers/char/Char.container';
-import { renderChar } from '../containers/char/action';
+import { renderChar, reRenderCharAction } from '../containers/char/action';
 import ViewPort from '../core/viewPort/ViewPort';
+import { onEvent } from '../utils/store.subscribe';
+import { VIEW_PORT_RESIZE_ACTION } from '../core/viewPort/types';
 
 @injectable()
 class StartGameStage {
@@ -33,6 +35,15 @@ class StartGameStage {
 
 		this.store.dispatch(renderBackgroundAction());
 		this.store.dispatch(renderChar());
+
+		this.initListeners();
+	}
+
+	protected initListeners = (): void => {
+		this.store.subscribe(onEvent(VIEW_PORT_RESIZE_ACTION, () => {
+			this.store.dispatch(reRenderBackgroundAction());
+			this.store.dispatch(reRenderCharAction());
+		}))
 	}
 
 }
