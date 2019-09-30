@@ -1,6 +1,7 @@
 import ViewPort from "../core/viewPort/ViewPort"
 import { Sprite, Texture, Container, Text, TextStyle } from 'pixi.js'
 import { btnLabelStyle, btnOrangeStyle } from "./fontStyles"
+import { SpriteEntity } from "./Sprite.entity"
 
 export enum barEventType {
 	onPlay = 'onPlay',
@@ -19,7 +20,7 @@ export class BarEntity {
 	public container: Container
 	protected viewPort: ViewPort
 	protected settings: BarEntityOptions
-	protected frameSprite: Sprite
+	protected frameSprite: SpriteEntity
 	protected btnBgPlaySprite: Sprite
 	protected btnPlayPosition: Array<number> = [25, 235]
 	protected btnPlayText: Text
@@ -35,8 +36,7 @@ export class BarEntity {
 
 	public reRender = (): void => {
 		const nextRatio = this.viewPort.getRatioOfSaveArea()
-		this.frameSprite.position.set(...this.viewPort.convertPointToSaveArea(this.settings.position))
-		this.frameSprite.scale.set(nextRatio)
+		this.frameSprite.reRender()
 
 		this.btnBgPlaySprite.position.set(...this.viewPort.convertPointToSaveArea(this.settings.position , this.btnPlayPosition))
 		this.btnBgPlaySprite.scale.set(nextRatio)
@@ -69,7 +69,10 @@ export class BarEntity {
 	} 
 
 	protected renderContent = (): void => {
-		this.frameSprite = new Sprite(this.settings.barFrameTexture)
+		this.frameSprite = new SpriteEntity(this.viewPort, {
+			texture: this.settings.barFrameTexture,
+			position: this.settings.position,
+		})
 		this.btnBgPlaySprite = new Sprite(this.settings.btnBgTexture)
 		this.btnBgPlaySprite.interactive = true
 		this.btnBgPlaySprite.buttonMode = true
@@ -82,7 +85,7 @@ export class BarEntity {
 		this.linkRulesText.interactive = true
 		this.linkRulesText.buttonMode = true
 
-		this.container.addChild(this.frameSprite)
+		this.container.addChild(this.frameSprite.sprite)
 		this.container.addChild(this.linkRulesText)
 		this.container.addChild(this.btnBgPlaySprite)
 		this.container.addChild(this.btnPlayText)

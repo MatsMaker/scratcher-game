@@ -5,7 +5,8 @@ import { StoreType } from '../../store';
 import Config from '../../core/config/Config';
 import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import ViewPort from '../../core/viewPort/ViewPort';
-import { SpriteEntity } from '../../entities/Sprite.entities';
+import { SpriteEntity } from '../../entities/Sprite.entity';
+import { ScratchEntity } from '../../entities/Scratch.entity';
 
 
 @injectable()
@@ -13,7 +14,7 @@ class ScratchesContainer extends ABaseContainer {
 
 	protected name = 'SCRATCHES'
 	protected frameSprite: SpriteEntity
-	protected scratchSprite: SpriteEntity
+	protected scratchEntity: ScratchEntity
 	protected position: Array<number> = [528, 140];
 
 	constructor(
@@ -36,6 +37,7 @@ class ScratchesContainer extends ABaseContainer {
 		const bgAsset = this.assetsLoader.getResource('img/magic_forest_winner_frame');
 		this.frameSprite = new SpriteEntity(this.viewPort, {
 			texture: bgAsset.texture,
+			name: 'ForestWinnerFrame',
 			position,
 		});
 		this.container.addChild(this.frameSprite.sprite);
@@ -45,18 +47,19 @@ class ScratchesContainer extends ABaseContainer {
 			position[0] + 87,
 			position[1] + 228
 		];
-		this.scratchSprite = new SpriteEntity(this.viewPort, {
-			texture: scratchAsset.texture,
+		this.scratchEntity = new ScratchEntity(this.viewPort, {
+			name: 'BigScratch',
+			scratchTexture: scratchAsset.texture,
 			position: scratchPosition,
 		});
-		this.container.addChild(this.scratchSprite.sprite);
+		this.container.addChild(this.scratchEntity.container);
 		
 		this.reRender();
 	}
 
 	protected reRender = (): void => {
 		this.frameSprite.reRender();
-		this.scratchSprite.reRender();
+		this.scratchEntity.reRender();
 	}
 
 }

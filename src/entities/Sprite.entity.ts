@@ -4,16 +4,19 @@ import { Sprite, Texture } from 'pixi.js'
 export interface ImageOptions {
 	texture: Texture
 	position?: Array<number>
+	name?: string
 }
 
 export class SpriteEntity {
 
+	public sprite: Sprite
 	protected texture: Texture
 	protected viewPort: ViewPort
 	protected position: Array<number>
-	public sprite: Sprite
+	protected name: string
 
 	constructor(viewPort: ViewPort, options: ImageOptions) {
+		this.name = options.name || SpriteEntity.name
 		this.texture = options.texture
 		this.position = options.position || [0.0]
 		this.viewPort = viewPort
@@ -26,7 +29,8 @@ export class SpriteEntity {
 	}
 
 	protected init = (): void => {
-		this.sprite = new Sprite(this.texture);
+		this.sprite = new Sprite(this.texture)
+		this.sprite.name = this.name
 	}
 
 }

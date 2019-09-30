@@ -5,8 +5,8 @@ import { StoreType } from '../../store';
 import ViewPort from '../../core/viewPort/ViewPort';
 import Config from '../../core/config/Config';
 import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
-import { SpriteEntity } from '../../entities/Sprite.entities';
-import { BarEntity, barEventType } from '../../entities/Bar.entities';
+import { SpriteEntity } from '../../entities/Sprite.entity';
+import { BarEntity, barEventType } from '../../entities/Bar.entity';
 import { playAction, rulesAction } from '../../game/actions';
 
 @injectable()
