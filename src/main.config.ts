@@ -12,11 +12,12 @@ import Config from './core/config/Config';
 import Game from './core/game/Game';
 import ViewPort from './core/viewPort/ViewPort';
 
+import StartGameStage from './stages/StartGame.stage';
+
 import BackgroundContainer from './containers/background/Background.container';
 import CharContainer from './containers/char/Char.container';
-
-import StartGameStage from './stages/StartGame.stage';
 import WinUpContainer from './containers/winUp/WinUp';
+import WinnerFrameContainer from './containers/winnerFrame/WinnerFrame.container';
 
 
 const main = new Container({ defaultScope: "Singleton" });
@@ -36,6 +37,7 @@ main.bind<Game>(TYPES.Game).to(Game);
 main.bind<BackgroundContainer>(TYPES.BackgroundContainer).to(BackgroundContainer);
 main.bind<CharContainer>(TYPES.CharContainer).to(CharContainer);
 main.bind<WinUpContainer>(TYPES.WinUpContainer).to(WinUpContainer);
+main.bind<WinnerFrameContainer>(TYPES.WinnerFrameContainer).to(WinnerFrameContainer);
 main.bind<FieldContainer>(TYPES.FieldContainer).to(FieldContainer);
 
 main.bind<StartGameStage>(TYPES.StartGameStage).to(StartGameStage);
