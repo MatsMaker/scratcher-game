@@ -48,19 +48,19 @@ class ViewPort {
 	public convertPointToSaveArea = ([x, y]: Array<number>): Array<number> => {
 		const { viewPort } = this.store.getState();
 		return [
-			viewPort.saveStartX + x,
-			viewPort.saveStartY + y
+			viewPort.saveStartX + (x * viewPort.saveRatio),
+			viewPort.saveStartY + (y * viewPort.saveRatio)
 		]
 	}
 
 	public convertXtoSaveArea = (x: number): number => {
 		const { viewPort } = this.store.getState();
-		return viewPort.saveStartX + x;
+		return viewPort.saveStartX + (x * viewPort.saveRatio);
 	}
 
 	public convertYtoSaveArea = (y: number): number => {
 		const { viewPort } = this.store.getState();
-		return viewPort.saveStartY + y;
+		return viewPort.saveStartY + (y * viewPort.saveRatio);
 	}
 
 	protected init = (): void => {

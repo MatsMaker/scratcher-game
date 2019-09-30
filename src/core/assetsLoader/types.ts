@@ -1,4 +1,4 @@
-export const ASSETS_IS_LOADED = '@ASSETS/isLoaded';
+export const ASSETS_IS_LOADED = '@CORE/ASSETS/is_loaded';
 
 interface BaseAction {
 	type: typeof ASSETS_IS_LOADED

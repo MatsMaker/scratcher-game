@@ -18,7 +18,7 @@ class CharContainer {
 	protected viewPort: ViewPort;
 	protected container: PIXI.Container;
 	protected char: PIXI.spine.Spine;
-	protected position: Array<number> = [110, 210];
+	protected position: Array<number> = [310, 615];
 
 	constructor(
 		@inject(TYPES.Store) store: StoreType,
