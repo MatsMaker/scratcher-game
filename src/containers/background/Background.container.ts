@@ -1,6 +1,6 @@
 import { Container, Sprite } from 'pixi.js';
 import { injectable, inject } from 'inversify';
-import TYPES from '../../types';
+import TYPES from '../../types/MainConfig';
 import Config from '../../core/config/Config';
 import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import { StoreType } from 'store';
@@ -36,8 +36,11 @@ class BackgroundContainer {
 	}
 
 	protected init = (): void => {
+		this.initContainer();
 		this.initListeners();
+	}
 
+	protected initContainer = () => {
 		this.container = new Container();
 		this.container.visible = false;
 		this.container.name = 'background';
@@ -50,7 +53,7 @@ class BackgroundContainer {
 			() => this.viewPort.ticker.addOnce(this.reRender)));
 	}
 
-	protected renderContainer = () => {
+	protected renderContent = () => {
 		const bgAsset = this.assetsLoader.getResource('img/magic_forest_bg');
 		this.baseSprite = new Sprite(bgAsset.texture);
 		this.container.addChild(this.baseSprite);
@@ -58,7 +61,7 @@ class BackgroundContainer {
 	}
 
 	protected render = () => {
-		this.renderContainer();
+		this.renderContent();
 		this.container.visible = true;
 	}
 

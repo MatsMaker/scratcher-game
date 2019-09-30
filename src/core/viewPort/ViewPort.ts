@@ -2,7 +2,7 @@ import { injectable, inject } from 'inversify';
 import isMobile from 'ismobilejs';
 import * as _ from 'lodash';
 import { StoreType } from '../../store';
-import TYPES from '../../types';
+import TYPES from '../../types/MainConfig';
 import { waitReRenderViewPort } from './utils';
 import { viewPortResizeAction, setAreaSizeAction } from './actions';
 import { Application, Container, Ticker } from 'pixi.js';
@@ -43,6 +43,11 @@ class ViewPort {
 			b.zIndex = b.zIndex || 0;
 			return b.zIndex - a.zIndex
 		});
+	}
+
+	public getRatioOfSaveArea = (): number => {
+		const { viewPort } = this.store.getState();
+		return viewPort.saveRatio;
 	}
 
 	public convertPointToSaveArea = ([x, y]: Array<number>): Array<number> => {

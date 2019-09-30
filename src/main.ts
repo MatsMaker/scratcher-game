@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { isDevelopment } from './utils/build';
 import { removeLoader } from './utils/loader';
 import main from './main.config';
-import TYPES from './types';
+import TYPES from './types/MainConfig';
 import Game from './core/game/Game';
 
 if (isDevelopment()) {

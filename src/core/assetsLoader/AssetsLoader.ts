@@ -2,7 +2,7 @@ import { Loader, LoaderResource } from 'pixi.js';
 import { injectable, inject } from 'inversify';
 import * as _ from 'lodash';
 import * as path from 'path';
-import TYPES from '../../types';
+import TYPES from '../../types/MainConfig';
 import Config from '../config/Config';
 import { StoreType } from '../../store';
 import { assetsIsLoadedAction } from './actions';

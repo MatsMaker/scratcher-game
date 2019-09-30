@@ -9,6 +9,7 @@ const TYPES = {
 	FieldContainer: Symbol.for('FieldContainer'),
 	BackgroundContainer: Symbol.for('BackgroundContainer'),
 	CharContainer: Symbol.for('CharContainer'),
+	WinUpContainer: Symbol.for('WinUpContainer'),
 
 	StartGameStage: Symbol.for('StartGameStage'),
 };

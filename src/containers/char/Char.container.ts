@@ -2,7 +2,7 @@ import { injectable, inject } from "inversify";
 import * as PIXI from "pixi.js";
 window.PIXI = PIXI;
 import "pixi-spine";
-import TYPES from "../../types";
+import TYPES from "../../types/MainConfig";
 import ViewPort from "../../core/viewPort/ViewPort";
 import AssetsLoader from "../../core/assetsLoader/AssetsLoader";
 import { StoreType } from "../../store";
@@ -36,46 +36,50 @@ class CharContainer {
 	}
 
 	protected init = (): void => {
-		this.container = new PIXI.Container();
-		this.container.visible = false;
-		this.container.name = 'char';
-		this.initListeners();
+		this.initContainer()
+		this.initListeners()
 	}
 
-	protected initChart = (): void => {
+	protected initContainer = (): void => {
+		this.container = new PIXI.Container()
+		this.container.visible = false
+		this.container.name = 'char'
+	}
+
+	protected renderChart = (): void => {
 		const { spineData } = this.assetsLoader.getResource('spine/char_spine_v5/Red.json');
 		this.char = new PIXI.spine.Spine(spineData);
 		this.char.skeleton.setSkinByName('default');
 		this.char.skeleton.setSlotsToSetupPose();
-		this.reRenderChar();
+		this.reRender();
 		this.container.addChild(this.char);
 		this.animateIdle();
 	}
 
 	protected initListeners = (): void => {
 		this.store.subscribe(onEvent(RENDER_CHAR, () => {
-			this.initChart();
-			this.renderChar();
+			this.render();
 		}))
 		this.store.subscribe(onEvent(RE_RENDER_CHAR, () => {
-			this.reRenderChar();
+			this.reRender();
 		}));
 	}
 
-	protected renderChar = (): void => {
-		this.container.visible = true;
+	protected animateIdle = (): void => {
+		this.char.state.setAnimation(0, 'red_idle_loop', true);
+	}
+
+	protected render = (): void => {
+		this.container.visible = true
+		this.renderChart();
 	};
 
-	protected reRenderChar = (): void => {
+	protected reRender = (): void => {
 		const { viewPort } = this.store.getState();
 		this.char.position.set(
 			...this.viewPort.convertPointToSaveArea(this.position)
 		);
 		this.char.scale.set(viewPort.saveRatio);
-	}
-
-	protected animateIdle = (): void => {
-		this.char.state.setAnimation(0, 'red_idle_loop', true);
 	}
 
 }

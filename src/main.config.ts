@@ -4,7 +4,7 @@ import { Application } from 'pixi.js';
 import * as settings from './settings.json';
 
 import { StoreType, store } from './store';
-import TYPES from './types';
+import TYPES from './types/MainConfig';
 
 import FieldContainer from './containers/field/Field.container';
 import AssetsLoader from './core/assetsLoader/AssetsLoader';
@@ -16,6 +16,7 @@ import BackgroundContainer from './containers/background/Background.container';
 import CharContainer from './containers/char/Char.container';
 
 import StartGameStage from './stages/StartGame.stage';
+import WinUpContainer from './containers/winUp/WinUp';
 
 
 const main = new Container({ defaultScope: "Singleton" });
@@ -34,6 +35,7 @@ main.bind<Game>(TYPES.Game).to(Game);
 
 main.bind<BackgroundContainer>(TYPES.BackgroundContainer).to(BackgroundContainer);
 main.bind<CharContainer>(TYPES.CharContainer).to(CharContainer);
+main.bind<WinUpContainer>(TYPES.WinUpContainer).to(WinUpContainer);
 main.bind<FieldContainer>(TYPES.FieldContainer).to(FieldContainer);
 
 main.bind<StartGameStage>(TYPES.StartGameStage).to(StartGameStage);

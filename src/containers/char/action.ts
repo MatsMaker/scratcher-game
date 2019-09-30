@@ -1,6 +1,6 @@
 import { ActionTypes, RENDER_CHAR, RE_RENDER_CHAR } from "./types";
 
-export function renderChar(): ActionTypes {
+export function renderCharAction(): ActionTypes {
 	return {
 		type: RENDER_CHAR,
 	}

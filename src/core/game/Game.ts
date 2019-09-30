@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import * as _ from 'lodash';
-import TYPES from '../../types';
+import TYPES from '../../types/MainConfig';
 import Config from '../config/Config';
 import AssetsLoader from '../assetsLoader/AssetsLoader';
 import { StoreType } from '../../store';
