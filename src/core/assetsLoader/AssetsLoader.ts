@@ -1,4 +1,5 @@
 import { Loader, LoaderResource } from 'pixi.js';
+import * as WebFont from 'webfontloader'
 import { injectable, inject } from 'inversify';
 import * as _ from 'lodash';
 import * as path from 'path';
@@ -16,6 +17,9 @@ class AssetsLoader {
 	protected config: Config;
 	protected cbOnReady: Function;
 	protected resources: Partial<Record<string, LoaderResource>>
+	protected webFont: any // WebFont
+	protected assetsIsLoaded: boolean = false
+	protected fontsIsLoaded: boolean = false
 
 	constructor(
 		@inject(TYPES.Store) store: StoreType,
@@ -24,7 +28,8 @@ class AssetsLoader {
 		this.store = store;
 		this.config = config;
 		this.loader = new Loader();
-		this.initListeners();
+		this.fontLoader()
+		this.initListeners()
 	}
 
 	public getResource = (key: string): LoaderResource => {
@@ -57,14 +62,36 @@ class AssetsLoader {
 		return removeExtension(assetsPath);
 	}
 
+	protected fontLoader = () => {
+		const fonts = this.config.get("fonts");
+		WebFont.load({
+			...fonts,
+			fontloading: this.onFontsIsLoaded
+		})
+	}
+
+	protected onFontsIsLoaded = () => {
+		this.fontsIsLoaded = true
+		this.dataIsLoaded()
+	}
+
 	// @ts-ignore
 	protected onComplete = (loader: Loader, resources: Partial<Record<string, LoaderResource>>) => {
 		this.proxyAssets(resources);
-		this.store.dispatch(assetsIsLoadedAction());
+		this.assetsIsLoaded = true;
+		this.dataIsLoaded()
 	};
 
 	protected proxyAssets = (resources: Partial<Record<string, LoaderResource>>) => {
 		this.resources = resources;
+	}
+
+	protected dataIsLoaded = (): void => {
+		if (this.assetsIsLoaded
+			&& this.fontsIsLoaded
+		) {
+			this.store.dispatch(assetsIsLoadedAction());
+		}
 	}
 
 }

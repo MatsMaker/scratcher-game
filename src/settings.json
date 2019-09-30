@@ -11,6 +11,16 @@
 		"img/magic_forest_button.png",
 		"spine/char_spine_v5/Red.json"
 	],
+	"fonts": {
+		"custom": {
+			"families": [
+				"DRAguSans"
+			],
+			"urls": [
+				"/assets/font/DRAguSans-Black.ttf"
+			]
+		}
+	},
 	"size": "origin",
 	"saveArea": {
 		"width": "1098",

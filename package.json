@@ -19,10 +19,12 @@
         "pixi.js": "^5.1.5",
         "redux": "^4.0.4",
         "reflect-metadata": "^0.1.13",
-        "three-orbitcontrols": "^2.108.1"
+        "three-orbitcontrols": "^2.108.1",
+        "webfontloader": "^1.6.28"
     },
     "devDependencies": {
         "@types/node": "^12.7.8",
+        "@types/webfontloader": "^1.6.29",
         "clean-webpack-plugin": "^3.0.0",
         "copy-webpack-plugin": "^5.0.4",
         "cross-env": "^6.0.0",
