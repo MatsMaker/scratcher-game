@@ -6,7 +6,8 @@ import ViewPort from '../../core/viewPort/ViewPort';
 import Config from '../../core/config/Config';
 import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import { SpriteEntity } from '../../entities/Sprite.entities';
-import { BarEntity } from '../../entities/Bar.entities';
+import { BarEntity, barEventType } from '../../entities/Bar.entities';
+import { playAction, rulesAction } from '../../core/game/actions';
 
 @injectable()
 class ModalWindowContainer extends ABaseContainer {
@@ -30,6 +31,10 @@ class ModalWindowContainer extends ABaseContainer {
 		this.init()
 	}
 
+	protected hideModal = (): void => {
+		this.container.visible = false
+	}
+
 	protected renderBackground = (): void => {
 		const { position } = this;
 		const bgAsset = this.assetsLoader.getResource('img/magic_forest_shadow_40_percent');
@@ -42,15 +47,30 @@ class ModalWindowContainer extends ABaseContainer {
 
 	protected renderBar = (): void => {
 		const barFrameAsset = this.assetsLoader.getResource('img/magic_forest_frame3')
-	
+
 		const btnBgAsset = this.assetsLoader.getResource('img/magic_forest_button')
 		const saveAreaSize = this.viewPort.getSaveAreaSize()
 		this.barEntity = new BarEntity(this.viewPort, {
 			barFrameTexture: barFrameAsset.texture,
-			btnBgTexture: btnBgAsset.texture, 
+			btnBgTexture: btnBgAsset.texture,
 			position: [0, saveAreaSize.height - 520],
+			onClick: this.onPlay,
 		})
 		this.container.addChild(this.barEntity.container)
+	}
+
+	protected onPlay = (eventType: barEventType): void => {
+		switch (eventType) {
+			case barEventType.onPlay:
+				this.hideModal()
+				this.store.dispatch(playAction())
+				break
+			case barEventType.howToPlay:
+				this.store.dispatch(rulesAction())
+				break
+			default:
+				throw 'Nonexistent event type'
+		}
 	}
 
 	protected renderContent = (): void => {
@@ -64,9 +84,10 @@ class ModalWindowContainer extends ABaseContainer {
 	}
 
 	protected render = (): void => {
-		this.renderContent();
-		this.reRender();
-		this.container.visible = true; // will be false
+		this.renderContent()
+		this.reRender()
+		this.container.visible = true // will be false
+		this.initListeners()
 	}
 
 }

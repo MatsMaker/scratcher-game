@@ -59,11 +59,11 @@ class ViewPort {
 		}
 	}
 
-	public convertPointToSaveArea = ([x, y]: Array<number>): Array<number> => {
+	public convertPointToSaveArea = ([x, y]: Array<number>, offset: Array<number> = [0, 0]): Array<number> => {
 		const { viewPort } = this.store.getState();
 		return [
-			viewPort.saveStartX + (x * viewPort.saveRatio),
-			viewPort.saveStartY + (y * viewPort.saveRatio)
+			viewPort.saveStartX + ((x + offset[0]) * viewPort.saveRatio),
+			viewPort.saveStartY + ((y + offset[1]) * viewPort.saveRatio)
 		]
 	}
 
