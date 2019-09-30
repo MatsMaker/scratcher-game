@@ -18,6 +18,7 @@ import BackgroundContainer from './containers/background/Background.container';
 import CharContainer from './containers/char/Char.container';
 import WinUpContainer from './containers/winUp/WinUp';
 import WinnerFrameContainer from './containers/winnerFrame/WinnerFrame.container';
+import NotificationContainer from './containers/notification/Notification';
 
 
 const main = new Container({ defaultScope: "Singleton" });
@@ -30,17 +31,19 @@ main.bind<Application>(TYPES.Application).toConstantValue(new Application({
 	transparent: true,
 	resolution: 1
 }))
-main.bind<ViewPort>(TYPES.ViewPort).to(ViewPort);
-main.bind<AssetsLoader>(TYPES.AssetsLoader).to(AssetsLoader);
-main.bind<Game>(TYPES.Game).to(Game);
+main.bind<ViewPort>(TYPES.ViewPort).to(ViewPort)
+main.bind<AssetsLoader>(TYPES.AssetsLoader).to(AssetsLoader)
+main.bind<Game>(TYPES.Game).to(Game)
 
-main.bind<BackgroundContainer>(TYPES.BackgroundContainer).to(BackgroundContainer);
-main.bind<CharContainer>(TYPES.CharContainer).to(CharContainer);
-main.bind<WinUpContainer>(TYPES.WinUpContainer).to(WinUpContainer);
-main.bind<WinnerFrameContainer>(TYPES.WinnerFrameContainer).to(WinnerFrameContainer);
-main.bind<FieldContainer>(TYPES.FieldContainer).to(FieldContainer);
+main.bind<BackgroundContainer>(TYPES.BackgroundContainer).to(BackgroundContainer)
+main.bind<CharContainer>(TYPES.CharContainer).to(CharContainer)
+main.bind<WinUpContainer>(TYPES.WinUpContainer).to(WinUpContainer)
+main.bind<WinnerFrameContainer>(TYPES.WinnerFrameContainer).to(WinnerFrameContainer)
+main.bind<NotificationContainer>(TYPES.NotificationContainer).to(NotificationContainer)
 
-main.bind<StartGameStage>(TYPES.StartGameStage).to(StartGameStage);
+main.bind<FieldContainer>(TYPES.FieldContainer).to(FieldContainer)
+
+main.bind<StartGameStage>(TYPES.StartGameStage).to(StartGameStage)
 
 
 export default main;

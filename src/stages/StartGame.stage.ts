@@ -12,6 +12,8 @@ import { reRenderWinUpAction, renderWinUpAction } from '../containers/winUp/acti
 import WinUpContainer from '../containers/winUp/WinUp';
 import WinnerFrameContainer from '../containers/winnerFrame/WinnerFrame.container';
 import * as winnerFrameAction from '../containers/winnerFrame/actions';
+import * as notificationActions from '../containers/notification/actions';
+import NotificationContainer from '../containers/notification/Notification';
 
 @injectable()
 class StartGameStage {
@@ -22,6 +24,7 @@ class StartGameStage {
 	protected charContainer: CharContainer;
 	protected winUpContainer: WinUpContainer;
 	protected winnerFrameContainer: WinnerFrameContainer;
+	protected notificationContainer: NotificationContainer;
 
 	constructor(
 		@inject(TYPES.Store) store: StoreType,
@@ -30,6 +33,7 @@ class StartGameStage {
 		@inject(TYPES.CharContainer) charContainer: CharContainer,
 		@inject(TYPES.WinUpContainer) winUpContainer: WinUpContainer,
 		@inject(TYPES.WinnerFrameContainer) winnerFrameContainer: WinnerFrameContainer,
+		@inject(TYPES.NotificationContainer) notificationContainer: NotificationContainer,
 	) {
 		this.store = store
 		this.viewPort = viewPort
@@ -37,6 +41,7 @@ class StartGameStage {
 		this.charContainer = charContainer
 		this.winUpContainer = winUpContainer
 		this.winnerFrameContainer = winnerFrameContainer
+		this.notificationContainer = notificationContainer
 	}
 
 	public initScreen = () => {
@@ -44,12 +49,14 @@ class StartGameStage {
 		this.viewPort.stage.addChild(this.charContainer.view)
 		this.viewPort.stage.addChild(this.winUpContainer.view)
 		this.viewPort.stage.addChild(this.winnerFrameContainer.view)
+		this.viewPort.stage.addChild(this.notificationContainer.view)
 
 
 		this.store.dispatch(renderBackgroundAction())
 		this.store.dispatch(renderCharAction())
 		this.store.dispatch(renderWinUpAction())
 		this.store.dispatch(winnerFrameAction.renderAction())
+		this.store.dispatch(notificationActions.renderAction())
 
 		this.initListeners();
 	}
@@ -60,6 +67,7 @@ class StartGameStage {
 			this.store.dispatch(reRenderCharAction())
 			this.store.dispatch(reRenderWinUpAction())
 			this.store.dispatch(winnerFrameAction.reRenderAction())
+			this.store.dispatch(notificationActions.reRenderAction())
 		}))
 	}
 

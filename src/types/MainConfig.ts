@@ -11,6 +11,7 @@ const TYPES = {
 	CharContainer: Symbol.for('CharContainer'),
 	WinUpContainer: Symbol.for('WinUpContainer'),
 	WinnerFrameContainer: Symbol.for('WinnerFrameContainer'),
+	NotificationContainer: Symbol.for('NotificationContainer'),
 
 	StartGameStage: Symbol.for('StartGameStage'),
 };
