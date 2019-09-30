@@ -14,6 +14,8 @@ import WinnerFrameContainer from '../containers/winnerFrame/WinnerFrame.containe
 import * as winnerFrameAction from '../containers/winnerFrame/actions';
 import * as notificationActions from '../containers/notification/actions';
 import NotificationContainer from '../containers/notification/Notification';
+import ModalWindowContainer from '../containers/modalWindow/ModalWindow';
+import * as modalWindowActions from '../containers/modalWindow/actions';
 
 @injectable()
 class StartGameStage {
@@ -25,6 +27,7 @@ class StartGameStage {
 	protected winUpContainer: WinUpContainer;
 	protected winnerFrameContainer: WinnerFrameContainer;
 	protected notificationContainer: NotificationContainer;
+	protected modalWindowContainer: ModalWindowContainer;
 
 	constructor(
 		@inject(TYPES.Store) store: StoreType,
@@ -34,6 +37,7 @@ class StartGameStage {
 		@inject(TYPES.WinUpContainer) winUpContainer: WinUpContainer,
 		@inject(TYPES.WinnerFrameContainer) winnerFrameContainer: WinnerFrameContainer,
 		@inject(TYPES.NotificationContainer) notificationContainer: NotificationContainer,
+		@inject(TYPES.ModalWindowContainer) modalWindowContainer: ModalWindowContainer,
 	) {
 		this.store = store
 		this.viewPort = viewPort
@@ -42,6 +46,7 @@ class StartGameStage {
 		this.winUpContainer = winUpContainer
 		this.winnerFrameContainer = winnerFrameContainer
 		this.notificationContainer = notificationContainer
+		this.modalWindowContainer = modalWindowContainer
 	}
 
 	public initScreen = () => {
@@ -50,13 +55,14 @@ class StartGameStage {
 		this.viewPort.stage.addChild(this.winUpContainer.view)
 		this.viewPort.stage.addChild(this.winnerFrameContainer.view)
 		this.viewPort.stage.addChild(this.notificationContainer.view)
-
+		this.viewPort.stage.addChild(this.modalWindowContainer.view)
 
 		this.store.dispatch(renderBackgroundAction())
 		this.store.dispatch(renderCharAction())
 		this.store.dispatch(renderWinUpAction())
 		this.store.dispatch(winnerFrameAction.renderAction())
 		this.store.dispatch(notificationActions.renderAction())
+		this.store.dispatch(modalWindowActions.renderAction())
 
 		this.initListeners();
 	}
@@ -68,6 +74,7 @@ class StartGameStage {
 			this.store.dispatch(reRenderWinUpAction())
 			this.store.dispatch(winnerFrameAction.reRenderAction())
 			this.store.dispatch(notificationActions.reRenderAction())
+			this.store.dispatch(modalWindowActions.reRenderAction())
 		}))
 	}
 

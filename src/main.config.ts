@@ -19,6 +19,7 @@ import CharContainer from './containers/char/Char.container';
 import WinUpContainer from './containers/winUp/WinUp';
 import WinnerFrameContainer from './containers/winnerFrame/WinnerFrame.container';
 import NotificationContainer from './containers/notification/Notification';
+import ModalWindowContainer from './containers/modalWindow/ModalWindow';
 
 
 const main = new Container({ defaultScope: "Singleton" });
@@ -40,6 +41,7 @@ main.bind<CharContainer>(TYPES.CharContainer).to(CharContainer)
 main.bind<WinUpContainer>(TYPES.WinUpContainer).to(WinUpContainer)
 main.bind<WinnerFrameContainer>(TYPES.WinnerFrameContainer).to(WinnerFrameContainer)
 main.bind<NotificationContainer>(TYPES.NotificationContainer).to(NotificationContainer)
+main.bind<ModalWindowContainer>(TYPES.ModalWindowContainer).to(ModalWindowContainer)
 
 main.bind<FieldContainer>(TYPES.FieldContainer).to(FieldContainer)
 
