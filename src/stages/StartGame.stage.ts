@@ -10,8 +10,8 @@ import { onEvent } from '../utils/store.subscribe';
 import { VIEW_PORT_RESIZE_ACTION } from '../core/viewPort/types';
 import { reRenderWinUpAction, renderWinUpAction } from '../containers/winUp/actions';
 import WinUpContainer from '../containers/winUp/WinUp';
-import WinnerFrameContainer from '../containers/winnerFrame/WinnerFrame.container';
-import * as winnerFrameAction from '../containers/winnerFrame/actions';
+import ScratchesContainer from '../containers/scratches/Scratches.containers';
+import * as scratchesAction from '../containers/scratches/actions';
 import * as notificationActions from '../containers/notification/actions';
 import NotificationContainer from '../containers/notification/Notification';
 import ModalWindowContainer from '../containers/modalWindow/ModalWindow';
@@ -25,7 +25,7 @@ class StartGameStage {
 	protected backgroundContainer: BackgroundContainer;
 	protected charContainer: CharContainer;
 	protected winUpContainer: WinUpContainer;
-	protected winnerFrameContainer: WinnerFrameContainer;
+	protected scratchesContainer: ScratchesContainer;
 	protected notificationContainer: NotificationContainer;
 	protected modalWindowContainer: ModalWindowContainer;
 
@@ -35,7 +35,7 @@ class StartGameStage {
 		@inject(TYPES.BackgroundContainer) backgroundContainer: BackgroundContainer,
 		@inject(TYPES.CharContainer) charContainer: CharContainer,
 		@inject(TYPES.WinUpContainer) winUpContainer: WinUpContainer,
-		@inject(TYPES.WinnerFrameContainer) winnerFrameContainer: WinnerFrameContainer,
+		@inject(TYPES.ScratchesContainer) scratchesContainer: ScratchesContainer,
 		@inject(TYPES.NotificationContainer) notificationContainer: NotificationContainer,
 		@inject(TYPES.ModalWindowContainer) modalWindowContainer: ModalWindowContainer,
 	) {
@@ -44,7 +44,7 @@ class StartGameStage {
 		this.backgroundContainer = backgroundContainer
 		this.charContainer = charContainer
 		this.winUpContainer = winUpContainer
-		this.winnerFrameContainer = winnerFrameContainer
+		this.scratchesContainer = scratchesContainer
 		this.notificationContainer = notificationContainer
 		this.modalWindowContainer = modalWindowContainer
 	}
@@ -53,14 +53,14 @@ class StartGameStage {
 		this.viewPort.stage.addChild(this.backgroundContainer.view)
 		this.viewPort.stage.addChild(this.charContainer.view)
 		this.viewPort.stage.addChild(this.winUpContainer.view)
-		this.viewPort.stage.addChild(this.winnerFrameContainer.view)
+		this.viewPort.stage.addChild(this.scratchesContainer.view)
 		this.viewPort.stage.addChild(this.notificationContainer.view)
 		this.viewPort.stage.addChild(this.modalWindowContainer.view)
 
 		this.store.dispatch(renderBackgroundAction())
 		this.store.dispatch(renderCharAction())
 		this.store.dispatch(renderWinUpAction())
-		this.store.dispatch(winnerFrameAction.renderAction())
+		this.store.dispatch(scratchesAction.renderAction())
 		this.store.dispatch(notificationActions.renderAction())
 		this.store.dispatch(modalWindowActions.renderAction())
 
@@ -72,7 +72,7 @@ class StartGameStage {
 			this.store.dispatch(reRenderBackgroundAction())
 			this.store.dispatch(reRenderCharAction())
 			this.store.dispatch(reRenderWinUpAction())
-			this.store.dispatch(winnerFrameAction.reRenderAction())
+			this.store.dispatch(scratchesAction.reRenderAction())
 			this.store.dispatch(notificationActions.reRenderAction())
 			this.store.dispatch(modalWindowActions.reRenderAction())
 		}))

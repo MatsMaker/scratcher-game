@@ -1,13 +1,13 @@
 import { injectable, inject } from 'inversify';
 import * as _ from 'lodash';
-import TYPES from '../../types/MainConfig';
-import Config from '../config/Config';
-import AssetsLoader from '../assetsLoader/AssetsLoader';
-import { StoreType } from '../../store';
-import { ASSETS_IS_LOADED } from '../assetsLoader/types';
-import { onEvent } from '../../utils/store.subscribe';
-import StartGameStage from '../../stages/StartGame.stage';
-import ViewPort from '../viewPort/ViewPort';
+import TYPES from '../types/MainConfig';
+import Config from '../core/config/Config';
+import AssetsLoader from '../core/assetsLoader/AssetsLoader';
+import { StoreType } from '../store';
+import { ASSETS_IS_LOADED } from '../core/assetsLoader/types';
+import { onEvent } from '../utils/store.subscribe';
+import StartGameStage from '../stages/StartGame.stage';
+import ViewPort from '../core/viewPort/ViewPort';
 
 @injectable()
 class Game {

@@ -10,7 +10,7 @@ const TYPES = {
 	BackgroundContainer: Symbol.for('BackgroundContainer'),
 	CharContainer: Symbol.for('CharContainer'),
 	WinUpContainer: Symbol.for('WinUpContainer'),
-	WinnerFrameContainer: Symbol.for('WinnerFrameContainer'),
+	ScratchesContainer: Symbol.for('ScratchesContainer'),
 	NotificationContainer: Symbol.for('NotificationContainer'),
 	ModalWindowContainer: Symbol.for('ModalWindowContainer'),
 

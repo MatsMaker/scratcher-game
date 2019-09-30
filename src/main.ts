@@ -3,7 +3,7 @@ import { isDevelopment } from './utils/build';
 import { removeLoader } from './utils/loader';
 import main from './main.config';
 import TYPES from './types/MainConfig';
-import Game from './core/game/Game';
+import Game from './game/Game';
 
 if (isDevelopment()) {
 	PIXI.useDeprecated();

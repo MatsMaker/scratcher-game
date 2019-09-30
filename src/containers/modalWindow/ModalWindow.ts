@@ -7,7 +7,7 @@ import Config from '../../core/config/Config';
 import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import { SpriteEntity } from '../../entities/Sprite.entities';
 import { BarEntity, barEventType } from '../../entities/Bar.entities';
-import { playAction, rulesAction } from '../../core/game/actions';
+import { playAction, rulesAction } from '../../game/actions';
 
 @injectable()
 class ModalWindowContainer extends ABaseContainer {

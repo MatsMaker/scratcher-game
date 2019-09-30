@@ -1,16 +1,17 @@
 import { injectable, inject } from 'inversify';
-import ABaseContainer from '../AContainer/ABaseContainer';
 import TYPES from '../../types/MainConfig';
+import ABaseContainer from '../AContainer/ABaseContainer';
 import { StoreType } from '../../store';
-import ViewPort from '../../core/viewPort/ViewPort';
 import Config from '../../core/config/Config';
 import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
+import ViewPort from '../../core/viewPort/ViewPort';
 import { SpriteEntity } from '../../entities/Sprite.entities';
 
-@injectable()
-class WinnerFrameContainer extends ABaseContainer {
 
-	protected name = 'WINNER_FRAME'
+@injectable()
+class ScratchesContainer extends ABaseContainer {
+
+	protected name = 'SCRATCHES'
 	protected frameSprite: SpriteEntity
 	protected scratchSprite: SpriteEntity
 	protected position: Array<number> = [528, 140];
@@ -31,6 +32,7 @@ class WinnerFrameContainer extends ABaseContainer {
 
 	protected renderContent = (): void => {
 		const { position } = this;
+
 		const bgAsset = this.assetsLoader.getResource('img/magic_forest_winner_frame');
 		this.frameSprite = new SpriteEntity(this.viewPort, {
 			texture: bgAsset.texture,
@@ -48,7 +50,7 @@ class WinnerFrameContainer extends ABaseContainer {
 			position: scratchPosition,
 		});
 		this.container.addChild(this.scratchSprite.sprite);
-
+		
 		this.reRender();
 	}
 
@@ -59,4 +61,4 @@ class WinnerFrameContainer extends ABaseContainer {
 
 }
 
-export default WinnerFrameContainer
+export default ScratchesContainer
