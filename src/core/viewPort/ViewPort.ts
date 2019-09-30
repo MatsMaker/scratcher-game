@@ -9,6 +9,7 @@ import { Application, Container, Ticker } from 'pixi.js';
 import { onEvent } from '../../utils/store.subscribe';
 import { VIEW_PORT_RESIZE_ACTION } from './types';
 import Config from '../../core/config/Config';
+import { AreaSizeType } from 'core/config/types';
 
 
 @injectable()
@@ -48,6 +49,14 @@ class ViewPort {
 	public getRatioOfSaveArea = (): number => {
 		const { viewPort } = this.store.getState();
 		return viewPort.saveRatio;
+	}
+
+	public getSaveAreaSize = (): AreaSizeType => {
+		const { viewPort } = this.store.getState();
+		return {
+			width: viewPort.cnfgSaveWidth,
+			height: viewPort.cnfgSaveHeight,
+		}
 	}
 
 	public convertPointToSaveArea = ([x, y]: Array<number>): Array<number> => {
