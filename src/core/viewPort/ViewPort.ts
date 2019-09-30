@@ -49,6 +49,7 @@ class ViewPort {
 		this.initListeners();
 		const saveAreaSize = this.config.getSaveAreaSize();
 		this.store.dispatch(setAreaSizeAction(saveAreaSize));
+		this.store.dispatch(viewPortResizeAction());
 		this.resize();
 		document.body.appendChild(this.app.view);
 	}

@@ -73,7 +73,7 @@ class BackgroundContainer {
 		const nextSize = insideSize(this.baseSprite, viewPort);
 		this.baseSprite.width = nextSize[0];
 		this.baseSprite.height = nextSize[1];
-		this.baseSprite.position.set(viewPort.centerWidth, viewPort.centerHeight);
+		this.baseSprite.position.set(viewPort.saveCenterWidth, viewPort.saveCenterHeight);
 	}
 
 }
