@@ -65,7 +65,7 @@ export class ScratchEntity {
 		this.brush = new Graphics()
 		this.brush.name = 'brash'
 		this.brush.beginFill(0xFFFFFF)
-		this.brush.drawCircle(0, 0, 200)
+		this.brush.drawCircle(0, 0, 150)
 		this.brush.endFill()
 
 		const { scratchTexture } = this.settings

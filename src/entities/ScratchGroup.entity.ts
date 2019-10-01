@@ -25,6 +25,12 @@ export default class ScratchGroupEntity {
 		this.init()
 	}
 
+	public reRender = (): void => {
+		_.forEach(this.scratchGroup, (scratch: ScratchEntity) => {
+			scratch.reRender()
+		})
+	}
+
 	protected init = (): void => {
 		this.container = new Container()
 		this.container.name = this.settings.name || 'ScratchGroupEntity'
@@ -39,15 +45,17 @@ export default class ScratchGroupEntity {
 			scratchTexture,
 			textureToReveal,
 			position,
-			positionContentCorrection: [50, 70],
+			positionContentCorrection: [0, 0],
 			onClear: this.onOnceClear
 		}
-		_.times(2).forEach((row: number) => {
-			_.times(3).forEach((clm: number) => {
+		const marginRow = 335
+		const marginClm = 335
+		_.times(3).forEach((row: number) => {
+			_.times(2).forEach((clm: number) => {
 				const scratch = new ScratchEntity(this.viewPort, {
 					...scratchSettings,
 					name: `SmallScratch-${row}-${clm}`,
-					position: movePoint(position, [87 + row * 50, 228 + clm * 50])
+					position: movePoint(position, [row * marginRow, clm * marginClm])
 				})
 				this.scratchGroup.push(scratch)
 				this.container.addChild(scratch.container)

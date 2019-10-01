@@ -21,7 +21,7 @@ class ScratchesContainer extends ABaseContainer {
 	protected frameSprite: SpriteEntity
 	protected scratchEntity: ScratchEntity
 	protected scratchGroupEntity: ScratchGroupEntity
-	protected position: Array<number> = [528, 140];
+	protected position: Array<number> = [0, 0];
 
 	constructor(
 		@inject(TYPES.Application) app: Application,
@@ -46,7 +46,7 @@ class ScratchesContainer extends ABaseContainer {
 		this.frameSprite = new SpriteEntity(this.viewPort, {
 			texture: bgAsset.texture,
 			name: 'ForestWinnerFrame',
-			position,
+			position: [528, 140],
 		});
 		this.container.addChild(this.frameSprite.sprite);
 
@@ -58,19 +58,20 @@ class ScratchesContainer extends ABaseContainer {
 			name: 'BigScratch',
 			scratchTexture: scratchAsset.texture,
 			textureToReveal: emptyRevealAsset.texture,
-			position: movePoint(position, [87, 228]),
+			position: movePoint(position, [615, 368]),
 			positionContentCorrection: [50, 70],
 			onClear: this.onClearBigScratcher
 		})
 		this.scratchEntity.setTextureToReveal(toRevealAsset.texture)
 		this.container.addChild(this.scratchEntity.container)
 
+		const scratchSmallAsset = this.assetsLoader.getResource('img/magic_forest_scratch_frame')
 		this.scratchGroupEntity = new ScratchGroupEntity(this.viewPort, {
 			app: this.app,
 			name: 'BigScratch',
-			scratchTexture: scratchAsset.texture,
+			scratchTexture: scratchSmallAsset.texture,
 			textureToReveal: emptyRevealAsset.texture,
-			position: movePoint(position, [87, 228]),
+			position: movePoint(position, [75, 1225]),
 		})
 		this.container.addChild(this.scratchGroupEntity.container)
 
@@ -78,8 +79,9 @@ class ScratchesContainer extends ABaseContainer {
 	}
 
 	protected reRender = (): void => {
-		this.frameSprite.reRender();
-		this.scratchEntity.reRender();
+		this.frameSprite.reRender()
+		this.scratchEntity.reRender()
+		this.scratchGroupEntity.reRender()
 	}
 
 	protected onClearBigScratcher = (): void => {
