@@ -9,6 +9,7 @@ import ViewPort from '../../core/viewPort/ViewPort';
 import { SpriteEntity } from '../../entities/Sprite.entity';
 import { ScratchEntity } from '../../entities/Scratch.entity';
 import { movePoint } from '../../utils/math';
+import { cleanScratcherAction } from './actions';
 
 
 @injectable()
@@ -57,6 +58,7 @@ class ScratchesContainer extends ABaseContainer {
 			textureToReveal: emptyRevealAsset.texture,
 			position: movePoint(position, [87, 228]),
 			positionContentCorrection: [50, 70],
+			onClear: this.onClearBigScratcher
 		})
 		this.scratchEntity.setTextureToReveal(toRevealAsset.texture)
 		this.container.addChild(this.scratchEntity.container)
@@ -67,6 +69,10 @@ class ScratchesContainer extends ABaseContainer {
 	protected reRender = (): void => {
 		this.frameSprite.reRender();
 		this.scratchEntity.reRender();
+	}
+
+	protected onClearBigScratcher = (): void => {
+		this.store.dispatch(cleanScratcherAction('bigScratcher'))
 	}
 
 }

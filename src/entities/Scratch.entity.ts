@@ -11,6 +11,7 @@ interface ScratchEntityOptions {
 	textureToReveal?: Texture
 	position: Array<number>
 	positionContentCorrection: Array<number>
+	onClear: Function
 }
 
 export class ScratchEntity {
@@ -64,7 +65,7 @@ export class ScratchEntity {
 		this.brush = new Graphics()
 		this.brush.name = 'brash'
 		this.brush.beginFill(0xFFFFFF)
-		this.brush.drawCircle(0, 0, 50)
+		this.brush.drawCircle(0, 0, 200)
 		this.brush.endFill()
 
 		const { scratchTexture } = this.settings
@@ -80,8 +81,9 @@ export class ScratchEntity {
 		const { position, scratchTexture } = this.settings
 		this.scratchEntity = new SpriteEntity(this.viewPort, {
 			texture: scratchTexture,
+			name: 'scratchEntity',
 			position,
-		});
+		})
 		this.scratchEntity.sprite.interactive = true
 		this.container.addChild(this.scratchEntity.sprite)
 
@@ -105,6 +107,11 @@ export class ScratchEntity {
 		sprite.on('pointermove', this.onPointerMove)
 	}
 
+	protected open = (): void => {
+		this.scratchEntity.sprite.visible = false
+		this.settings.onClear()
+	}
+
 	protected onPointerDown = (event: interaction.InteractionEvent): void => {
 		this.dragging = true
 		this.onPointerMove(event)
@@ -122,6 +129,7 @@ export class ScratchEntity {
 			newPoint.y = event.data.global.y - this.maskSprite.position.y
 			this.brush.position.copyFrom(newPoint)
 			app.renderer.render(this.brush, this.renderTexture, false, null, false)
+			this.open()
 		}
 	}
 
