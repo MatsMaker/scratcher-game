@@ -10,6 +10,7 @@ import { SpriteEntity } from '../../entities/Sprite.entity';
 import { ScratchEntity } from '../../entities/Scratch.entity';
 import { movePoint } from '../../utils/math';
 import { cleanScratcherAction } from './actions';
+import ScratchGroupEntity from '../../entities/ScratchGroup.entity';
 
 
 @injectable()
@@ -19,6 +20,7 @@ class ScratchesContainer extends ABaseContainer {
 	protected app: Application
 	protected frameSprite: SpriteEntity
 	protected scratchEntity: ScratchEntity
+	protected scratchGroupEntity: ScratchGroupEntity
 	protected position: Array<number> = [528, 140];
 
 	constructor(
@@ -63,7 +65,16 @@ class ScratchesContainer extends ABaseContainer {
 		this.scratchEntity.setTextureToReveal(toRevealAsset.texture)
 		this.container.addChild(this.scratchEntity.container)
 
-		this.reRender();
+		this.scratchGroupEntity = new ScratchGroupEntity(this.viewPort, {
+			app: this.app,
+			name: 'BigScratch',
+			scratchTexture: scratchAsset.texture,
+			textureToReveal: emptyRevealAsset.texture,
+			position: movePoint(position, [87, 228]),
+		})
+		this.container.addChild(this.scratchGroupEntity.container)
+
+		this.reRender()
 	}
 
 	protected reRender = (): void => {
