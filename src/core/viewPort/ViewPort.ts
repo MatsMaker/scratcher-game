@@ -46,6 +46,11 @@ class ViewPort {
 		});
 	}
 
+	public getStartPointSaveArea = (): Array<number> => {
+		const { viewPort } = this.store.getState()
+		return [viewPort.saveStartX, viewPort.saveStartY]
+	}
+
 	public getRatioOfSaveArea = (): number => {
 		const { viewPort } = this.store.getState();
 		return viewPort.saveRatio;
