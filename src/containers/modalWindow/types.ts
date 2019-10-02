@@ -8,5 +8,9 @@ interface InitBackground {
 	type: typeof RENDER | typeof RE_RENDER | typeof HIDE_MODAL | typeof SHOW_PLAY_BAR | typeof PLAY_BAR_HIDDEN
 }
 
-
 export type ActionTypes = InitBackground
+
+
+export interface ModalWindowState {
+	barIsShowing: boolean
+}

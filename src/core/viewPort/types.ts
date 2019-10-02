@@ -1,10 +1,10 @@
-import { OrientationType } from "../../types/orientation";
-import { AreaSizeType } from "../../core/config/types";
+import { OrientationType } from "../../types/orientation"
+import { AreaSizeType } from "../../core/config/types"
 
-export const VIEW_PORT_RESIZE_ACTION = '@CORE/VIEW_PORT/resize';
+export const VIEW_PORT_RESIZE_ACTION = '@CORE/VIEW_PORT/resize'
 export const VIEW_PORT_SET_SAVE_AREA = '@CORE/VIEW_PORT/set_save_area'
 export interface BaseAction {
-	type: typeof VIEW_PORT_RESIZE_ACTION | typeof VIEW_PORT_SET_SAVE_AREA,
+	type: typeof VIEW_PORT_RESIZE_ACTION | typeof VIEW_PORT_SET_SAVE_AREA
 	payload?: AreaSizeType
 }
 

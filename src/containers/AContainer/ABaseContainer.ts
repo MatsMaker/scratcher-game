@@ -9,15 +9,17 @@ import ViewPort from '../../core/viewPort/ViewPort';
 @injectable()
 abstract class ABaseContainer {
 
-	protected store: StoreType;
-	protected config: Config;
-	protected assetsLoader: AssetsLoader;
-	protected viewPort: ViewPort;
-	protected container: Container;
-	protected name: string = 'AContainer';
-	protected zIndex: number = 0;
+	protected store: StoreType
+	protected config: Config
+	protected assetsLoader: AssetsLoader
+	protected viewPort: ViewPort
+	protected container: Container
+	protected name: string = 'AContainer'
+	protected zIndex: number = 0
 
-	constructor() { }
+	constructor(
+	) {
+	}
 
 	get view(): Container {
 		return this.container;
@@ -36,10 +38,11 @@ abstract class ABaseContainer {
 	}
 
 	protected initListeners(): void {
-		this.store.subscribe(onEvent(`@CONTAINER/${this.name}/render`,
-			() => this.viewPort.ticker.addOnce(this.render)));
-		this.store.subscribe(onEvent(`@CONTAINER/${this.name}/re_render`,
-			() => this.viewPort.ticker.addOnce(this.reRender)));
+		const { subscribe } = this.store
+		subscribe(onEvent(`@CONTAINER/${this.name}/render`,
+			() => this.viewPort.addTickOnce(this.render)))
+		subscribe(onEvent(`@CONTAINER/${this.name}/re_render`,
+			() => this.viewPort.addTickOnce(this.reRender)))
 	}
 
 	protected render = () => {

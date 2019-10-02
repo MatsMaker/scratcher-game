@@ -8,10 +8,9 @@ import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import { SpriteEntity } from '../../entities/Sprite.entity';
 import { BarEntity, barEventType } from '../../entities/Bar.entity';
 import { rulesAction } from '../../game/actions';
-import { onEvent } from '../../utils/store.subscribe';
-import { SHOW_PLAY_BAR } from './types';
-import { Application } from 'pixi.js';
 import { hiddenPlayBarAction } from './actions';
+import { onEvent } from '../../utils/store.subscribe';
+import { SHOW_PLAY_BAR, PLAY_BAR_HIDDEN } from './types';
 
 @injectable()
 class ModalWindowContainer extends ABaseContainer {
@@ -20,17 +19,14 @@ class ModalWindowContainer extends ABaseContainer {
 	protected bgEntity: SpriteEntity
 	protected barEntity: BarEntity
 	protected position: Array<number> = [0, 0]
-	protected app: Application
 
 	constructor(
-		@inject(TYPES.Application) app: Application,
 		@inject(TYPES.Store) store: StoreType,
 		@inject(TYPES.Config) config: Config,
 		@inject(TYPES.AssetsLoader) assetsLoader: AssetsLoader,
 		@inject(TYPES.ViewPort) viewPort: ViewPort
 	) {
 		super()
-		this.app = app
 		this.store = store
 		this.config = config
 		this.assetsLoader = assetsLoader
@@ -39,7 +35,9 @@ class ModalWindowContainer extends ABaseContainer {
 	}
 
 	protected hideModal = (): void => {
-		this.container.visible = false
+		this.viewPort.addTickOnce(() => {
+			this.container.visible = false
+		}, this)
 	}
 
 	protected renderBackground = (): void => {
@@ -93,19 +91,24 @@ class ModalWindowContainer extends ABaseContainer {
 	protected render = (): void => {
 		this.renderContent()
 		this.reRender()
-		this.container.visible = false
 		this.initListeners()
 	}
 
 	protected initListeners() {
 		super.initListeners()
-		this.store.subscribe(onEvent(SHOW_PLAY_BAR, this.showPlayBar.bind(this)))
+		const { subscribe } = this.store
+		subscribe(onEvent(SHOW_PLAY_BAR, () => {
+			this.showPlayBar()
+		}))
+		subscribe(onEvent(PLAY_BAR_HIDDEN, () => {
+			this.hideModal()
+		}))
 	}
 
-	protected showPlayBar() {
-		this.app.ticker.addOnce(() => { // TODO need change flow for add event to change to renderer
+	protected showPlayBar(): void {
+		this.viewPort.addTickOnce(() => {
 			this.container.visible = true
-		})
+		}, this)
 	}
 
 }

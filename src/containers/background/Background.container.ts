@@ -48,9 +48,9 @@ class BackgroundContainer {
 
 	protected initListeners = (): void => {
 		this.store.subscribe(onEvent(RENDER_BACKGROUND,
-			() => this.viewPort.ticker.addOnce(this.render)));
+			() => this.viewPort.addTickOnce(this.render)));
 		this.store.subscribe(onEvent(RE_RENDER_BACKGROUND,
-			() => this.viewPort.ticker.addOnce(this.reRender)));
+			() => this.viewPort.addTickOnce(this.reRender)));
 	}
 
 	protected renderContent = () => {

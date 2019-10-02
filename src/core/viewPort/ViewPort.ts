@@ -9,7 +9,7 @@ import { Application, Container, Ticker } from 'pixi.js';
 import { onEvent } from '../../utils/store.subscribe';
 import { VIEW_PORT_RESIZE_ACTION } from './types';
 import Config from '../../core/config/Config';
-import { AreaSizeType } from 'core/config/types';
+import { AreaSizeType } from '../../core/config/types';
 
 
 @injectable()
@@ -30,11 +30,11 @@ class ViewPort {
 		this.init();
 	}
 
-	public get ticker(): Ticker {
-		return this.app.ticker;
+	public addTickOnce(fn: (...params: any[]) => any, context?: any, priority?: number): Ticker {
+		return this.app.ticker.addOnce(fn, context, priority)
 	}
 
-	public get stage(): Container {
+	public get scene(): Container {
 		return this.app.stage;
 	}
 
@@ -92,18 +92,19 @@ class ViewPort {
 	}
 
 	protected initListeners = (): void => {
+		const { subscribe } = this.store
 		if (isMobile().any) {
 			window.addEventListener('orientationchange', () => {
 				waitReRenderViewPort(this.onScreenResized)
-			});
+			})
 		} else {
 			window.addEventListener('resize', () => {
 				waitReRenderViewPort(this.onScreenResized)
-			});
+			})
 		}
-		this.store.subscribe(onEvent(VIEW_PORT_RESIZE_ACTION, () => {
+		subscribe(onEvent(VIEW_PORT_RESIZE_ACTION, () => {
 			this.resize();
-		}));
+		}))
 	}
 
 	protected resize = (): void => {

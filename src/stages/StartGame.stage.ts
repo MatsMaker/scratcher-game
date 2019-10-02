@@ -53,34 +53,36 @@ class StartGameStage {
 	}
 
 	protected initScreen() {
-		this.viewPort.stage.addChild(this.backgroundContainer.view)
-		this.viewPort.stage.addChild(this.charContainer.view)
-		this.viewPort.stage.addChild(this.winUpContainer.view)
-		this.viewPort.stage.addChild(this.scratchesContainer.view)
-		this.viewPort.stage.addChild(this.notificationContainer.view)
-		this.viewPort.stage.addChild(this.modalWindowContainer.view)
+		const { dispatch } = this.store
+		const { scene } = this.viewPort
 
-		this.store.dispatch(renderBackgroundAction())
-		this.store.dispatch(renderCharAction())
-		this.store.dispatch(renderWinUpAction())
-		this.store.dispatch(scratchesAction.renderAction())
-		this.store.dispatch(notificationActions.renderAction())
-		this.store.dispatch(modalWindowActions.renderAction())
+		scene.addChild(this.backgroundContainer.view)
+		scene.addChild(this.charContainer.view)
+		scene.addChild(this.winUpContainer.view)
+		scene.addChild(this.scratchesContainer.view)
+		scene.addChild(this.notificationContainer.view)
+		scene.addChild(this.modalWindowContainer.view)
 
-		this.store.dispatch(initiatedStartGameAction())
+		dispatch(renderBackgroundAction())
+		dispatch(renderCharAction())
+		dispatch(renderWinUpAction())
+		dispatch(scratchesAction.renderAction())
+		dispatch(notificationActions.renderAction())
+		dispatch(modalWindowActions.renderAction())
+		dispatch(initiatedStartGameAction())
 	}
 
 	protected initListeners(): void {
-		this.store.subscribe(onEvent(VIEW_PORT_RESIZE_ACTION, () => {
-			this.store.dispatch(reRenderBackgroundAction())
-			this.store.dispatch(reRenderCharAction())
-			this.store.dispatch(reRenderWinUpAction())
-			this.store.dispatch(scratchesAction.reRenderAction())
-			this.store.dispatch(notificationActions.reRenderAction())
-			this.store.dispatch(modalWindowActions.reRenderAction())
+		const { subscribe, dispatch } = this.store
+		subscribe(onEvent(VIEW_PORT_RESIZE_ACTION, () => {
+			dispatch(reRenderBackgroundAction())
+			dispatch(reRenderCharAction())
+			dispatch(reRenderWinUpAction())
+			dispatch(scratchesAction.reRenderAction())
+			dispatch(notificationActions.reRenderAction())
+			dispatch(modalWindowActions.reRenderAction())
 		}))
-
-		this.store.subscribe(onEvent(INIT_START_GAME_STAGE, this.initScreen.bind(this)))
+		subscribe(onEvent(INIT_START_GAME_STAGE, this.initScreen.bind(this)))
 	}
 
 }
