@@ -10,6 +10,9 @@ import StartGameStage from '../stages/StartGame.stage';
 import ViewPort from '../core/viewPort/ViewPort';
 import { OPEN_SCRATCH } from '../containers/scratches/types';
 import { endRound } from './actions';
+import { initStartGameAction } from '../stages/action';
+import { INITIATED_START_GAME_STAGE } from '../stages/types';
+import { showPlayBarAction } from '../containers/modalWindow/actions';
 
 @injectable()
 class Game {
@@ -36,21 +39,18 @@ class Game {
 		this.initListeners();
 	}
 
-	protected start = (): void => {
-		this.initsStartStage();
+	protected initStage = (): void => {
+		this.store.dispatch(initStartGameAction())
 	}
 
 	protected initListeners(): void {
-		this.store.subscribe(onEvent(ASSETS_IS_LOADED, this.start))
+		this.store.subscribe(onEvent(ASSETS_IS_LOADED, this.initStage))
 		this.store.subscribe(onEvent(OPEN_SCRATCH, this.openScratch))
+		this.store.subscribe(onEvent(INITIATED_START_GAME_STAGE, this.toPrepareGame.bind(this)))
 	}
 
 	public launch(): void {
-		this.assetsLoader.load();
-	}
-
-	protected initsStartStage = (): void => {
-		this.startGameStage.initScreen();
+		this.assetsLoader.load()
 	}
 
 	protected openScratch = (): void => {
@@ -58,6 +58,10 @@ class Game {
 		if (scratchesReducer.allIsOpen) {
 			this.store.dispatch(endRound())
 		}
+	}
+
+	protected toPrepareGame(): void {
+		this.store.dispatch(showPlayBarAction())
 	}
 
 }

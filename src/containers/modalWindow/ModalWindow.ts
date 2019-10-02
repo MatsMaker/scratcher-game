@@ -8,6 +8,9 @@ import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import { SpriteEntity } from '../../entities/Sprite.entity';
 import { BarEntity, barEventType } from '../../entities/Bar.entity';
 import { playAction, rulesAction } from '../../game/actions';
+import { onEvent } from '../../utils/store.subscribe';
+import { SHOW_PLAY_BAR } from './types';
+import { Application } from 'pixi.js';
 
 @injectable()
 class ModalWindowContainer extends ABaseContainer {
@@ -16,14 +19,17 @@ class ModalWindowContainer extends ABaseContainer {
 	protected bgEntity: SpriteEntity
 	protected barEntity: BarEntity
 	protected position: Array<number> = [0, 0]
+	protected app: Application
 
 	constructor(
+		@inject(TYPES.Application) app: Application,
 		@inject(TYPES.Store) store: StoreType,
 		@inject(TYPES.Config) config: Config,
 		@inject(TYPES.AssetsLoader) assetsLoader: AssetsLoader,
 		@inject(TYPES.ViewPort) viewPort: ViewPort
 	) {
 		super()
+		this.app = app
 		this.store = store
 		this.config = config
 		this.assetsLoader = assetsLoader
@@ -86,8 +92,19 @@ class ModalWindowContainer extends ABaseContainer {
 	protected render = (): void => {
 		this.renderContent()
 		this.reRender()
-		this.container.visible = true // will be false
+		this.container.visible = false
 		this.initListeners()
+	}
+
+	protected initListeners() {
+		super.initListeners()
+		this.store.subscribe(onEvent(SHOW_PLAY_BAR, this.showPlayBar.bind(this)))
+	}
+
+	protected showPlayBar() {
+		this.app.ticker.addOnce(() => { // TODO need change flow for add event to change to renderer
+			this.container.visible = true
+		})
 	}
 
 }

@@ -1,4 +1,4 @@
-import { RENDER, RE_RENDER, ActionTypes } from './types'
+import { RENDER, RE_RENDER, ActionTypes, SHOW_PLAY_BAR } from './types'
 
 export function renderAction(): ActionTypes {
 	return {
@@ -11,3 +11,9 @@ export function  reRenderAction(): ActionTypes {
 		type: RE_RENDER,
 	}
 }
+
+export function showPlayBarAction(): ActionTypes {
+	return {
+		type: SHOW_PLAY_BAR
+	}
+} 

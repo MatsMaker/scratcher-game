@@ -53,7 +53,6 @@ class ScratchesContainer extends ABaseContainer {
 		this.container.addChild(this.frameSprite.sprite);
 
 		const scratchAsset = this.assetsLoader.getResource('img/magic_forest_scratch_frame_big')
-		const toRevealAsset = this.assetsLoader.getResource('img/magic_forest_tent')
 		const bgRevealAsset = this.assetsLoader.getResource('img/magic_forest_frame')
 		this.scratchEntity = new ScratchEntity(this.viewPort, {
 			id: 0,
@@ -65,7 +64,6 @@ class ScratchesContainer extends ABaseContainer {
 			positionContentCorrection: [50, 70],
 			onOpening: this.onOpenScratcher,
 		})
-		this.scratchEntity.setTextureToReveal(toRevealAsset.texture)
 		this.container.addChild(this.scratchEntity.container)
 
 		const scratchSmallAsset = this.assetsLoader.getResource('img/magic_forest_scratch_frame')

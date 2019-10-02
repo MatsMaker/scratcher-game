@@ -16,6 +16,8 @@ import * as notificationActions from '../containers/notification/actions';
 import NotificationContainer from '../containers/notification/Notification';
 import ModalWindowContainer from '../containers/modalWindow/ModalWindow';
 import * as modalWindowActions from '../containers/modalWindow/actions';
+import { INIT_START_GAME_STAGE } from './types';
+import { initiatedStartGameAction } from './action';
 
 @injectable()
 class StartGameStage {
@@ -47,9 +49,10 @@ class StartGameStage {
 		this.scratchesContainer = scratchesContainer
 		this.notificationContainer = notificationContainer
 		this.modalWindowContainer = modalWindowContainer
+		this.initListeners();
 	}
 
-	public initScreen = () => {
+	protected initScreen() {
 		this.viewPort.stage.addChild(this.backgroundContainer.view)
 		this.viewPort.stage.addChild(this.charContainer.view)
 		this.viewPort.stage.addChild(this.winUpContainer.view)
@@ -64,10 +67,10 @@ class StartGameStage {
 		this.store.dispatch(notificationActions.renderAction())
 		this.store.dispatch(modalWindowActions.renderAction())
 
-		this.initListeners();
+		this.store.dispatch(initiatedStartGameAction())
 	}
 
-	protected initListeners = (): void => {
+	protected initListeners(): void {
 		this.store.subscribe(onEvent(VIEW_PORT_RESIZE_ACTION, () => {
 			this.store.dispatch(reRenderBackgroundAction())
 			this.store.dispatch(reRenderCharAction())
@@ -76,6 +79,8 @@ class StartGameStage {
 			this.store.dispatch(notificationActions.reRenderAction())
 			this.store.dispatch(modalWindowActions.reRenderAction())
 		}))
+
+		this.store.subscribe(onEvent(INIT_START_GAME_STAGE, this.initScreen.bind(this)))
 	}
 
 }
