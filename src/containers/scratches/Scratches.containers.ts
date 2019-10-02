@@ -51,27 +51,28 @@ class ScratchesContainer extends ABaseContainer {
 		this.container.addChild(this.frameSprite.sprite);
 
 		const scratchAsset = this.assetsLoader.getResource('img/magic_forest_scratch_frame_big')
-		const emptyRevealAsset = this.assetsLoader.getResource('img/magic_forest_frame')
 		const toRevealAsset = this.assetsLoader.getResource('img/magic_forest_tent')
+		const bgRevealAsset = this.assetsLoader.getResource('img/magic_forest_frame')
 		this.scratchEntity = new ScratchEntity(this.viewPort, {
 			app: this.app,
 			name: 'BigScratch',
 			scratchTexture: scratchAsset.texture,
-			textureToReveal: emptyRevealAsset.texture,
+			textureToReveal: bgRevealAsset.texture,
 			position: movePoint(position, [615, 368]),
 			positionContentCorrection: [50, 70],
-			onClear: this.onClearBigScratcher
+			onClear: this.onClearBigScratcher,
 		})
 		this.scratchEntity.setTextureToReveal(toRevealAsset.texture)
 		this.container.addChild(this.scratchEntity.container)
-
+		
 		const scratchSmallAsset = this.assetsLoader.getResource('img/magic_forest_scratch_frame')
 		this.scratchGroupEntity = new ScratchGroupEntity(this.viewPort, {
 			app: this.app,
-			name: 'BigScratch',
+			name: 'SmallScratchesGroup',
 			scratchTexture: scratchSmallAsset.texture,
-			textureToReveal: emptyRevealAsset.texture,
+			textureToReveal: bgRevealAsset.texture,
 			position: movePoint(position, [75, 1225]),
+			bgTexture: bgRevealAsset.texture,
 		})
 		this.container.addChild(this.scratchGroupEntity.container)
 

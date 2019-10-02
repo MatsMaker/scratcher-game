@@ -9,6 +9,7 @@ interface ScratchGroupEntityOptions {
 	app: Application
 	scratchTexture: Texture
 	textureToReveal?: Texture
+	bgTexture: Texture
 	position: Array<number>
 }
 
@@ -38,7 +39,7 @@ export default class ScratchGroupEntity {
 	}
 
 	protected renderContent = (): void => {
-		const { scratchTexture, position, textureToReveal } = this.settings
+		const { scratchTexture, position, textureToReveal, bgTexture } = this.settings
 		const scratchSettings = {
 			app: this.settings.app,
 			name: 'BigScratch',
@@ -55,7 +56,8 @@ export default class ScratchGroupEntity {
 				const scratch = new ScratchEntity(this.viewPort, {
 					...scratchSettings,
 					name: `SmallScratch-${row}-${clm}`,
-					position: movePoint(position, [row * marginRow, clm * marginClm])
+					position: movePoint(position, [row * marginRow, clm * marginClm]),
+					bgTexture,
 				})
 				this.scratchGroup.push(scratch)
 				this.container.addChild(scratch.container)

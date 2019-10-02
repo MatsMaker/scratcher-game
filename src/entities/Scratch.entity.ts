@@ -9,6 +9,7 @@ interface ScratchEntityOptions {
 	app: Application
 	scratchTexture: Texture
 	textureToReveal?: Texture
+	bgTexture?: Texture
 	position: Array<number>
 	positionContentCorrection: Array<number>
 	onClear: Function
@@ -25,6 +26,7 @@ export class ScratchEntity {
 	protected renderTexture: RenderTexture
 	protected imageToReveal: Sprite
 	protected maskSprite: Sprite
+	protected bgSpriteEntity?: SpriteEntity
 
 	constructor(viewPort: ViewPort, settings: ScratchEntityOptions) {
 		this.viewPort = viewPort
@@ -55,12 +57,25 @@ export class ScratchEntity {
 			movePoint(position, positionContentCorrection)
 		)
 		this.imageToReveal.position.set(...nextImagePos)
+
+		if (this.settings.bgTexture) {
+			this.bgSpriteEntity.reRender()
+		}
 	}
 
 	protected init = (): void => {
 
 		this.container = new Container()
 		this.container.name = this.settings.name || 'Scratch'
+
+		if (this.settings.bgTexture) {
+			this.bgSpriteEntity = new SpriteEntity(this.viewPort, {
+				name: 'bgTexture',
+				texture: this.settings.bgTexture,
+				position: this.settings.position,
+			})
+			this.container.addChild(this.bgSpriteEntity.sprite)
+		}
 
 		this.brush = new Graphics()
 		this.brush.name = 'brash'
