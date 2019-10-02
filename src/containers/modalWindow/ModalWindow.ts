@@ -7,10 +7,11 @@ import Config from '../../core/config/Config';
 import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import { SpriteEntity } from '../../entities/Sprite.entity';
 import { BarEntity, barEventType } from '../../entities/Bar.entity';
-import { playAction, rulesAction } from '../../game/actions';
+import { rulesAction } from '../../game/actions';
 import { onEvent } from '../../utils/store.subscribe';
 import { SHOW_PLAY_BAR } from './types';
 import { Application } from 'pixi.js';
+import { hiddenPlayBarAction } from './actions';
 
 @injectable()
 class ModalWindowContainer extends ABaseContainer {
@@ -60,16 +61,16 @@ class ModalWindowContainer extends ABaseContainer {
 			barFrameTexture: barFrameAsset.texture,
 			btnBgTexture: btnBgAsset.texture,
 			position: [0, saveAreaSize.height - 520],
-			onClick: this.onPlay,
+			onClick: this.onBarClick,
 		})
 		this.container.addChild(this.barEntity.container)
 	}
 
-	protected onPlay = (eventType: barEventType): void => {
+	protected onBarClick = (eventType: barEventType): void => {
 		switch (eventType) {
 			case barEventType.onPlay:
 				this.hideModal()
-				this.store.dispatch(playAction())
+				this.store.dispatch(hiddenPlayBarAction())
 				break
 			case barEventType.howToPlay:
 				this.store.dispatch(rulesAction())

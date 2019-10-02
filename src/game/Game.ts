@@ -9,10 +9,12 @@ import { onEvent } from '../utils/store.subscribe';
 import StartGameStage from '../stages/StartGame.stage';
 import ViewPort from '../core/viewPort/ViewPort';
 import { OPEN_SCRATCH } from '../containers/scratches/types';
-import { endRound } from './actions';
+import { endRound, playAction } from './actions';
 import { initStartGameAction } from '../stages/action';
 import { INITIATED_START_GAME_STAGE } from '../stages/types';
 import { showPlayBarAction } from '../containers/modalWindow/actions';
+import { PLAY_BAR_HIDDEN } from '../containers/modalWindow/types';
+import { END_ROUND } from './types';
 
 @injectable()
 class Game {
@@ -44,13 +46,20 @@ class Game {
 	}
 
 	protected initListeners(): void {
-		this.store.subscribe(onEvent(ASSETS_IS_LOADED, this.initStage))
-		this.store.subscribe(onEvent(OPEN_SCRATCH, this.openScratch))
-		this.store.subscribe(onEvent(INITIATED_START_GAME_STAGE, this.toPrepareGame.bind(this)))
+		const { subscribe } = this.store
+		subscribe(onEvent(ASSETS_IS_LOADED, this.initStage))
+		subscribe(onEvent(OPEN_SCRATCH, this.openScratch))
+		subscribe(onEvent(INITIATED_START_GAME_STAGE, this.toPrepareGame.bind(this)))
+		subscribe(onEvent(PLAY_BAR_HIDDEN, this.toPlayGame.bind(this)))
+		subscribe(onEvent(END_ROUND, this.toPrepareGame.bind(this)))
 	}
 
 	public launch(): void {
 		this.assetsLoader.load()
+	}
+
+	protected toPlayGame(): void {
+		this.store.dispatch(playAction())
 	}
 
 	protected openScratch = (): void => {
