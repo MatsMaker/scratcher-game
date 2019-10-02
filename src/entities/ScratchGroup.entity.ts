@@ -5,12 +5,14 @@ import * as _ from 'lodash'
 import { movePoint } from "../utils/math"
 
 interface ScratchGroupEntityOptions {
+	startId: number
 	name: string
 	app: Application
 	scratchTexture: Texture
-	textureToReveal?: Texture
 	bgTexture: Texture
 	position: Array<number>
+	onClear: Function
+	textureToReveal?: Texture
 }
 
 export default class ScratchGroupEntity {
@@ -47,26 +49,30 @@ export default class ScratchGroupEntity {
 			textureToReveal,
 			position,
 			positionContentCorrection: [0, 0],
-			onClear: this.onOnceClear
+			onClear: this.onOpenOnce,
+			bgTexture
 		}
 		const marginRow = 335
 		const marginClm = 335
+		let id = this.settings.startId
 		_.times(3).forEach((row: number) => {
 			_.times(2).forEach((clm: number) => {
 				const scratch = new ScratchEntity(this.viewPort, {
 					...scratchSettings,
+					id,
 					name: `SmallScratch-${row}-${clm}`,
 					position: movePoint(position, [row * marginRow, clm * marginClm]),
-					bgTexture,
 				})
 				this.scratchGroup.push(scratch)
 				this.container.addChild(scratch.container)
+				id++
 			})
 		})
 	}
 
-	protected onOnceClear = (): void => {
-		console.log('!!!!!!!!!!!!!!')
+	protected onOpenOnce = (id: number, entity: ScratchEntity): void => {
+		const {onClear} = this.settings
+		onClear && onClear(id, entity) 
 	}
 
 }

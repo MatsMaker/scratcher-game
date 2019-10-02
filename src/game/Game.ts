@@ -8,7 +8,7 @@ import { ASSETS_IS_LOADED } from '../core/assetsLoader/types';
 import { onEvent } from '../utils/store.subscribe';
 import StartGameStage from '../stages/StartGame.stage';
 import ViewPort from '../core/viewPort/ViewPort';
-import { CLEAR_SCRATCH } from '../containers/scratches/types';
+import { OPEN_SCRATCH } from '../containers/scratches/types';
 
 @injectable()
 class Game {
@@ -41,7 +41,7 @@ class Game {
 
 	protected initListeners(): void {
 		this.store.subscribe(onEvent(ASSETS_IS_LOADED, this.start))
-		this.store.subscribe(onEvent(CLEAR_SCRATCH, this.clearScratch))
+		this.store.subscribe(onEvent(OPEN_SCRATCH, this.openScratch))
 	}
 
 	public launch(): void {
@@ -52,7 +52,7 @@ class Game {
 		this.startGameStage.initScreen();
 	}
 
-	protected clearScratch = (): void => {
+	protected openScratch = (): void => {
 		const { scratchesReducer } = this.store.getState()
 		console.log('!!!!!!!!!!!', scratchesReducer);
 	}

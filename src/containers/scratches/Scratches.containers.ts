@@ -9,7 +9,7 @@ import ViewPort from '../../core/viewPort/ViewPort';
 import { SpriteEntity } from '../../entities/Sprite.entity';
 import { ScratchEntity } from '../../entities/Scratch.entity';
 import { movePoint } from '../../utils/math';
-import { cleanScratcherAction } from './actions';
+import { openScratcherAction } from './actions';
 import ScratchGroupEntity from '../../entities/ScratchGroup.entity';
 
 
@@ -54,25 +54,28 @@ class ScratchesContainer extends ABaseContainer {
 		const toRevealAsset = this.assetsLoader.getResource('img/magic_forest_tent')
 		const bgRevealAsset = this.assetsLoader.getResource('img/magic_forest_frame')
 		this.scratchEntity = new ScratchEntity(this.viewPort, {
+			id: 0,
 			app: this.app,
 			name: 'BigScratch',
 			scratchTexture: scratchAsset.texture,
 			textureToReveal: bgRevealAsset.texture,
 			position: movePoint(position, [615, 368]),
 			positionContentCorrection: [50, 70],
-			onClear: this.onClearBigScratcher,
+			onClear: this.onOpenScratcher,
 		})
 		this.scratchEntity.setTextureToReveal(toRevealAsset.texture)
 		this.container.addChild(this.scratchEntity.container)
 		
 		const scratchSmallAsset = this.assetsLoader.getResource('img/magic_forest_scratch_frame')
 		this.scratchGroupEntity = new ScratchGroupEntity(this.viewPort, {
+			startId: 1,
 			app: this.app,
 			name: 'SmallScratchesGroup',
 			scratchTexture: scratchSmallAsset.texture,
 			textureToReveal: bgRevealAsset.texture,
 			position: movePoint(position, [75, 1225]),
 			bgTexture: bgRevealAsset.texture,
+			onClear: this.onOpenScratcher,
 		})
 		this.container.addChild(this.scratchGroupEntity.container)
 
@@ -85,8 +88,11 @@ class ScratchesContainer extends ABaseContainer {
 		this.scratchGroupEntity.reRender()
 	}
 
-	protected onClearBigScratcher = (): void => {
-		this.store.dispatch(cleanScratcherAction('bigScratcher'))
+	protected onOpenScratcher = (id: number, entity: ScratchEntity): void => {
+		console.log('open: ', entity); // TODO change flow animate open after change stage
+		this.store.dispatch(openScratcherAction({
+			id
+		}))
 	}
 
 }

@@ -1,4 +1,4 @@
-import { RENDER, RE_RENDER, ActionTypes, CLEAR_SCRATCH } from './types'
+import { RENDER, RE_RENDER, ActionTypes, OPEN_SCRATCH, ScratchState, UPDATE_SCRATCHES } from './types'
 
 export function renderAction(): ActionTypes {
 	return {
@@ -6,15 +6,22 @@ export function renderAction(): ActionTypes {
 	}
 }
 
-export function  reRenderAction(): ActionTypes {
+export function reRenderAction(): ActionTypes {
 	return {
 		type: RE_RENDER,
 	}
 }
 
-export function  cleanScratcherAction(payload: any) {
+export function updateScratchesAction(payload: Array<ScratchState>) {
 	return {
-		type: CLEAR_SCRATCH,
+		type: UPDATE_SCRATCHES,
+		payload,
+	}
+}
+
+export function openScratcherAction(payload: { id: number }) {
+	return {
+		type: OPEN_SCRATCH,
 		payload,
 	}
 }

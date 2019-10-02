@@ -5,6 +5,7 @@ import { SpriteEntity } from './Sprite.entity'
 import { movePoint } from '../utils/math'
 
 interface ScratchEntityOptions {
+	id: number
 	name: string
 	app: Application
 	scratchTexture: Texture
@@ -124,7 +125,7 @@ export class ScratchEntity {
 
 	protected open = (): void => {
 		this.scratchEntity.sprite.visible = false
-		this.settings.onClear()
+		this.settings.onClear(this.settings.id, this)
 	}
 
 	protected onPointerDown = (event: interaction.InteractionEvent): void => {
