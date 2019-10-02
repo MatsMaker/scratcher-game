@@ -47,10 +47,9 @@ class BackgroundContainer {
 	}
 
 	protected initListeners = (): void => {
-		this.store.subscribe(onEvent(RENDER_BACKGROUND,
-			() => this.viewPort.addTickOnce(this.render)));
-		this.store.subscribe(onEvent(RE_RENDER_BACKGROUND,
-			() => this.viewPort.addTickOnce(this.reRender)));
+		const { subscribe } = this.store
+		subscribe(onEvent(RENDER_BACKGROUND, this.render.bind(this)))
+		subscribe(onEvent(RE_RENDER_BACKGROUND, this.reRender.bind(this)))
 	}
 
 	protected renderContent = () => {
@@ -60,17 +59,21 @@ class BackgroundContainer {
 		this.reRender();
 	}
 
-	protected render = () => {
-		this.renderContent();
-		this.container.visible = true;
+	protected render(): void {
+		this.viewPort.addTickOnce(() => {
+			this.renderContent();
+			this.container.visible = true;
+		})
 	}
 
-	protected reRender = () => {
-		const { viewPort } = this.store.getState();
-		this.baseSprite.position.set(
-			...this.viewPort.convertPointToSaveArea([0, 0]),
-		);
-		this.baseSprite.scale.set(viewPort.saveRatio);
+	protected reRender(): void {
+		this.viewPort.addTickOnce(() => {
+			const { viewPort } = this.store.getState();
+			this.baseSprite.position.set(
+				...this.viewPort.convertPointToSaveArea([0, 0]),
+			);
+			this.baseSprite.scale.set(viewPort.saveRatio)
+		})
 	}
 
 }

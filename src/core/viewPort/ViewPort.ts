@@ -30,7 +30,7 @@ class ViewPort {
 		this.init();
 	}
 
-	public addTickOnce(fn: (...params: any[]) => any, context?: any, priority?: number): Ticker {
+	public addTickOnce(fn: (...params: any[]) => any, context?: any, priority?: number): Ticker { // TODO will be fine to create decorator for cowered method and not use cb
 		return this.app.ticker.addOnce(fn, context, priority)
 	}
 
