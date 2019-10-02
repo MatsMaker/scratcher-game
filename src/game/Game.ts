@@ -9,6 +9,7 @@ import { onEvent } from '../utils/store.subscribe';
 import StartGameStage from '../stages/StartGame.stage';
 import ViewPort from '../core/viewPort/ViewPort';
 import { OPEN_SCRATCH } from '../containers/scratches/types';
+import { endRound } from './actions';
 
 @injectable()
 class Game {
@@ -54,7 +55,9 @@ class Game {
 
 	protected openScratch = (): void => {
 		const { scratchesReducer } = this.store.getState()
-		console.log('!!!!!!!!!!!', scratchesReducer);
+		if (scratchesReducer.allIsOpen) {
+			this.store.dispatch(endRound())
+		}
 	}
 
 }

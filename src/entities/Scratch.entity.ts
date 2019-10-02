@@ -13,7 +13,7 @@ interface ScratchEntityOptions {
 	bgTexture?: Texture
 	position: Array<number>
 	positionContentCorrection: Array<number>
-	onClear: Function
+	onOpening: Function
 }
 
 export class ScratchEntity {
@@ -33,6 +33,14 @@ export class ScratchEntity {
 		this.viewPort = viewPort
 		this.settings = settings
 		this.init()
+	}
+
+	get id(): number {
+		return this.settings.id
+	}
+
+	public toOpen = (): void => {
+		this.scratchEntity.sprite.visible = false
 	}
 
 	public setTextureToReveal = (texture: Texture): void => {
@@ -123,9 +131,8 @@ export class ScratchEntity {
 		sprite.on('pointermove', this.onPointerMove)
 	}
 
-	protected open = (): void => {
-		this.scratchEntity.sprite.visible = false
-		this.settings.onClear(this.settings.id, this)
+	protected onOpening = (): void => {
+		this.settings.onOpening(this.settings.id)
 	}
 
 	protected onPointerDown = (event: interaction.InteractionEvent): void => {
@@ -145,7 +152,7 @@ export class ScratchEntity {
 			newPoint.y = event.data.global.y - this.maskSprite.position.y
 			this.brush.position.copyFrom(newPoint)
 			app.renderer.render(this.brush, this.renderTexture, false, null, false)
-			this.open()
+			this.onOpening()
 		}
 	}
 

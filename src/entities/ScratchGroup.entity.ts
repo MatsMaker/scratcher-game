@@ -11,7 +11,7 @@ interface ScratchGroupEntityOptions {
 	scratchTexture: Texture
 	bgTexture: Texture
 	position: Array<number>
-	onClear: Function
+	onOpening: Function
 	textureToReveal?: Texture
 }
 
@@ -26,6 +26,11 @@ export default class ScratchGroupEntity {
 		this.viewPort = viewPort
 		this.settings = settings
 		this.init()
+	}
+
+	public toOpen = (id: number): void => {
+		const entityIndex = this.scratchGroup.findIndex((s: ScratchEntity) => s.id === id)
+		this.scratchGroup[entityIndex].toOpen()
 	}
 
 	public reRender = (): void => {
@@ -49,7 +54,7 @@ export default class ScratchGroupEntity {
 			textureToReveal,
 			position,
 			positionContentCorrection: [0, 0],
-			onClear: this.onOpenOnce,
+			onOpening: this.onOpening,
 			bgTexture
 		}
 		const marginRow = 335
@@ -70,9 +75,9 @@ export default class ScratchGroupEntity {
 		})
 	}
 
-	protected onOpenOnce = (id: number, entity: ScratchEntity): void => {
-		const {onClear} = this.settings
-		onClear && onClear(id, entity) 
+	protected onOpening = (id: number, entity: ScratchEntity): void => {
+		const { onOpening } = this.settings
+		onOpening(id, entity)
 	}
 
 }

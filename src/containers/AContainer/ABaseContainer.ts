@@ -17,7 +17,7 @@ abstract class ABaseContainer {
 	protected name: string = 'AContainer';
 	protected zIndex: number = 0;
 
-	constructor() {}
+	constructor() { }
 
 	get view(): Container {
 		return this.container;
@@ -35,7 +35,7 @@ abstract class ABaseContainer {
 		this.container.name = this.name;
 	}
 
-	protected initListeners = (): void => {
+	protected initListeners(): void {
 		this.store.subscribe(onEvent(`@CONTAINER/${this.name}/render`,
 			() => this.viewPort.ticker.addOnce(this.render)));
 		this.store.subscribe(onEvent(`@CONTAINER/${this.name}/re_render`,

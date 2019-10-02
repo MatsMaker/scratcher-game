@@ -11,6 +11,8 @@ import { ScratchEntity } from '../../entities/Scratch.entity';
 import { movePoint } from '../../utils/math';
 import { openScratcherAction } from './actions';
 import ScratchGroupEntity from '../../entities/ScratchGroup.entity';
+import { OPEN_SCRATCH } from './types';
+import { onClearEvent } from '../../utils/store.subscribe';
 
 
 @injectable()
@@ -61,11 +63,11 @@ class ScratchesContainer extends ABaseContainer {
 			textureToReveal: bgRevealAsset.texture,
 			position: movePoint(position, [615, 368]),
 			positionContentCorrection: [50, 70],
-			onClear: this.onOpenScratcher,
+			onOpening: this.onOpenScratcher,
 		})
 		this.scratchEntity.setTextureToReveal(toRevealAsset.texture)
 		this.container.addChild(this.scratchEntity.container)
-		
+
 		const scratchSmallAsset = this.assetsLoader.getResource('img/magic_forest_scratch_frame')
 		this.scratchGroupEntity = new ScratchGroupEntity(this.viewPort, {
 			startId: 1,
@@ -75,11 +77,23 @@ class ScratchesContainer extends ABaseContainer {
 			textureToReveal: bgRevealAsset.texture,
 			position: movePoint(position, [75, 1225]),
 			bgTexture: bgRevealAsset.texture,
-			onClear: this.onOpenScratcher,
+			onOpening: this.onOpenScratcher,
 		})
 		this.container.addChild(this.scratchGroupEntity.container)
 
 		this.reRender()
+	}
+
+	protected initListeners = (): void => {
+		super.initListeners()
+		this.store.subscribe(onClearEvent(OPEN_SCRATCH, (payload: { id: number }) => {
+			const { id } = payload
+			if (id == 0) {
+				this.scratchEntity.toOpen()
+			} else {
+				this.scratchGroupEntity.toOpen(id)
+			}
+		}))
 	}
 
 	protected reRender = (): void => {
@@ -88,13 +102,9 @@ class ScratchesContainer extends ABaseContainer {
 		this.scratchGroupEntity.reRender()
 	}
 
-	protected onOpenScratcher = (id: number, entity: ScratchEntity): void => {
-		console.log('open: ', entity); // TODO change flow animate open after change stage
-		this.store.dispatch(openScratcherAction({
-			id
-		}))
+	protected onOpenScratcher = (id: number): void => {
+		this.store.dispatch(openScratcherAction({ id }))
 	}
-
 }
 
 export default ScratchesContainer
