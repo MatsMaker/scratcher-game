@@ -8,13 +8,13 @@ import { ASSETS_IS_LOADED } from '../core/assetsLoader/types';
 import { onEvent, onClearEvent } from '../utils/store.subscribe';
 import StartGameStage from '../stages/StartGame.stage';
 import ViewPort from '../core/viewPort/ViewPort';
-import { OPEN_SCRATCH, BonusType, SCRATCHES_RESTORED } from '../containers/scratches/types';
+import { OPEN_SCRATCH, SCRATCHES_RESTORED } from '../containers/scratches/types';
 import { endRound, playAction, getBonusAction } from './actions';
 import { initStartGameAction } from '../stages/action';
 import { INITIATED_START_GAME_STAGE } from '../stages/types';
 import { showPlayBarAction } from '../containers/modalWindow/actions';
 import { PLAY_BAR_HIDDEN } from '../containers/modalWindow/types';
-import { END_ROUND, GET_BONUS } from './types'
+import { END_ROUND, GET_BONUS, BonusType } from './types'
 import { resetScratchesAction } from '../containers/scratches/actions';
 
 @injectable()
@@ -79,9 +79,10 @@ class Game {
 
 	protected openScratch(payload: { id: number }): void {
 		const { dispatch } = this.store
+		const specialCardId = this.config.getSpecialCardId()
 		const { id } = payload
 		let bonus: BonusType
-		if (id !== 0) {
+		if (id !== specialCardId) {
 			bonus = this.generateBonusForCard()
 		} else {
 			bonus = this.generateBonusForWinner()

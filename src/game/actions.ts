@@ -1,5 +1,4 @@
-import { PLAY, ActionTypes, RULES_GAME, END_ROUND, GET_BONUS } from './types'
-import { BonusType } from '../containers/scratches/types'
+import { PLAY, ActionTypes, RULES_GAME, END_ROUND, GET_BONUS, BonusType } from './types'
 
 export function playAction(): ActionTypes {
 	return {

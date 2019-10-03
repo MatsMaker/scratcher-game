@@ -9,11 +9,11 @@ import ViewPort from '../../core/viewPort/ViewPort';
 import { SpriteEntity } from '../../entities/Sprite.entity';
 import { ScratchEntity } from '../../entities/Scratch.entity';
 import { movePoint } from '../../utils/math';
-import { openScratcherAction, scratchesRestoredAction } from './actions';
+import { openScratcherAction, scratchesRestoredAction, onMouseoverScratcherAction } from './actions';
 import ScratchGroupEntity from '../../entities/ScratchGroup.entity';
-import { BonusType, RESET_SCRATCHES, ImageSize } from './types';
+import { RESET_SCRATCHES, ImageSize } from './types';
 import { onClearEvent } from '../../utils/store.subscribe';
-import { GET_BONUS } from '../../game/types';
+import { GET_BONUS, BonusType } from '../../game/types';
 
 
 @injectable()
@@ -64,6 +64,7 @@ class ScratchesContainer extends ABaseContainer {
 			position: movePoint(position, [615, 368]),
 			contentCorrection: [180, 190, 2.3],
 			onOpening: this.onOpenScratcher,
+			onMouseover: this.onMouseoverScratcher,
 		})
 		this.container.addChild(this.scratchEntity.container)
 
@@ -78,6 +79,7 @@ class ScratchesContainer extends ABaseContainer {
 			bgTexture: bgRevealAsset.texture,
 			contentCorrection: [140, 135, 2.3],
 			onOpening: this.onOpenScratcher,
+			onMouseover: this.onMouseoverScratcher,
 		})
 		this.container.addChild(this.scratchGroupEntity.container)
 
@@ -105,6 +107,10 @@ class ScratchesContainer extends ABaseContainer {
 		this.viewPort.addTickOnce(() => {
 			dispatch(scratchesRestoredAction())
 		})
+	}
+
+	protected onMouseoverScratcher = (): void => {
+		this.store.dispatch(onMouseoverScratcherAction())
 	}
 
 	protected onOpenedScratch(payload: { id: number, bonus: BonusType }): void {

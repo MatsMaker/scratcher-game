@@ -3,11 +3,10 @@ import {
   ActionTypes,
   OPEN_SCRATCH,
   ScratchesState,
-  BonusType,
   RESET_SCRATCHES,
   ScratchState,
 } from './types'
-import { GET_BONUS } from '../../game/types'
+import { GET_BONUS, BonusType } from '../../game/types'
 
 const initialState: ScratchesState = {
   allIsOpen: false,

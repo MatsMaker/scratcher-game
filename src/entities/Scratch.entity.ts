@@ -14,6 +14,7 @@ interface ScratchEntityOptions {
 	position: Array<number>
 	contentCorrection: Array<number> // TODO just to set align buy center 
 	onOpening: Function
+	onMouseover: Function
 }
 
 export class ScratchEntity {
@@ -48,7 +49,7 @@ export class ScratchEntity {
 	public reset(): void {
 		this.dragging = false
 		this.scratchEntity.sprite.visible = true
-		this.imageToReveal.visible = false	
+		this.imageToReveal.visible = false
 	}
 
 	public setTextureToReveal = (texture: Texture): void => {
@@ -126,6 +127,8 @@ export class ScratchEntity {
 			position,
 		})
 		this.scratchEntity.sprite.interactive = true
+		this.scratchEntity.sprite.buttonMode = true
+
 		this.container.addChild(this.scratchEntity.sprite)
 
 		this.imageToReveal = new Sprite(this.settings.textureToReveal)
@@ -147,6 +150,7 @@ export class ScratchEntity {
 		sprite.on('pointerdown', this.onPointerDown)
 		sprite.on('pointerup', this.onPointerUp)
 		sprite.on('pointermove', this.onPointerMove)
+		sprite.on('mouseover', this.settings.onMouseover)
 	}
 
 	protected onOpening = (): void => {
@@ -154,7 +158,7 @@ export class ScratchEntity {
 	}
 
 	protected onPointerDown = (): void => {
-	// protected onPointerDown = (event: interaction.InteractionEvent): void => {
+		// protected onPointerDown = (event: interaction.InteractionEvent): void => {
 		this.dragging = true
 		this.onPointerMove()
 	}
@@ -164,7 +168,7 @@ export class ScratchEntity {
 	}
 
 	protected onPointerMove = (): void => {
-	// protected onPointerMove = (event: interaction.InteractionEvent): void => {
+		// protected onPointerMove = (event: interaction.InteractionEvent): void => {
 		// const { app } = this.settings
 		if (this.dragging) {
 			// const newPoint = event.data.global.clone()

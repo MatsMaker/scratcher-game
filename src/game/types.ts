@@ -23,3 +23,14 @@ export enum GAME_STATE {
 export interface IGameState {
 	gameState: GAME_STATE
 }
+
+export enum BonusType {
+	Bonfire,
+	Bow,
+	Leaf,
+	Rope,
+	Tent,
+	Coin,
+	Cash,
+	Lose
+}

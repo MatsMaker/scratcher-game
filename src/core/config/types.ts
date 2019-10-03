@@ -1,5 +1,3 @@
-import { BonusType } from "containers/scratches/types";
-
 export interface AreaSizeType {
 	width: number,
 	height: number,
@@ -13,6 +11,7 @@ export interface GSettings {
 		width: string,
 		height: string,
 	}
+	specialCard: number,
 	bonusImages: Array<Array<string>>
 	[key: string]: any
 }

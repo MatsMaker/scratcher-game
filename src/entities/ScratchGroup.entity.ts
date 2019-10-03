@@ -12,6 +12,7 @@ interface ScratchGroupEntityOptions {
 	bgTexture: Texture
 	position: Array<number>
 	onOpening: Function
+	onMouseover: Function
 	contentCorrection: Array<number>
 	textureToReveal?: Texture
 }
@@ -67,6 +68,7 @@ export default class ScratchGroupEntity {
 			position,
 			contentCorrection: this.settings.contentCorrection,
 			onOpening: this.onOpening,
+			onMouseover: this.settings.onMouseover,
 			bgTexture
 		}
 		const marginRow = 335

@@ -1,4 +1,4 @@
-import { RENDER, RE_RENDER, ActionTypes, OPEN_SCRATCH, RESET_SCRATCHES, SCRATCHES_RESTORED } from './types'
+import { RENDER, RE_RENDER, ActionTypes, OPEN_SCRATCH, RESET_SCRATCHES, SCRATCHES_RESTORED, ON_HOVERING_SCRATCH } from './types'
 
 export function renderAction(): ActionTypes {
 	return {
@@ -28,5 +28,11 @@ export function openScratcherAction(payload: { id: number }) {
 	return {
 		type: OPEN_SCRATCH,
 		payload,
+	}
+}
+
+export function onMouseoverScratcherAction() {
+	return {
+		type: ON_HOVERING_SCRATCH
 	}
 }

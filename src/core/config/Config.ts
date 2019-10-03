@@ -14,6 +14,10 @@ class Config {
 		return this.settings[key];
 	}
 
+	public getSpecialCardId(): number {
+		return Number(this.settings.specialCard)
+	}
+
 	public getSaveAreaSize = (): AreaSizeType => {
 		return {
 			width: Number(this.settings.saveArea.width),
