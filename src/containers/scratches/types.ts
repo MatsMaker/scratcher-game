@@ -3,10 +3,11 @@ import { GET_BONUS } from "../../game/types"
 export const RENDER = '@CONTAINER/SCRATCHES/render'
 export const RE_RENDER = '@CONTAINER/SCRATCHES/re_render'
 export const OPEN_SCRATCH = '@CONTAINER/SCRATCHES/OPEN_SCRATCH'
-export const UPDATE_SCRATCHES = '@CONTAINER/SCRATCHES/update'
+export const RESET_SCRATCHES = '@CONTAINER/SCRATCHES/reset'
+export const SCRATCHES_RESTORED = '@CONTAINER/SCRATCHES/restored'
 
 interface BaseType {
-	type: typeof RENDER | typeof RE_RENDER | typeof OPEN_SCRATCH | typeof UPDATE_SCRATCHES | typeof GET_BONUS
+	type: typeof RENDER | typeof RE_RENDER | typeof OPEN_SCRATCH | typeof RESET_SCRATCHES | typeof GET_BONUS | typeof SCRATCHES_RESTORED
 	payload?: any | Array<ScratchState>
 }
 

@@ -4,7 +4,7 @@ import {
   OPEN_SCRATCH,
   ScratchesState,
   BonusType,
-  UPDATE_SCRATCHES,
+  RESET_SCRATCHES,
   ScratchState,
 } from './types'
 import { GET_BONUS } from '../../game/types'
@@ -43,11 +43,17 @@ const initialState: ScratchesState = {
 }
 
 export function scratchesReducer(
-  state = initialState,
+  state = _.cloneDeep(initialState),
   action: ActionTypes
 ): ScratchesState {
 
   switch (action.type) {
+    case RESET_SCRATCHES: {
+      const nextState = _.cloneDeep(initialState)
+      return {
+        ...nextState
+      }
+    }
     case GET_BONUS: {
       const { id, bonus } = action.payload
       // TODO it is bad more better will be immutable way
@@ -68,7 +74,7 @@ export function scratchesReducer(
         allIsOpen: isCloses.length === 0
       }
     }
-    case UPDATE_SCRATCHES: {
+    case RESET_SCRATCHES: {
       const nextScratches: Array<ScratchState> = action.payload
       const isCloses: Array<ScratchState> = _.filter(action.payload, (ss: ScratchState) => ss.isOpen !== true)
       return {

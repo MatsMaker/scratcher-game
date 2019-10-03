@@ -1,4 +1,4 @@
-import { Container, Texture, Graphics, RenderTexture, Application, Sprite, interaction } from 'pixi.js'
+import { Container, Texture, Graphics, Sprite } from 'pixi.js'
 import * as _ from 'lodash'
 import ViewPort from "../core/viewPort/ViewPort"
 import { SpriteEntity } from './Sprite.entity'
@@ -7,7 +7,7 @@ import { movePoint } from '../utils/math'
 interface ScratchEntityOptions {
 	id: number
 	name: string
-	app: Application
+	// app: Application
 	scratchTexture: Texture
 	textureToReveal?: Texture
 	bgTexture?: Texture
@@ -24,7 +24,7 @@ export class ScratchEntity {
 	protected scratchEntity: SpriteEntity
 	protected brush: Graphics
 	protected dragging: boolean = false
-	protected renderTexture: RenderTexture
+	// protected renderTexture: RenderTexture
 	protected imageToReveal: Sprite
 	protected maskSprite: Sprite
 	protected bgSpriteEntity?: SpriteEntity
@@ -41,6 +41,15 @@ export class ScratchEntity {
 
 	public toOpen = (): void => {
 		this.scratchEntity.sprite.visible = false
+		this.imageToReveal.visible = true
+	}
+
+	public reset(): void {
+		this.dragging = false
+		this.scratchEntity.sprite.visible = true
+		this.imageToReveal.visible = false
+		console.log('entity is restored');
+		
 	}
 
 	public setTextureToReveal = (texture: Texture): void => {
@@ -53,13 +62,12 @@ export class ScratchEntity {
 
 		const nextRatio = this.viewPort.getRatioOfSaveArea()
 
-		const { scratchTexture, position, positionContentCorrection } = this.settings
-		this.renderTexture.resize(scratchTexture.width * nextRatio, scratchTexture.height * nextRatio)
-		// this.maskSprite.scale.set(nextRatio)
-		this.maskSprite.width = scratchTexture.width * nextRatio
-		this.maskSprite.height = scratchTexture.height * nextRatio
-		const nextPosition = this.viewPort.convertPointToSaveArea(position);
-		this.maskSprite.position.set(...nextPosition)
+		const { position, positionContentCorrection } = this.settings
+		// this.renderTexture.resize(scratchTexture.width * nextRatio, scratchTexture.height * nextRatio)
+		// this.maskSprite.width = scratchTexture.width * nextRatio
+		// this.maskSprite.height = scratchTexture.height * nextRatio
+		// const nextPosition = this.viewPort.convertPointToSaveArea(position);
+		// this.maskSprite.position.set(...nextPosition)
 
 		this.imageToReveal.scale.set(nextRatio)
 		const nextImagePos = this.viewPort.convertPointToSaveArea(
@@ -86,20 +94,24 @@ export class ScratchEntity {
 			this.container.addChild(this.bgSpriteEntity.sprite)
 		}
 
-		this.brush = new Graphics()
-		this.brush.name = 'brash'
-		this.brush.beginFill(0xFFFFFF)
-		this.brush.drawCircle(0, 0, 150)
-		this.brush.endFill()
+		// this.initBrush()
 
-		const { scratchTexture } = this.settings
-		this.renderTexture = RenderTexture.create({
-			width: scratchTexture.width,
-			height: scratchTexture.height,
-		})
+		// const { scratchTexture } = this.settings
+		// this.renderTexture = RenderTexture.create({
+		// 	width: scratchTexture.width,
+		// 	height: scratchTexture.height,
+		// })
 
 		this.renderContent()
 	}
+
+	// protected initBrush(): void {
+	// 	this.brush = new Graphics()
+	// 	this.brush.name = 'brash'
+	// 	this.brush.beginFill(0xFFFFFF)
+	// 	this.brush.drawCircle(0, 0, 150)
+	// 	this.brush.endFill()
+	// }
 
 	protected renderContent = (): void => {
 		const { position, scratchTexture } = this.settings
@@ -115,11 +127,11 @@ export class ScratchEntity {
 		this.imageToReveal.name = 'imageToReveal'
 		this.container.addChild(this.imageToReveal)
 
-		this.maskSprite = new Sprite(this.renderTexture)
-		this.maskSprite.name = 'mask'
-		this.container.addChild(this.maskSprite)
+		// this.maskSprite = new Sprite(this.renderTexture)
+		// this.maskSprite.name = 'mask'
+		// this.container.addChild(this.maskSprite)
 
-		this.imageToReveal.mask = this.maskSprite
+		// this.imageToReveal.mask = this.maskSprite
 
 		this.initListeners()
 	}
@@ -135,23 +147,25 @@ export class ScratchEntity {
 		this.settings.onOpening(this.settings.id)
 	}
 
-	protected onPointerDown = (event: interaction.InteractionEvent): void => {
+	protected onPointerDown = (): void => {
+	// protected onPointerDown = (event: interaction.InteractionEvent): void => {
 		this.dragging = true
-		this.onPointerMove(event)
+		this.onPointerMove()
 	}
 
 	protected onPointerUp = (): void => {
 		this.dragging = false
 	}
 
-	protected onPointerMove = (event: interaction.InteractionEvent): void => {
-		const { app } = this.settings
+	protected onPointerMove = (): void => {
+	// protected onPointerMove = (event: interaction.InteractionEvent): void => {
+		// const { app } = this.settings
 		if (this.dragging) {
-			const newPoint = event.data.global.clone()
-			newPoint.x = event.data.global.x - this.maskSprite.position.x
-			newPoint.y = event.data.global.y - this.maskSprite.position.y
-			this.brush.position.copyFrom(newPoint)
-			app.renderer.render(this.brush, this.renderTexture, false, null, false)
+			// const newPoint = event.data.global.clone()
+			// newPoint.x = event.data.global.x - this.maskSprite.position.x
+			// newPoint.y = event.data.global.y - this.maskSprite.position.y
+			// this.brush.position.copyFrom(newPoint)
+			// app.renderer.render(this.brush, this.renderTexture, false, null, false)
 			this.onOpening()
 		}
 	}

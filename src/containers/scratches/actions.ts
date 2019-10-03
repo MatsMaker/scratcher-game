@@ -1,4 +1,4 @@
-import { RENDER, RE_RENDER, ActionTypes, OPEN_SCRATCH, ScratchState, UPDATE_SCRATCHES } from './types'
+import { RENDER, RE_RENDER, ActionTypes, OPEN_SCRATCH, RESET_SCRATCHES, SCRATCHES_RESTORED } from './types'
 
 export function renderAction(): ActionTypes {
 	return {
@@ -12,10 +12,15 @@ export function reRenderAction(): ActionTypes {
 	}
 }
 
-export function updateScratchesAction(payload: Array<ScratchState>) {
+export function resetScratchesAction() {
 	return {
-		type: UPDATE_SCRATCHES,
-		payload,
+		type: RESET_SCRATCHES,
+	}
+}
+
+export function scratchesRestoredAction(): ActionTypes {
+	return {
+		type: SCRATCHES_RESTORED,
 	}
 }
 

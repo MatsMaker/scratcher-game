@@ -33,6 +33,12 @@ export default class ScratchGroupEntity {
 		this.scratchGroup[entityIndex].toOpen()
 	}
 
+	public resetAll(): void {
+		_.forEach(this.scratchGroup, (s: ScratchEntity) => {
+			s.reset()
+		})
+	}
+
 	public reRender = (): void => {
 		_.forEach(this.scratchGroup, (scratch: ScratchEntity) => {
 			scratch.reRender()

@@ -9,9 +9,9 @@ import ViewPort from '../../core/viewPort/ViewPort';
 import { SpriteEntity } from '../../entities/Sprite.entity';
 import { ScratchEntity } from '../../entities/Scratch.entity';
 import { movePoint } from '../../utils/math';
-import { openScratcherAction } from './actions';
+import { openScratcherAction, scratchesRestoredAction } from './actions';
 import ScratchGroupEntity from '../../entities/ScratchGroup.entity';
-import { OPEN_SCRATCH, BonusType } from './types';
+import { OPEN_SCRATCH, BonusType, RESET_SCRATCHES } from './types';
 import { onClearEvent } from '../../utils/store.subscribe';
 import { GET_BONUS } from '../../game/types';
 
@@ -57,7 +57,7 @@ class ScratchesContainer extends ABaseContainer {
 		const bgRevealAsset = this.assetsLoader.getResource('img/magic_forest_frame')
 		this.scratchEntity = new ScratchEntity(this.viewPort, {
 			id: 0,
-			app: this.app,
+			// app: this.app,
 			name: 'BigScratch',
 			scratchTexture: scratchAsset.texture,
 			textureToReveal: bgRevealAsset.texture,
@@ -86,17 +86,11 @@ class ScratchesContainer extends ABaseContainer {
 	protected initListeners = (): void => {
 		const { subscribe } = this.store
 		super.initListeners()
-		subscribe(onClearEvent(OPEN_SCRATCH, (payload: { id: number }) => {
-			const { id } = payload
-			if (id == 0) {
-				this.scratchEntity.toOpen()
-			} else {
-				this.scratchGroupEntity.toOpen(id)
-			}
-		}))
+		subscribe(onClearEvent(OPEN_SCRATCH, this.onOpenedScratch.bind(this)))
 		subscribe(onClearEvent(GET_BONUS, (payload: { id: number, bonus: BonusType }) => {
 			console.log('show get bonus:', payload)
 		}))
+		subscribe(onClearEvent(RESET_SCRATCHES, this.resetAll.bind(this)))
 	}
 
 	protected reRender = (): void => {
@@ -105,9 +99,28 @@ class ScratchesContainer extends ABaseContainer {
 		this.scratchGroupEntity.reRender()
 	}
 
+	protected resetAll(): void {
+		const { dispatch } = this.store
+		this.scratchEntity.reset()
+		this.scratchGroupEntity.resetAll()
+		this.viewPort.addTickOnce(() => {
+			dispatch(scratchesRestoredAction())
+		})
+	}
+
+	protected onOpenedScratch(payload: { id: number }): void {
+		const { id } = payload
+		if (id == 0) {
+			this.scratchEntity.toOpen()
+		} else {
+			this.scratchGroupEntity.toOpen(id)
+		}
+	}
+
 	protected onOpenScratcher = (id: number): void => {
 		this.store.dispatch(openScratcherAction({ id }))
 	}
+
 }
 
 export default ScratchesContainer

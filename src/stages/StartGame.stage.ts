@@ -69,6 +69,13 @@ class StartGameStage {
 		dispatch(scratchesAction.renderAction())
 		dispatch(notificationActions.renderAction())
 		dispatch(modalWindowActions.renderAction())
+		dispatch(modalWindowActions.showPlayBarAction())
+
+		this.viewPort.addTickOnce(this.initiatedScreen.bind(this))
+	}
+
+	protected initiatedScreen() {
+		const { dispatch } = this.store
 		dispatch(initiatedStartGameAction())
 	}
 
@@ -83,6 +90,7 @@ class StartGameStage {
 			dispatch(modalWindowActions.reRenderAction())
 		}))
 		subscribe(onEvent(INIT_START_GAME_STAGE, this.initScreen.bind(this)))
+		subscribe
 	}
 
 }
