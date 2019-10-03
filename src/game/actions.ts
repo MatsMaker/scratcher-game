@@ -1,8 +1,16 @@
-import { PLAY, ActionTypes, RULES_GAME, END_ROUND } from './types'
+import { PLAY, ActionTypes, RULES_GAME, END_ROUND, GET_BONUS } from './types'
+import { BonusType } from '../containers/scratches/types'
 
 export function playAction(): ActionTypes {
 	return {
 		type: PLAY
+	}
+}
+
+export function getBonusAction(payload: { id: number, bonus: BonusType }): ActionTypes {
+	return {
+		type: GET_BONUS,
+		payload
 	}
 }
 

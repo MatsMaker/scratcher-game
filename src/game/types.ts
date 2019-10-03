@@ -3,9 +3,11 @@ import { ASSETS_IS_LOADED } from "../core/assetsLoader/types"
 export const PLAY = '@GAME/play'
 export const RULES_GAME = '@GAME/rules_game'
 export const END_ROUND = '@GAME/end_round'
+export const GET_BONUS = '@GAME/get_bonus'
 
 interface BaseAction {
-	type: typeof PLAY | typeof RULES_GAME | typeof END_ROUND | typeof ASSETS_IS_LOADED
+	type: typeof PLAY | typeof RULES_GAME | typeof END_ROUND | typeof ASSETS_IS_LOADED | typeof GET_BONUS,
+	payload?: any
 }
 
 export type ActionTypes = BaseAction

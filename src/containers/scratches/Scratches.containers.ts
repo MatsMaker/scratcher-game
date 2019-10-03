@@ -11,8 +11,9 @@ import { ScratchEntity } from '../../entities/Scratch.entity';
 import { movePoint } from '../../utils/math';
 import { openScratcherAction } from './actions';
 import ScratchGroupEntity from '../../entities/ScratchGroup.entity';
-import { OPEN_SCRATCH } from './types';
+import { OPEN_SCRATCH, BonusType } from './types';
 import { onClearEvent } from '../../utils/store.subscribe';
+import { GET_BONUS } from '../../game/types';
 
 
 @injectable()
@@ -83,14 +84,18 @@ class ScratchesContainer extends ABaseContainer {
 	}
 
 	protected initListeners = (): void => {
+		const { subscribe } = this.store
 		super.initListeners()
-		this.store.subscribe(onClearEvent(OPEN_SCRATCH, (payload: { id: number }) => {
+		subscribe(onClearEvent(OPEN_SCRATCH, (payload: { id: number }) => {
 			const { id } = payload
 			if (id == 0) {
 				this.scratchEntity.toOpen()
 			} else {
 				this.scratchGroupEntity.toOpen(id)
 			}
+		}))
+		subscribe(onClearEvent(GET_BONUS, (payload: { id: number, bonus: BonusType }) => {
+			console.log('show get bonus:', payload)
 		}))
 	}
 

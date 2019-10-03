@@ -7,6 +7,7 @@ import {
   UPDATE_SCRATCHES,
   ScratchState,
 } from './types'
+import { GET_BONUS } from '../../game/types'
 
 const initialState: ScratchesState = {
   allIsOpen: false,
@@ -47,6 +48,15 @@ export function scratchesReducer(
 ): ScratchesState {
 
   switch (action.type) {
+    case GET_BONUS: {
+      const { id, bonus } = action.payload
+      // TODO it is bad more better will be immutable way
+      const openIndex: number = _.findIndex(state.scratches, (ss: ScratchState) => ss.id === id)
+      state.scratches[openIndex].content = bonus
+      return {
+        ...state,
+      }
+    }
     case OPEN_SCRATCH: {
       const { id } = action.payload
       // TODO it is bad more better will be immutable way
