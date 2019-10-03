@@ -40,5 +40,35 @@
 	"saveArea": {
 		"width": "1098",
 		"height": "1920"
-	}
+	},
+	"bonusImages": [
+		[
+			"img/magic_forest_bonfire_small",
+			"img/magic_forest_bonfire"
+		],
+		[
+			"img/magic_forest_bow_small",
+			"img/magic_forest_bow"
+		],
+		[
+			"img/magic_forest_leaf_small",
+			"img/magic_forest_leaf"
+		],
+		[
+			"img/magic_forest_rope_small",
+			"img/magic_forest_rope"
+		],
+		[
+			"img/magic_forest_tent_small",
+			"img/magic_forest_tent"
+		],
+		[
+			"img/magic_forest_coin_icon_small",
+			"img/magic_forest_coin_icon_big"
+		],
+		[
+			"",
+			"img/magic_forest_dollar_icon"
+		]
+	]
 }

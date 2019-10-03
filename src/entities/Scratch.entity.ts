@@ -12,7 +12,7 @@ interface ScratchEntityOptions {
 	textureToReveal?: Texture
 	bgTexture?: Texture
 	position: Array<number>
-	positionContentCorrection: Array<number>
+	contentCorrection: Array<number> // TODO just to set align buy center 
 	onOpening: Function
 }
 
@@ -27,6 +27,7 @@ export class ScratchEntity {
 	// protected renderTexture: RenderTexture
 	protected imageToReveal: Sprite
 	protected maskSprite: Sprite
+	protected isEmpty: boolean = true
 	protected bgSpriteEntity?: SpriteEntity
 
 	constructor(viewPort: ViewPort, settings: ScratchEntityOptions) {
@@ -41,7 +42,7 @@ export class ScratchEntity {
 
 	public toOpen = (): void => {
 		this.scratchEntity.sprite.visible = false
-		this.imageToReveal.visible = true
+		this.imageToReveal.visible = !this.isEmpty
 	}
 
 	public reset(): void {
@@ -52,8 +53,13 @@ export class ScratchEntity {
 
 	public setTextureToReveal = (texture: Texture): void => {
 		this.settings.textureToReveal = texture
-		this.imageToReveal.texture = this.settings.textureToReveal
-		this.reRender()
+		if (_.isNull(texture)) {
+			this.isEmpty = true
+			this.imageToReveal.visible = false
+		} else {
+			this.isEmpty = false
+			this.imageToReveal.texture = this.settings.textureToReveal
+		}
 	}
 
 	public reRender = (): void => {
@@ -61,16 +67,16 @@ export class ScratchEntity {
 
 		const nextRatio = this.viewPort.getRatioOfSaveArea()
 
-		const { position, positionContentCorrection } = this.settings
+		const { position, contentCorrection } = this.settings
 		// this.renderTexture.resize(scratchTexture.width * nextRatio, scratchTexture.height * nextRatio)
 		// this.maskSprite.width = scratchTexture.width * nextRatio
 		// this.maskSprite.height = scratchTexture.height * nextRatio
 		// const nextPosition = this.viewPort.convertPointToSaveArea(position);
 		// this.maskSprite.position.set(...nextPosition)
 
-		this.imageToReveal.scale.set(nextRatio)
+		this.imageToReveal.scale.set(nextRatio * contentCorrection[2])
 		const nextImagePos = this.viewPort.convertPointToSaveArea(
-			movePoint(position, positionContentCorrection)
+			movePoint(position, contentCorrection)
 		)
 		this.imageToReveal.position.set(...nextImagePos)
 
@@ -124,6 +130,7 @@ export class ScratchEntity {
 
 		this.imageToReveal = new Sprite(this.settings.textureToReveal)
 		this.imageToReveal.name = 'imageToReveal'
+		this.imageToReveal.anchor.set(0.5, 0.5)
 		this.container.addChild(this.imageToReveal)
 
 		// this.maskSprite = new Sprite(this.renderTexture)

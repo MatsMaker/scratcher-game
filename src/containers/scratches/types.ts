@@ -24,6 +24,11 @@ export enum BonusType {
 	Cash,
 	Lose
 }
+
+export enum ImageSize {
+	SMALL,
+	BIG
+}
 export interface ScratchState {
 	isOpen: boolean
 	content: BonusType

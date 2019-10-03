@@ -29,6 +29,10 @@ class Config {
 		return this.settings.assetsPath;
 	}
 
+	public getBonusImages(bonus: number): Array<string> {
+		return this.settings.bonusImages[bonus]
+	}
+
 }
 
 export default Config;

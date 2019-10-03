@@ -1,5 +1,5 @@
 import { ScratchEntity } from "./Scratch.entity"
-import { Container, Texture, Application } from "pixi.js"
+import { Container, Texture } from "pixi.js"
 import ViewPort from "../core/viewPort/ViewPort"
 import * as _ from 'lodash'
 import { movePoint } from "../utils/math"
@@ -7,11 +7,12 @@ import { movePoint } from "../utils/math"
 interface ScratchGroupEntityOptions {
 	startId: number
 	name: string
-	app: Application
+	// app: Application
 	scratchTexture: Texture
 	bgTexture: Texture
 	position: Array<number>
 	onOpening: Function
+	contentCorrection: Array<number>
 	textureToReveal?: Texture
 }
 
@@ -59,12 +60,12 @@ export default class ScratchGroupEntity {
 	protected renderContent = (): void => {
 		const { scratchTexture, position, textureToReveal, bgTexture } = this.settings
 		const scratchSettings = {
-			app: this.settings.app,
+			// app: this.settings.app,
 			name: 'BigScratch',
 			scratchTexture,
 			textureToReveal,
 			position,
-			positionContentCorrection: [0, 0],
+			contentCorrection: this.settings.contentCorrection,
 			onOpening: this.onOpening,
 			bgTexture
 		}

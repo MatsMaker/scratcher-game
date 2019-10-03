@@ -114,7 +114,7 @@ class Game {
 	}
 
 	protected generateBonusForCard(): BonusType {
-		const dice = this.toDice()
+		const dice = this.toDice() // TODO move this ratio to settings
 		if (dice > 98) {   // 2%
 			return BonusType.Tent
 		} if (dice > 96) { // 4%
