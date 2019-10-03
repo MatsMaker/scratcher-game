@@ -1,5 +1,5 @@
 import { injectable, inject } from 'inversify';
-import { Application } from 'pixi.js';
+import { Application, LoaderResource } from 'pixi.js';
 import TYPES from '../../types/MainConfig';
 import ABaseContainer from '../AContainer/ABaseContainer';
 import { StoreType } from '../../store';
@@ -11,7 +11,7 @@ import { ScratchEntity } from '../../entities/Scratch.entity';
 import { movePoint } from '../../utils/math';
 import { openScratcherAction, scratchesRestoredAction } from './actions';
 import ScratchGroupEntity from '../../entities/ScratchGroup.entity';
-import { OPEN_SCRATCH, BonusType, RESET_SCRATCHES } from './types';
+import { BonusType, RESET_SCRATCHES } from './types';
 import { onClearEvent } from '../../utils/store.subscribe';
 import { GET_BONUS } from '../../game/types';
 
@@ -86,10 +86,8 @@ class ScratchesContainer extends ABaseContainer {
 	protected initListeners = (): void => {
 		const { subscribe } = this.store
 		super.initListeners()
-		subscribe(onClearEvent(OPEN_SCRATCH, this.onOpenedScratch.bind(this)))
-		subscribe(onClearEvent(GET_BONUS, (payload: { id: number, bonus: BonusType }) => {
-			console.log('show get bonus:', payload)
-		}))
+		// subscribe(onClearEvent(OPEN_SCRATCH, this.onOpenedScratch.bind(this)))
+		subscribe(onClearEvent(GET_BONUS, this.onOpenedScratch.bind(this)))
 		subscribe(onClearEvent(RESET_SCRATCHES, this.resetAll.bind(this)))
 	}
 
@@ -108,17 +106,43 @@ class ScratchesContainer extends ABaseContainer {
 		})
 	}
 
-	protected onOpenedScratch(payload: { id: number }): void {
-		const { id } = payload
+	protected onOpenedScratch(payload: { id: number, bonus: BonusType }): void {
+		const { id, bonus } = payload
 		if (id == 0) {
+			const scratchAsset = this.getAssetByBonus(bonus, true)
+			this.scratchEntity.setTextureToReveal(scratchAsset.texture)
 			this.scratchEntity.toOpen()
 		} else {
+			const scratchAsset = this.getAssetByBonus(bonus, false)
+			this.scratchGroupEntity.setTextureToReveal(id, scratchAsset.texture)
 			this.scratchGroupEntity.toOpen(id)
 		}
 	}
 
 	protected onOpenScratcher = (id: number): void => {
 		this.store.dispatch(openScratcherAction({ id }))
+	}
+
+	protected getAssetByBonus(bonus: BonusType, bigSize: boolean = false): LoaderResource {
+		const { getResource } = this.assetsLoader
+		switch (bonus) {
+			case BonusType.Bonfire:
+				return (bigSize) ? getResource('img/magic_forest_bonfire') : getResource('img/magic_forest_bonfire_small')
+			case BonusType.Bow:
+				return (bigSize) ? getResource('img/magic_forest_bow') : getResource('img/magic_forest_bow_small')
+			case BonusType.Tent:
+				return (bigSize) ? getResource('img/magic_forest_tent') : getResource('img/magic_forest_tent_small')
+			case BonusType.Coin:
+				return (bigSize) ? getResource('img/magic_forest_coin_icon_big') : getResource('img/magic_forest_coin_icon_small')
+			case BonusType.Cash:
+				return getResource('img/magic_forest_dollar_icon')
+			case BonusType.Leaf:
+				return (bigSize) ? getResource('img/magic_forest_leaf') : getResource('img/magic_forest_leaf_small')
+			case BonusType.Rope:
+				return (bigSize) ? getResource('img/magic_forest_rope') : getResource('img/magic_forest_rope_small')
+			case BonusType.Lose:
+				return getResource('img/magic_forest_frame')
+		}
 	}
 
 }

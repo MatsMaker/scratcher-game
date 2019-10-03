@@ -39,6 +39,11 @@ export default class ScratchGroupEntity {
 		})
 	}
 
+	public setTextureToReveal(id: number, texture: Texture): void {
+		const entityIndex = this.scratchGroup.findIndex((s: ScratchEntity) => s.id === id)
+		this.scratchGroup[entityIndex].setTextureToReveal(texture)
+	}
+
 	public reRender = (): void => {
 		_.forEach(this.scratchGroup, (scratch: ScratchEntity) => {
 			scratch.reRender()

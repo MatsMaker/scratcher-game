@@ -47,14 +47,13 @@ export class ScratchEntity {
 	public reset(): void {
 		this.dragging = false
 		this.scratchEntity.sprite.visible = true
-		this.imageToReveal.visible = false
-		console.log('entity is restored');
-		
+		this.imageToReveal.visible = false	
 	}
 
 	public setTextureToReveal = (texture: Texture): void => {
 		this.settings.textureToReveal = texture
 		this.imageToReveal.texture = this.settings.textureToReveal
+		this.reRender()
 	}
 
 	public reRender = (): void => {
