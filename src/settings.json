@@ -38,8 +38,8 @@
 	},
 	"size": "origin",
 	"saveArea": {
-		"width": "1098",
-		"height": "1920"
+		"width": 1098,
+		"height": 1920
 	},
 	"specialCard": 0,
 	"winAmounts": [

@@ -1,8 +1,14 @@
-import { PLAY, ActionTypes, RULES_GAME, END_ROUND, GET_BONUS, BonusType, GET_WIN, WinType } from './types'
+import { PLAY, ActionTypes, RULES_GAME, END_ROUND, GET_BONUS, BonusType, GET_WIN, WinType, START_ROUND } from './types'
 
 export function playAction(): ActionTypes {
 	return {
 		type: PLAY
+	}
+}
+
+export function startRoundAction(): ActionTypes {
+	return {
+		type: START_ROUND
 	}
 }
 

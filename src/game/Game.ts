@@ -9,7 +9,7 @@ import { onEvent, onClearEvent } from '../utils/store.subscribe';
 import StartGameStage from '../stages/StartGame.stage';
 import ViewPort from '../core/viewPort/ViewPort';
 import { OPEN_SCRATCH, SCRATCHES_RESTORED } from '../containers/scratches/types';
-import { endRound, playAction, getBonusAction, getWinAction } from './actions';
+import { endRound, playAction, getBonusAction, getWinAction, startRoundAction } from './actions';
 import { initStartGameAction } from '../stages/action';
 import { INITIATED_START_GAME_STAGE } from '../stages/types';
 import { showPlayBarAction } from '../containers/modalWindow/actions';
@@ -76,6 +76,7 @@ class Game {
 
 	protected toStartRound(): void {
 		const { dispatch } = this.store
+		dispatch(startRoundAction())
 		dispatch(setInteractionScratchesAction({ interaction: true }))
 		this.viewPort.addTickOnce(() => {
 			dispatch(resetScratchesAction())
