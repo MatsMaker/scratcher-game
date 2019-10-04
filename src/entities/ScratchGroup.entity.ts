@@ -52,6 +52,12 @@ export default class ScratchGroupEntity {
 		})
 	}
 
+	public setInteractive(value: boolean): void {
+		_.forEach(this.scratchGroup, (s: ScratchEntity) => {
+			s.setInteractive(value)
+		})
+	}
+
 	protected init = (): void => {
 		this.container = new Container()
 		this.container.name = this.settings.name || 'ScratchGroupEntity'

@@ -19,10 +19,11 @@ class Config {
 	}
 
 	public getSaveAreaSize = (): AreaSizeType => {
+		const { width, height } = this.settings.saveArea
 		return {
-			width: Number(this.settings.saveArea.width),
-			height: Number(this.settings.saveArea.height)
-		};
+			width: Number(width),
+			height: Number(height)
+		}
 	}
 
 	public getAssetsList = (): Array<string> => {

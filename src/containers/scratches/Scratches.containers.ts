@@ -11,7 +11,7 @@ import { ScratchEntity } from '../../entities/Scratch.entity';
 import { movePoint } from '../../utils/math';
 import { openScratcherAction, scratchesRestoredAction, onMouseoverScratcherAction } from './actions';
 import ScratchGroupEntity from '../../entities/ScratchGroup.entity';
-import { RESET_SCRATCHES, ImageSize } from './types';
+import { RESET_SCRATCHES, ImageSize, SET_INTERACTION } from './types';
 import { onClearEvent } from '../../utils/store.subscribe';
 import { GET_BONUS, BonusType } from '../../game/types';
 
@@ -92,6 +92,13 @@ class ScratchesContainer extends ABaseContainer {
 		// subscribe(onClearEvent(OPEN_SCRATCH, this.onOpenedScratch.bind(this)))
 		subscribe(onClearEvent(GET_BONUS, this.onOpenedScratch.bind(this)))
 		subscribe(onClearEvent(RESET_SCRATCHES, this.resetAll.bind(this)))
+		subscribe(onClearEvent(SET_INTERACTION, this.setInteraction.bind(this)))
+	}
+
+	protected setInteraction(payload: { interaction: boolean }): void {
+		const { interaction } = payload
+		this.scratchEntity.setInteractive(interaction)
+		this.scratchGroupEntity.setInteractive(interaction)
 	}
 
 	protected reRender = (): void => {

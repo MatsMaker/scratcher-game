@@ -11,7 +11,7 @@ export interface GSettings {
 		width: string,
 		height: string,
 	}
-	specialCard: number,
+	specialCard: string,
 	bonusImages: Array<Array<string>>
 	[key: string]: any
 }

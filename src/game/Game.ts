@@ -15,7 +15,7 @@ import { INITIATED_START_GAME_STAGE } from '../stages/types';
 import { showPlayBarAction } from '../containers/modalWindow/actions';
 import { PLAY_BAR_HIDDEN } from '../containers/modalWindow/types';
 import { END_ROUND, GET_BONUS, BonusType } from './types'
-import { resetScratchesAction } from '../containers/scratches/actions';
+import { resetScratchesAction, setInteractionScratchesAction } from '../containers/scratches/actions';
 
 @injectable()
 class Game {
@@ -50,7 +50,7 @@ class Game {
 		const { subscribe } = this.store
 		subscribe(onEvent(ASSETS_IS_LOADED, this.initStage))
 		subscribe(onEvent(INITIATED_START_GAME_STAGE, this.toResetScratches.bind(this)))
-		subscribe(onEvent(PLAY_BAR_HIDDEN, this.toResetScratches.bind(this)))
+		subscribe(onEvent(PLAY_BAR_HIDDEN, this.toStartRound.bind(this)))
 		subscribe(onEvent(SCRATCHES_RESTORED, this.toPlayGame.bind(this)))
 		subscribe(onClearEvent(OPEN_SCRATCH, this.openScratch.bind(this)))
 		subscribe(onEvent(GET_BONUS, this.onGetBonus.bind(this)))
@@ -67,8 +67,17 @@ class Game {
 
 	protected toShowPlayBar(): void {
 		const { dispatch } = this.store
+		dispatch(setInteractionScratchesAction({ interaction: false }))
 		this.viewPort.addTickOnce(() => {
 			dispatch(showPlayBarAction())
+		})
+	}
+
+	protected toStartRound(): void {
+		const { dispatch } = this.store
+		dispatch(setInteractionScratchesAction({ interaction: true }))
+		this.viewPort.addTickOnce(() => {
+			dispatch(resetScratchesAction())
 		})
 	}
 

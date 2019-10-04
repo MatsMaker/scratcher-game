@@ -86,6 +86,11 @@ export class ScratchEntity {
 		}
 	}
 
+	public setInteractive(value: boolean): void {
+		this.scratchEntity.sprite.interactive = value
+		this.scratchEntity.sprite.buttonMode = value
+	}
+
 	protected init = (): void => {
 
 		this.container = new Container()
@@ -126,8 +131,6 @@ export class ScratchEntity {
 			name: 'scratchEntity',
 			position,
 		})
-		this.scratchEntity.sprite.interactive = true
-		this.scratchEntity.sprite.buttonMode = true
 
 		this.container.addChild(this.scratchEntity.sprite)
 

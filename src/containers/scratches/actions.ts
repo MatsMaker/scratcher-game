@@ -1,4 +1,4 @@
-import { RENDER, RE_RENDER, ActionTypes, OPEN_SCRATCH, RESET_SCRATCHES, SCRATCHES_RESTORED, ON_HOVERING_SCRATCH } from './types'
+import { RENDER, RE_RENDER, ActionTypes, OPEN_SCRATCH, RESET_SCRATCHES, SCRATCHES_RESTORED, ON_HOVERING_SCRATCH, SET_INTERACTION } from './types'
 
 export function renderAction(): ActionTypes {
 	return {
@@ -24,15 +24,22 @@ export function scratchesRestoredAction(): ActionTypes {
 	}
 }
 
-export function openScratcherAction(payload: { id: number }) {
+export function openScratcherAction(payload: { id: number }): ActionTypes {
 	return {
 		type: OPEN_SCRATCH,
 		payload,
 	}
 }
 
-export function onMouseoverScratcherAction() {
+export function onMouseoverScratcherAction(): ActionTypes {
 	return {
 		type: ON_HOVERING_SCRATCH
+	}
+}
+
+export function setInteractionScratchesAction(payload: {interaction: boolean}): ActionTypes {
+	return {
+		type: SET_INTERACTION,
+		payload
 	}
 }
