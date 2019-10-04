@@ -11,3 +11,18 @@ export const btnOrangeStyle = {
 	fill: "orange",
 	fontWeight: "bold"
 }
+
+export const redWinStyle = {
+	fontFamily: "DRAguSans",
+	fontSize: 116,
+	fill: "red",
+	fontWeight: "bold"
+}
+
+
+export const resultWinStyle = {
+	fontFamily: "DRAguSans",
+	fontSize: 126,
+	fill: "brown",
+	fontWeight: "bold"
+}

@@ -7,7 +7,6 @@ import { movePoint } from "../utils/math"
 interface ScratchGroupEntityOptions {
 	startId: number
 	name: string
-	// app: Application
 	scratchTexture: Texture
 	bgTexture: Texture
 	position: Array<number>
@@ -67,7 +66,6 @@ export default class ScratchGroupEntity {
 	protected renderContent = (): void => {
 		const { scratchTexture, position, textureToReveal, bgTexture } = this.settings
 		const scratchSettings = {
-			// app: this.settings.app,
 			name: 'BigScratch',
 			scratchTexture,
 			textureToReveal,

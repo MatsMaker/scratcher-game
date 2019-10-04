@@ -7,7 +7,6 @@ import { movePoint } from '../utils/math'
 interface ScratchEntityOptions {
 	id: number
 	name: string
-	// app: Application
 	scratchTexture: Texture
 	textureToReveal?: Texture
 	bgTexture?: Texture
@@ -25,7 +24,6 @@ export class ScratchEntity {
 	protected scratchEntity: SpriteEntity
 	protected brush: Graphics
 	protected dragging: boolean = false
-	// protected renderTexture: RenderTexture
 	protected imageToReveal: Sprite
 	protected maskSprite: Sprite
 	protected isEmpty: boolean = true
@@ -65,15 +63,8 @@ export class ScratchEntity {
 
 	public reRender = (): void => {
 		this.scratchEntity.reRender()
-
 		const nextRatio = this.viewPort.getRatioOfSaveArea()
-
 		const { position, contentCorrection } = this.settings
-		// this.renderTexture.resize(scratchTexture.width * nextRatio, scratchTexture.height * nextRatio)
-		// this.maskSprite.width = scratchTexture.width * nextRatio
-		// this.maskSprite.height = scratchTexture.height * nextRatio
-		// const nextPosition = this.viewPort.convertPointToSaveArea(position);
-		// this.maskSprite.position.set(...nextPosition)
 
 		this.imageToReveal.scale.set(nextRatio * contentCorrection[2])
 		const nextImagePos = this.viewPort.convertPointToSaveArea(
@@ -105,24 +96,8 @@ export class ScratchEntity {
 			this.container.addChild(this.bgSpriteEntity.sprite)
 		}
 
-		// this.initBrush()
-
-		// const { scratchTexture } = this.settings
-		// this.renderTexture = RenderTexture.create({
-		// 	width: scratchTexture.width,
-		// 	height: scratchTexture.height,
-		// })
-
 		this.renderContent()
 	}
-
-	// protected initBrush(): void {
-	// 	this.brush = new Graphics()
-	// 	this.brush.name = 'brash'
-	// 	this.brush.beginFill(0xFFFFFF)
-	// 	this.brush.drawCircle(0, 0, 150)
-	// 	this.brush.endFill()
-	// }
 
 	protected renderContent = (): void => {
 		const { position, scratchTexture } = this.settings
@@ -138,12 +113,6 @@ export class ScratchEntity {
 		this.imageToReveal.name = 'imageToReveal'
 		this.imageToReveal.anchor.set(0.5, 0.5)
 		this.container.addChild(this.imageToReveal)
-
-		// this.maskSprite = new Sprite(this.renderTexture)
-		// this.maskSprite.name = 'mask'
-		// this.container.addChild(this.maskSprite)
-
-		// this.imageToReveal.mask = this.maskSprite
 
 		this.initListeners()
 	}
@@ -161,7 +130,6 @@ export class ScratchEntity {
 	}
 
 	protected onPointerDown = (): void => {
-		// protected onPointerDown = (event: interaction.InteractionEvent): void => {
 		this.dragging = true
 		this.onPointerMove()
 	}
@@ -171,14 +139,7 @@ export class ScratchEntity {
 	}
 
 	protected onPointerMove = (): void => {
-		// protected onPointerMove = (event: interaction.InteractionEvent): void => {
-		// const { app } = this.settings
 		if (this.dragging) {
-			// const newPoint = event.data.global.clone()
-			// newPoint.x = event.data.global.x - this.maskSprite.position.x
-			// newPoint.y = event.data.global.y - this.maskSprite.position.y
-			// this.brush.position.copyFrom(newPoint)
-			// app.renderer.render(this.brush, this.renderTexture, false, null, false)
 			this.onOpening()
 		}
 	}

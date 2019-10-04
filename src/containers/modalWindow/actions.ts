@@ -1,4 +1,4 @@
-import { RENDER, RE_RENDER, ActionTypes, SHOW_PLAY_BAR, PLAY_BAR_HIDDEN } from './types'
+import { RENDER, RE_RENDER, ActionTypes, SHOW_MODAL_WINDOW, MODAL_WINDOW_HIDDEN } from './types'
 
 export function renderAction(): ActionTypes {
 	return {
@@ -12,14 +12,14 @@ export function reRenderAction(): ActionTypes {
 	}
 }
 
-export function showPlayBarAction(): ActionTypes {
+export function showModalWindowAction(): ActionTypes {
 	return {
-		type: SHOW_PLAY_BAR
+		type: SHOW_MODAL_WINDOW
 	}
 }
 
-export function hiddenPlayBarAction(): ActionTypes {
+export function hiddenModalWindowAction(): ActionTypes {
 	return {
-		type: PLAY_BAR_HIDDEN
+		type: MODAL_WINDOW_HIDDEN
 	}
 } 

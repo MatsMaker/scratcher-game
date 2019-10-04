@@ -1,8 +1,8 @@
 import {
 	ActionTypes,
-	SHOW_PLAY_BAR,
+	SHOW_MODAL_WINDOW,
 	ModalWindowState,
-	PLAY_BAR_HIDDEN
+	MODAL_WINDOW_HIDDEN
 } from './types'
 
 const initialState: ModalWindowState = {
@@ -15,13 +15,13 @@ export function modalWindowReducer(
 ): ModalWindowState {
 
 	switch (action.type) {
-		case SHOW_PLAY_BAR: {
+		case SHOW_MODAL_WINDOW: {
 			return {
 				...state,
 				barIsShowing: true,
 			}
 		}
-		case PLAY_BAR_HIDDEN: {
+		case MODAL_WINDOW_HIDDEN: {
 			return {
 				...state,
 				barIsShowing: false,

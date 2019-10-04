@@ -51,6 +51,11 @@ class ViewPort {
 		return [viewPort.saveStartX, viewPort.saveStartY]
 	}
 
+	public getSaveCenterPoint(): Array<number> {
+		const { viewPort } = this.store.getState()
+		return [viewPort.saveCenterWidth, viewPort.saveCenterHeight]
+	}
+
 	public getRatioOfSaveArea = (): number => {
 		const { viewPort } = this.store.getState();
 		return viewPort.saveRatio;

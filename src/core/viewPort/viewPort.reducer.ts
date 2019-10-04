@@ -25,8 +25,8 @@ function getNewViewPortState(cnfgSaveArea: AreaSizeType): ViewPortBaseState {
     saveHeight: saveArea.height,
     saveStartX: saveArea.x,
     saveStartY: saveArea.y,
-    saveCenterWidth: width / 2,
-    saveCenterHeight: height / 2
+    saveCenterWidth: saveArea.width / 2 + saveArea.x,
+    saveCenterHeight: saveArea.height / 2 + saveArea.y,
   }
 }
 

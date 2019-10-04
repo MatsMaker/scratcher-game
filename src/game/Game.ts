@@ -12,8 +12,8 @@ import { OPEN_SCRATCH, SCRATCHES_RESTORED } from '../containers/scratches/types'
 import { endRound, playAction, getBonusAction, getWinAction, startRoundAction } from './actions';
 import { initStartGameAction } from '../stages/action';
 import { INITIATED_START_GAME_STAGE } from '../stages/types';
-import { showPlayBarAction } from '../containers/modalWindow/actions';
-import { PLAY_BAR_HIDDEN } from '../containers/modalWindow/types';
+import { showModalWindowAction } from '../containers/modalWindow/actions';
+import { MODAL_WINDOW_HIDDEN } from '../containers/modalWindow/types';
 import { END_ROUND, GET_BONUS, BonusType, GET_WIN } from './types'
 import { resetScratchesAction, setInteractionScratchesAction } from '../containers/scratches/actions';
 
@@ -50,7 +50,7 @@ class Game {
 		const { subscribe } = this.store
 		subscribe(onEvent(ASSETS_IS_LOADED, this.initStage))
 		subscribe(onEvent(INITIATED_START_GAME_STAGE, this.toResetScratches.bind(this)))
-		subscribe(onEvent(PLAY_BAR_HIDDEN, this.toStartRound.bind(this)))
+		subscribe(onEvent(MODAL_WINDOW_HIDDEN, this.toStartRound.bind(this)))
 		subscribe(onEvent(SCRATCHES_RESTORED, this.toPlayGame.bind(this)))
 		subscribe(onClearEvent(OPEN_SCRATCH, this.openScratch.bind(this)))
 		subscribe(onClearEvent(GET_BONUS, this.onGetBonus.bind(this)))
@@ -70,7 +70,7 @@ class Game {
 		const { dispatch } = this.store
 		dispatch(setInteractionScratchesAction({ interaction: false }))
 		this.viewPort.addTickOnce(() => {
-			dispatch(showPlayBarAction())
+			dispatch(showModalWindowAction())
 		})
 	}
 
