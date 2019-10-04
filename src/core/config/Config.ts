@@ -1,5 +1,7 @@
 import { injectable } from 'inversify';
-import { GSettings, AreaSizeType } from './types';
+import * as _ from 'lodash'
+import { GSettings, AreaSizeType, WinAmountType } from './types';
+import { BonusType, WinType } from '../../game/types';
 
 @injectable()
 class Config {
@@ -22,8 +24,13 @@ class Config {
 		const { width, height } = this.settings.saveArea
 		return {
 			width: Number(width),
-			height: Number(height)
+			height: Number(height),
 		}
+	}
+
+	public getWinAmount(bonusId: BonusType): WinType {
+		const winAmount = _.find(this.settings.winAmounts, (wa: WinAmountType) => wa.bonusId === bonusId)
+		return winAmount.win
 	}
 
 	public getAssetsList = (): Array<string> => {

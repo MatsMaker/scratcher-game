@@ -9,12 +9,12 @@ import { onEvent, onClearEvent } from '../utils/store.subscribe';
 import StartGameStage from '../stages/StartGame.stage';
 import ViewPort from '../core/viewPort/ViewPort';
 import { OPEN_SCRATCH, SCRATCHES_RESTORED } from '../containers/scratches/types';
-import { endRound, playAction, getBonusAction } from './actions';
+import { endRound, playAction, getBonusAction, getWinAction } from './actions';
 import { initStartGameAction } from '../stages/action';
 import { INITIATED_START_GAME_STAGE } from '../stages/types';
 import { showPlayBarAction } from '../containers/modalWindow/actions';
 import { PLAY_BAR_HIDDEN } from '../containers/modalWindow/types';
-import { END_ROUND, GET_BONUS, BonusType } from './types'
+import { END_ROUND, GET_BONUS, BonusType, GET_WIN } from './types'
 import { resetScratchesAction, setInteractionScratchesAction } from '../containers/scratches/actions';
 
 @injectable()
@@ -53,7 +53,8 @@ class Game {
 		subscribe(onEvent(PLAY_BAR_HIDDEN, this.toStartRound.bind(this)))
 		subscribe(onEvent(SCRATCHES_RESTORED, this.toPlayGame.bind(this)))
 		subscribe(onClearEvent(OPEN_SCRATCH, this.openScratch.bind(this)))
-		subscribe(onEvent(GET_BONUS, this.onGetBonus.bind(this)))
+		subscribe(onClearEvent(GET_BONUS, this.onGetBonus.bind(this)))
+		subscribe(onEvent(GET_WIN, this.onGetWin.bind(this)))
 		subscribe(onEvent(END_ROUND, this.toShowPlayBar.bind(this)))
 	}
 
@@ -104,7 +105,15 @@ class Game {
 		})
 	}
 
-	protected onGetBonus(): void {
+	protected onGetBonus(payload: { id: number, bonus: BonusType }): void {
+		const { dispatch } = this.store
+		const win = this.config.getWinAmount(payload.bonus)
+		this.viewPort.addTickOnce(() => {
+			dispatch(getWinAction(win))
+		})
+	}
+
+	protected onGetWin(): void {
 		const { scratchesReducer } = this.store.getState()
 		const { dispatch } = this.store
 		if (scratchesReducer.allIsOpen) {

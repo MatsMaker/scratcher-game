@@ -4,11 +4,13 @@ import { viewPortReducer } from '../core/viewPort/viewPort.reducer'
 import { scratchesReducer } from '../containers/scratches/scratches.reducer'
 import { modalWindowReducer } from '../containers/modalWindow/modalWindow.reducer'
 import { lastAction } from './lastAction.reducer'
+import { gameReducer } from '../game/game.reducer'
 
 export const rootReducer = combineReducers({
 	assets: assetsReducer,
 	viewPort: viewPortReducer,
 	scratchesReducer,
 	modalWindowReducer,
+	gameReducer,
 	lastAction,
 });

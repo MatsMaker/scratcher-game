@@ -1,15 +1,20 @@
 import {
   IGameState,
   ActionTypes,
-	GAME_STATE
+  GAME_STATE,
+  GET_WIN
 } from './types'
 import { ASSETS_IS_LOADED } from '../core/assetsLoader/types'
 
 const initialState: IGameState = {
   gameState: GAME_STATE.LOAD_GAME,
+  win: {
+    coin: 0,
+    cash: 0,
+  }
 }
 
-export function assetsReducer(
+export function gameReducer(
   state = initialState,
   action: ActionTypes
 ): IGameState {
@@ -19,6 +24,16 @@ export function assetsReducer(
       return {
         ...state,
         gameState: GAME_STATE.PREPARE_ROUND,
+      }
+    }
+    case GET_WIN: {
+      return {
+        ...state,
+        win: {
+          ...state.win,
+          coin: state.win.coin + action.payload.coin,
+          cash: state.win.cash + action.payload.cash,
+        }
       }
     }
     default:

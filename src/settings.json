@@ -41,7 +41,65 @@
 		"width": "1098",
 		"height": "1920"
 	},
-	"specialCard": "0",
+	"specialCard": 0,
+	"winAmounts": [
+		{
+			"bonusId": 0,
+			"win": {
+				"coin": 25,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 1,
+			"win": {
+				"coin": 30,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 2,
+			"win": {
+				"coin": 35,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 3,
+			"win": {
+				"coin": 50,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 4,
+			"win": {
+				"coin": 100,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 5,
+			"win": {
+				"coin": 25,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 6,
+			"win": {
+				"coin": 0,
+				"cash": 1
+			}
+		},
+		{
+			"bonusId": 7,
+			"win": {
+				"coin": 0,
+				"cash": 0
+			}
+		}
+	],
 	"bonusImages": [
 		[
 			"img/magic_forest_bonfire_small",

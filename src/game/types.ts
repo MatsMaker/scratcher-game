@@ -4,9 +4,10 @@ export const PLAY = '@GAME/play'
 export const RULES_GAME = '@GAME/rules_game'
 export const END_ROUND = '@GAME/end_round'
 export const GET_BONUS = '@GAME/get_bonus'
+export const GET_WIN = '@GAME/get_win'
 
 interface BaseAction {
-	type: typeof PLAY | typeof RULES_GAME | typeof END_ROUND | typeof ASSETS_IS_LOADED | typeof GET_BONUS,
+	type: typeof PLAY | typeof RULES_GAME | typeof END_ROUND | typeof ASSETS_IS_LOADED | typeof GET_BONUS | typeof GET_WIN,
 	payload?: any
 }
 
@@ -22,6 +23,7 @@ export enum GAME_STATE {
 
 export interface IGameState {
 	gameState: GAME_STATE
+	win: WinType
 }
 
 export enum BonusType {
@@ -33,4 +35,9 @@ export enum BonusType {
 	Coin,
 	Cash,
 	Lose
+}
+
+export interface WinType {
+	coin: number
+	cash: number
 }
