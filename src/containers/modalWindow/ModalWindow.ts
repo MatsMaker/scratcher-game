@@ -50,7 +50,7 @@ class ModalWindowContainer extends ABaseContainer {
 		const barFrameAsset = this.assetsLoader.getResource('img/magic_forest_frame3')
 
 		const btnBgAsset = this.assetsLoader.getResource('img/magic_forest_button')
-		const saveAreaSize = this.viewPort.getSaveAreaSize()
+		const saveAreaSize = this.viewPort.getCnfSaveAreaSize()
 		this.barEntity = new BarEntity(this.viewPort, {
 			barFrameTexture: barFrameAsset.texture,
 			btnBgTexture: btnBgAsset.texture,

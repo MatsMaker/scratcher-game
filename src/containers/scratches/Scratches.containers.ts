@@ -57,7 +57,7 @@ class ScratchesContainer extends ABaseContainer {
 		const bgRevealAsset = this.assetsLoader.getResource('img/magic_forest_frame')
 		this.scratchEntity = new ScratchEntity(this.viewPort, {
 			id: 0,
-			// app: this.app,
+			renderer: this.app.renderer,
 			name: 'BigScratch',
 			scratchTexture: scratchAsset.texture,
 			textureToReveal: bgRevealAsset.texture,

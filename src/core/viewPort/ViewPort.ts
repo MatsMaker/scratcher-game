@@ -61,11 +61,19 @@ class ViewPort {
 		return viewPort.saveRatio;
 	}
 
-	public getSaveAreaSize = (): AreaSizeType => {
+	public getCnfSaveAreaSize = (): AreaSizeType => {
 		const { viewPort } = this.store.getState();
 		return {
 			width: viewPort.cnfgSaveWidth,
 			height: viewPort.cnfgSaveHeight,
+		}
+	}
+
+	public getSaveAreaSize = (): AreaSizeType => {
+		const { viewPort } = this.store.getState()
+		return {
+			width: viewPort.cnfgSaveWidth * viewPort.saveRatio,
+			height: viewPort.cnfgSaveHeight * viewPort.saveRatio,
 		}
 	}
 
@@ -74,6 +82,14 @@ class ViewPort {
 		return [
 			viewPort.saveStartX + ((x + offset[0]) * viewPort.saveRatio),
 			viewPort.saveStartY + ((y + offset[1]) * viewPort.saveRatio)
+		]
+	}
+
+	public globalPointToSaveArea = ([x, y]: Array<number>, offset: Array<number> = [0, 0]): Array<number> => {
+		const { saveStartX, saveStartY, saveRatio } = this.store.getState().viewPort;
+		return [
+			(x - saveStartX) / saveRatio - offset[0],
+			(y - saveStartY) / saveRatio - offset[1],
 		]
 	}
 
@@ -89,7 +105,7 @@ class ViewPort {
 
 	protected init = (): void => {
 		this.initListeners();
-		const saveAreaSize = this.config.getSaveAreaSize();
+		const saveAreaSize = this.config.getCnfSaveAreaSize();
 		this.store.dispatch(setAreaSizeAction(saveAreaSize));
 		this.store.dispatch(viewPortResizeAction());
 		this.resize();

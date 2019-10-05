@@ -20,7 +20,7 @@ class Config {
 		return Number(this.settings.specialCard)
 	}
 
-	public getSaveAreaSize = (): AreaSizeType => {
+	public getCnfSaveAreaSize = (): AreaSizeType => {
 		const { width, height } = this.settings.saveArea
 		return {
 			width: Number(width),
