@@ -39,7 +39,7 @@ export class ScratchEntity {
 	constructor(viewPort: ViewPort, settings: ScratchEntityOptions) {
 		this.viewPort = viewPort
 		this.settings = settings
-		this.fingerSize = settings.fingerSize || 75
+		this.fingerSize = settings.fingerSize || 80
 		this.init()
 	}
 
