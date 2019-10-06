@@ -2,6 +2,7 @@ import ViewPort from "../core/viewPort/ViewPort"
 import { Sprite, Texture, Container, Text, TextStyle } from 'pixi.js'
 import { btnLabelStyle, btnOrangeStyle } from "./fontStyles"
 import { SpriteEntity } from "./Sprite.entity"
+import { TweenMax } from 'gsap'
 
 export enum barEventType {
 	onPlay = 'onPlay',
@@ -11,8 +12,12 @@ export interface BarEntityOptions {
 	barFrameTexture: Texture
 	btnBgTexture: Texture
 	onClick?: Function
+	onShow: Function
+	onHidden: Function
 	name?: string
 	position?: Array<number>
+	hidePosition: Array<number>
+	speedAnimation: number
 }
 
 export class BarEntity {
@@ -27,6 +32,8 @@ export class BarEntity {
 	protected btnPlayLabelPosition: Array<number> = [350, 285]
 	protected linkRulesText: Text
 	protected linkRulesLabelPosition: Array<number> = [430, 115]
+	protected speedAnimation: number
+	protected animation: TweenMax
 
 	constructor(viewPort: ViewPort, settings: BarEntityOptions) {
 		this.settings = settings
@@ -34,18 +41,27 @@ export class BarEntity {
 		this.init()
 	}
 
+	public show(): void {
+		this.animation.play()
+	}
+
+	public hide(): void {
+		this.animation.reverse()
+	}
+
 	public reRender = (): void => {
+		const { position } = this.settings
 		const nextRatio = this.viewPort.getRatioOfSaveArea()
 		this.frameSprite.reRender()
 
-		this.btnBgPlaySprite.position.set(...this.viewPort.convertPointToSaveArea(this.settings.position , this.btnPlayPosition))
+		this.btnBgPlaySprite.position.set(...this.viewPort.convertPointToSaveArea(position, this.btnPlayPosition))
 		this.btnBgPlaySprite.scale.set(nextRatio)
 
 		this.btnPlayText.style.fontSize = Number(btnLabelStyle.fontSize) * nextRatio
-		this.btnPlayText.position.set(...this.viewPort.convertPointToSaveArea(this.settings.position, this.btnPlayLabelPosition))
+		this.btnPlayText.position.set(...this.viewPort.convertPointToSaveArea(position, this.btnPlayLabelPosition))
 
 		this.linkRulesText.style.fontSize = Number(btnLabelStyle.fontSize) * nextRatio
-		this.linkRulesText.position.set(...this.viewPort.convertPointToSaveArea(this.settings.position, this.linkRulesLabelPosition))
+		this.linkRulesText.position.set(...this.viewPort.convertPointToSaveArea(position, this.linkRulesLabelPosition))
 	}
 
 	public onClick = (eventType: string, payload?: any): void => {
@@ -66,7 +82,7 @@ export class BarEntity {
 		this.linkRulesText.on('pointerdown', (e: any) => {
 			this.onClick(barEventType.howToPlay, e)
 		})
-	} 
+	}
 
 	protected renderContent = (): void => {
 		this.frameSprite = new SpriteEntity(this.viewPort, {
@@ -89,6 +105,15 @@ export class BarEntity {
 		this.container.addChild(this.linkRulesText)
 		this.container.addChild(this.btnBgPlaySprite)
 		this.container.addChild(this.btnPlayText)
+
+		const { hidePosition, speedAnimation } = this.settings
+		this.container.position.set(...hidePosition)
+		this.animation = new TweenMax(this.container, speedAnimation, {
+			y: 0,
+			onComplete: this.settings.onShow,
+			onReverseComplete: this.settings.onHidden,
+		})
+
 
 		this.initListeners()
 	}

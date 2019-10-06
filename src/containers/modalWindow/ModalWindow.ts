@@ -7,19 +7,20 @@ import Config from '../../core/config/Config';
 import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import { SpriteEntity } from '../../entities/Sprite.entity';
 import { rulesAction } from '../../game/actions';
-import { hiddenModalWindowAction } from './actions';
+import { hiddenModalWindowEndAction, hiddenModalWindowStartAction } from './actions';
 import { onEvent } from '../../utils/store.subscribe';
-import { SHOW_MODAL_WINDOW, MODAL_WINDOW_HIDDEN } from './types';
+import { SHOW_MODAL_WINDOW, MODAL_WINDOW_HIDDEN_START } from './types';
 import { BarEntity, barEventType } from '../../entities/Bar.entity';
 import { WinModalEntity } from '../../entities/WinModal.entity';
+import { TIMING } from '../../core/config/types';
 
 @injectable()
 class ModalWindowContainer extends ABaseContainer {
 
 	protected name = 'MODAL_WINDOW'
+	protected position: Array<number> = [0, 0]
 	protected bgEntity: SpriteEntity
 	protected barEntity: BarEntity
-	protected position: Array<number> = [0, 0]
 	protected winModalEntity: WinModalEntity
 
 	constructor(
@@ -52,23 +53,40 @@ class ModalWindowContainer extends ABaseContainer {
 		const btnBgAsset = this.assetsLoader.getResource('img/magic_forest_button')
 		const saveAreaSize = this.viewPort.getCnfSaveAreaSize()
 		this.barEntity = new BarEntity(this.viewPort, {
+			speedAnimation: this.config.getWaitTime(TIMING.LOW_SEC),
 			barFrameTexture: barFrameAsset.texture,
 			btnBgTexture: btnBgAsset.texture,
 			position: [0, saveAreaSize.height - 520],
+			hidePosition: [0, saveAreaSize.height],
 			onClick: this.onBarClick,
+			onShow: this.onShow.bind(this),
+			onHidden: this.onHide.bind(this),
 		})
 		this.container.addChild(this.barEntity.container)
+	}
+
+	protected onShow(): void { // note now use one timing many  animation
+		this.container.visible = true
+	}
+
+	protected onHide(): void { // note now use one timing many animation
+		this.container.visible = false
+		this.store.dispatch(hiddenModalWindowEndAction())
 	}
 
 	protected renderWinModal(): void {
 		const bgFrameAsset = this.assetsLoader.getResource('img/magic_forest_frame1')
 		const coinAsset = this.assetsLoader.getResource('img/magic_forest_coin_icon_small')
-		const position = [45, 230]
+		const position = [15, 230]
 		this.winModalEntity = new WinModalEntity(this.viewPort, {
+			speedAnimation: this.config.getWaitTime(TIMING.LOW_SEC),
 			bgFrame: bgFrameAsset.texture,
 			position,
+			hidePosition: [position[0], -500],
 			labelCorrect: [500, 100],
-			coinTexture: coinAsset.texture
+			coinTexture: coinAsset.texture,
+			onShow: this.onShow.bind(this),
+			onHidden: this.onHide.bind(this),
 		})
 		this.container.addChild(this.winModalEntity.container)
 	}
@@ -77,7 +95,7 @@ class ModalWindowContainer extends ABaseContainer {
 		switch (eventType) {
 			case barEventType.onPlay:
 				this.hideModalWindow()
-				this.store.dispatch(hiddenModalWindowAction())
+				this.store.dispatch(hiddenModalWindowStartAction())
 				break
 			case barEventType.howToPlay:
 				this.store.dispatch(rulesAction())
@@ -111,25 +129,30 @@ class ModalWindowContainer extends ABaseContainer {
 		subscribe(onEvent(SHOW_MODAL_WINDOW, () => {
 			this.showModalWindow()
 		}))
-		subscribe(onEvent(MODAL_WINDOW_HIDDEN, () => {
+		subscribe(onEvent(MODAL_WINDOW_HIDDEN_START, () => {
 			this.hideModalWindow()
 		}))
 	}
 
 	protected showModalWindow(): void {
-		const { gameReducer } = this.store.getState()
-		const haveRoundWin = gameReducer.roundWin.coin > 0 || gameReducer.roundWin.cash > 0
-		this.winModalEntity.setWinValue(gameReducer.roundWin)
-		this.winModalEntity.setVisible(haveRoundWin)
-
 		this.viewPort.addTickOnce(() => {
 			this.container.visible = true
+
+			const { gameReducer } = this.store.getState()
+			const haveRoundWin = gameReducer.roundWin.coin > 0 || gameReducer.roundWin.cash > 0
+			if (haveRoundWin) {
+				this.winModalEntity.setWinValue(gameReducer.roundWin)
+				this.winModalEntity.show()
+			}
+
+			this.barEntity.show()
 		}, this)
 	}
 
 	protected hideModalWindow(): void {
 		this.viewPort.addTickOnce(() => {
-			this.container.visible = false
+			this.barEntity.hide()
+			this.winModalEntity.hide()
 		}, this)
 	}
 

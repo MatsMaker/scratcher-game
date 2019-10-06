@@ -2,7 +2,7 @@ import {
 	ActionTypes,
 	SHOW_MODAL_WINDOW,
 	ModalWindowState,
-	MODAL_WINDOW_HIDDEN
+	MODAL_WINDOW_HIDDEN_END
 } from './types'
 
 const initialState: ModalWindowState = {
@@ -21,7 +21,7 @@ export function modalWindowReducer(
 				barIsShowing: true,
 			}
 		}
-		case MODAL_WINDOW_HIDDEN: {
+		case MODAL_WINDOW_HIDDEN_END: {
 			return {
 				...state,
 				barIsShowing: false,

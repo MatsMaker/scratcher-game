@@ -5,13 +5,18 @@ import { SpriteEntity } from "./Sprite.entity"
 import { redWinStyle, resultWinStyle } from "./fontStyles"
 import { TextEntity } from "./Text.entity"
 import { movePoint } from "../utils/math"
+import { TweenMax } from "gsap"
 
 export interface WinModalEntityOptions {
 	bgFrame: Texture
 	name?: string
 	position?: Array<number>
+	hidePosition: Array<number>
 	labelCorrect: Array<number>
 	coinTexture: Texture
+	onShow: Function
+	onHidden: Function
+	speedAnimation: number
 }
 
 export class WinModalEntity {
@@ -24,6 +29,7 @@ export class WinModalEntity {
 	protected messageEntity: TextEntity
 	protected resultCoinsEntity: TextEntity
 	protected coinIco: SpriteEntity
+	protected animation: TweenMax
 
 	constructor(viewPort: ViewPort, settings: WinModalEntityOptions) {
 		this.settings = settings
@@ -43,8 +49,12 @@ export class WinModalEntity {
 		this.coinIco.reRender()
 	}
 
-	public setVisible(value: boolean) {
-		this.container.visible = value
+	public show(): void {
+		this.animation.play()
+	}
+
+	public hide(): void {
+		this.animation.reverse()
 	}
 
 	protected init(): void {
@@ -57,7 +67,7 @@ export class WinModalEntity {
 		})
 		this.container.addChild(this.bgFrame.sprite)
 
-		const { position, labelCorrect } = this.settings
+		const { position, labelCorrect, speedAnimation, hidePosition } = this.settings
 		const messagePosition = movePoint(position, labelCorrect)
 		this.messageEntity = new TextEntity(this.viewPort, {
 			name: 'message',
@@ -85,6 +95,13 @@ export class WinModalEntity {
 		})
 		this.coinIco.sprite.anchor.set(0.5, 0.5)
 		this.container.addChild(this.coinIco.sprite)
+
+		this.container.position.set(...hidePosition)
+		this.animation = new TweenMax(this.container, speedAnimation, {
+			y: 0,
+			onComplete: this.settings.onShow,
+			onReverseComplete: this.settings.onHidden,
+		})
 	}
 
 }

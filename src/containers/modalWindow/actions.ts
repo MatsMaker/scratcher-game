@@ -1,4 +1,4 @@
-import { RENDER, RE_RENDER, ActionTypes, SHOW_MODAL_WINDOW, MODAL_WINDOW_HIDDEN } from './types'
+import { RENDER, RE_RENDER, ActionTypes, SHOW_MODAL_WINDOW, MODAL_WINDOW_HIDDEN_START, MODAL_WINDOW_HIDDEN_END } from './types'
 
 export function renderAction(): ActionTypes {
 	return {
@@ -18,8 +18,14 @@ export function showModalWindowAction(): ActionTypes {
 	}
 }
 
-export function hiddenModalWindowAction(): ActionTypes {
+export function hiddenModalWindowStartAction(): ActionTypes {
 	return {
-		type: MODAL_WINDOW_HIDDEN
+		type: MODAL_WINDOW_HIDDEN_START
+	}
+} 
+
+export function hiddenModalWindowEndAction(): ActionTypes {
+	return {
+		type: MODAL_WINDOW_HIDDEN_END
 	}
 } 

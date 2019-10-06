@@ -13,7 +13,8 @@ export interface WinAmountType {
 }
 
 export enum TIMING {
-	MEDIUM = 'medium'
+	MEDIUM = 'medium',
+	LOW_SEC = 'lowSec',
 }
 export interface WaitTime {
 	[key: string]: number

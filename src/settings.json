@@ -132,6 +132,7 @@
 		]
 	],
 	"waitTime": {
+		"lowSec": 1, 
 		"medium": 3000 
 	}
 }
