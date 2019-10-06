@@ -9,12 +9,14 @@ interface ScratchEntityOptions {
 	name: string
 	scratchTexture: Texture
 	textureToReveal?: Texture
-	bgTexture?: Texture
+	bgTexture: Texture
+	bgCorrect?: Array<number>
 	position: Array<number>
 	contentCorrection: Array<number> // TODO just to set align buy center 
 	onOpening: Function
 	onMouseover: Function
 	renderer?: Renderer
+	fingerSize?: number
 }
 
 export class ScratchEntity {
@@ -30,12 +32,14 @@ export class ScratchEntity {
 	protected isEmpty: boolean = true
 	protected bgSpriteEntity?: SpriteEntity
 	protected fingerMask: Graphics
-	protected fingerActiveArea: Sprite
+	protected invertFingerMask: Graphics
 	protected isClose: boolean
+	protected fingerSize: number
 
 	constructor(viewPort: ViewPort, settings: ScratchEntityOptions) {
 		this.viewPort = viewPort
 		this.settings = settings
+		this.fingerSize = settings.fingerSize || 60
 		this.init()
 	}
 
@@ -44,7 +48,6 @@ export class ScratchEntity {
 	}
 
 	public toOpen = (): void => {
-		this.scratchEntity.sprite.visible = false
 		this.imageToReveal.visible = !this.isEmpty
 		this.isClose = false
 	}
@@ -52,7 +55,7 @@ export class ScratchEntity {
 	public reset(): void {
 		this.dragging = false
 		this.scratchEntity.sprite.visible = true
-		this.fingerMask = new Graphics()
+		this.fingerMask.clear()
 		this.isClose = true
 	}
 
@@ -81,17 +84,12 @@ export class ScratchEntity {
 		this.fingerMask.scale.set(nextRatio)
 		this.fingerMask.position.set(...this.viewPort.convertPointToSaveArea(position))
 
-		this.fingerActiveArea.scale.set(nextRatio)
-		this.fingerActiveArea.position.set(...this.viewPort.convertPointToSaveArea(position))
-
-		if (this.settings.bgTexture) {
-			this.bgSpriteEntity.reRender()
-		}
+		this.bgSpriteEntity.reRender()
 	}
 
 	public setInteractive(value: boolean): void {
-		this.fingerActiveArea.interactive = value
-		this.fingerActiveArea.buttonMode = value
+		this.scratchEntity.sprite.interactive = value
+		this.scratchEntity.sprite.buttonMode = value
 	}
 
 	protected init = (): void => {
@@ -99,26 +97,27 @@ export class ScratchEntity {
 		this.container = new Container()
 		this.container.name = this.settings.name || 'Scratch'
 
-		if (this.settings.bgTexture) {
-			this.bgSpriteEntity = new SpriteEntity(this.viewPort, {
-				name: 'bgTexture',
-				texture: this.settings.bgTexture,
-				position: this.settings.position,
-			})
-			this.container.addChild(this.bgSpriteEntity.sprite)
-		}
-
 		this.renderContent()
 	}
 
 	protected renderContent = (): void => {
 		const { position, scratchTexture } = this.settings
+
 		this.scratchEntity = new SpriteEntity(this.viewPort, {
 			texture: scratchTexture,
 			name: 'scratchEntity',
 			position,
 		})
 		this.container.addChild(this.scratchEntity.sprite)
+
+		this.bgSpriteEntity = new SpriteEntity(this.viewPort, {
+			name: 'bgTexture',
+			texture: this.settings.bgTexture,
+			width: this.settings.scratchTexture.width,
+			height: this.settings.scratchTexture.height,
+			position: movePoint(this.settings.position, this.settings.bgCorrect || [0, 0]),
+		})
+		this.container.addChild(this.bgSpriteEntity.sprite)
 
 		this.imageToReveal = new Sprite(this.settings.textureToReveal)
 		this.imageToReveal.name = 'imageToReveal'
@@ -127,21 +126,20 @@ export class ScratchEntity {
 
 		this.fingerMask = new Graphics()
 		this.container.addChild(this.fingerMask)
-		this.imageToReveal.mask = this.fingerMask
 		this.isClose = true
 
-		this.fingerActiveArea = new Sprite(this.getNewFingerActiveTexture())
-		this.container.addChild(this.fingerActiveArea)
+		this.bgSpriteEntity.sprite.mask = this.fingerMask
+		this.imageToReveal.mask = this.fingerMask
 
 		this.initListeners()
 	}
 
 	protected initListeners = (): void => {
-		const { fingerActiveArea } = this
-		fingerActiveArea.on('pointerdown', this.onPointerDown)
-		fingerActiveArea.on('pointerup', this.onPointerUp)
-		fingerActiveArea.on('pointermove', this.onPointerMove)
-		fingerActiveArea.on('mouseover', this.settings.onMouseover)
+		const { sprite } = this.scratchEntity
+		sprite.on('pointerdown', this.onPointerDown)
+		sprite.on('pointerup', this.onPointerUp)
+		sprite.on('pointermove', this.onPointerMove)
+		sprite.on('mouseover', this.settings.onMouseover)
 	}
 
 	protected getNewFingerActiveTexture(): Texture {
@@ -170,12 +168,18 @@ export class ScratchEntity {
 			const { global } = event.data
 			const scratchPoint = this.viewPort.globalPointToSaveArea([global.x, global.y], position)
 
-			this.fingerMask.beginFill(0xFFFFFF, 1)
-			this.fingerMask.drawCircle(scratchPoint[0], scratchPoint[1], 25)
+			this.fingerMask.beginFill(0x000000)
+			this.fingerMask.drawCircle(scratchPoint[0], scratchPoint[1], this.fingerSize)
 			this.fingerMask.lineStyle(0)
 			this.fingerMask.endFill()
 
-			this.onOpening()
+			// console.log(this.fingerMask.geometry['dirty'])
+			console.log(this.fingerMask.geometry)
+
+			if (this.isClose) {
+				this.onOpening()
+			}
+
 		}
 	}
 

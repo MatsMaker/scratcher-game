@@ -5,6 +5,8 @@ export interface ImageOptions {
 	texture: Texture
 	position?: Array<number>
 	name?: string
+	width?: number
+	height?: number
 }
 
 export class SpriteEntity {
@@ -14,18 +16,29 @@ export class SpriteEntity {
 	protected viewPort: ViewPort
 	protected position: Array<number>
 	protected name: string
+	protected width: number
+	protected height: number
 
 	constructor(viewPort: ViewPort, options: ImageOptions) {
 		this.name = options.name || SpriteEntity.name
 		this.texture = options.texture
-		this.position = options.position || [0.0]
+		this.position = options.position || [0, 0, 0]
 		this.viewPort = viewPort
+		this.width = options.width
+		this.height = options.height
 		this.init()
 	}
 
 	public reRender = (): void => {
 		this.sprite.position.set(...this.viewPort.convertPointToSaveArea(this.position))
-		this.sprite.scale.set(this.viewPort.getRatioOfSaveArea())
+		const ration = this.viewPort.getRatioOfSaveArea()
+		if (this.width && this.height) {
+			this.sprite.width = this.width * ration
+			this.sprite.height = this.height * ration
+		} else {
+			this.sprite.scale.set(ration)
+		}
+
 	}
 
 	protected init = (): void => {

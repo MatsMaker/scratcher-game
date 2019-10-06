@@ -6,7 +6,6 @@ import { StoreType } from '../../store';
 import Config from '../../core/config/Config';
 import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import ViewPort from '../../core/viewPort/ViewPort';
-import { SpriteEntity } from '../../entities/Sprite.entity';
 import { ScratchEntity } from '../../entities/Scratch.entity';
 import { movePoint } from '../../utils/math';
 import { openScratcherAction, scratchesRestoredAction, onMouseoverScratcherAction } from './actions';
@@ -14,6 +13,7 @@ import ScratchGroupEntity from '../../entities/ScratchGroup.entity';
 import { RESET_SCRATCHES, ImageSize, SET_INTERACTION } from './types';
 import { onClearEvent } from '../../utils/store.subscribe';
 import { GET_BONUS, BonusType } from '../../game/types';
+import { SpriteEntity } from '../../entities/Sprite.entity';
 
 
 @injectable()
@@ -45,23 +45,26 @@ class ScratchesContainer extends ABaseContainer {
 	protected renderContent = (): void => {
 		const { position } = this;
 
-		const bgAsset = this.assetsLoader.getResource('img/magic_forest_winner_frame');
+		const bgAsset = this.assetsLoader.getResource('img/magic_forest_winner_frame')
+		const framePosition = [528, 140]
 		this.frameSprite = new SpriteEntity(this.viewPort, {
 			texture: bgAsset.texture,
 			name: 'ForestWinnerFrame',
-			position: [528, 140],
+			position: framePosition,
 		});
-		this.container.addChild(this.frameSprite.sprite);
+		this.container.addChild(this.frameSprite.sprite)
 
 		const scratchAsset = this.assetsLoader.getResource('img/magic_forest_scratch_frame_big')
 		const bgRevealAsset = this.assetsLoader.getResource('img/magic_forest_frame')
+		const scratchPosition = [615, 368]
 		this.scratchEntity = new ScratchEntity(this.viewPort, {
 			id: 0,
 			renderer: this.app.renderer,
 			name: 'BigScratch',
 			scratchTexture: scratchAsset.texture,
 			textureToReveal: bgRevealAsset.texture,
-			position: movePoint(position, [615, 368]),
+			bgTexture: bgRevealAsset.texture,
+			position: movePoint(position, scratchPosition),
 			contentCorrection: [180, 190, 2.3],
 			onOpening: this.onOpenScratcher,
 			onMouseover: this.onMouseoverScratcher,
@@ -71,7 +74,6 @@ class ScratchesContainer extends ABaseContainer {
 		const scratchSmallAsset = this.assetsLoader.getResource('img/magic_forest_scratch_frame')
 		this.scratchGroupEntity = new ScratchGroupEntity(this.viewPort, {
 			startId: 1,
-			// app: this.app,
 			name: 'SmallScratchesGroup',
 			scratchTexture: scratchSmallAsset.texture,
 			textureToReveal: bgRevealAsset.texture,
@@ -89,7 +91,6 @@ class ScratchesContainer extends ABaseContainer {
 	protected initListeners = (): void => {
 		const { subscribe } = this.store
 		super.initListeners()
-		// subscribe(onClearEvent(OPEN_SCRATCH, this.onOpenedScratch.bind(this)))
 		subscribe(onClearEvent(GET_BONUS, this.onOpenedScratch.bind(this)))
 		subscribe(onClearEvent(RESET_SCRATCHES, this.resetAll.bind(this)))
 		subscribe(onClearEvent(SET_INTERACTION, this.setInteraction.bind(this)))
