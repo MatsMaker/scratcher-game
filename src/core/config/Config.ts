@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import * as _ from 'lodash'
-import { GSettings, AreaSizeType, WinAmountType } from './types';
+import { GSettings, AreaSizeType, WinAmountType, TIMING } from './types';
 import { BonusType, WinType } from '../../game/types';
 
 @injectable()
@@ -43,6 +43,10 @@ class Config {
 
 	public getBonusImages(bonus: number): Array<string> {
 		return this.settings.bonusImages[bonus]
+	}
+
+	public getWaitTime(time: TIMING): number {
+		return this.settings.waitTime[time]
 	}
 
 }

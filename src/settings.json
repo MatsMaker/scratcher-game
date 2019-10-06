@@ -130,5 +130,8 @@
 			"",
 			"img/magic_forest_dollar_icon"
 		]
-	]
+	],
+	"waitTime": {
+		"medium": 3000 
+	}
 }

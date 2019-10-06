@@ -12,6 +12,13 @@ export interface WinAmountType {
 	win: WinType
 }
 
+export enum TIMING {
+	MEDIUM = 'medium'
+}
+export interface WaitTime {
+	[key: string]: number
+}
+
 export interface GSettings {
 	assetsPath: string
 	assetsList: Array<string>
@@ -23,5 +30,6 @@ export interface GSettings {
 	specialCard: number,
 	bonusImages: Array<Array<string>>
 	winAmounts: Array<WinAmountType>
+	waitTime: WaitTime
 	[key: string]: any
 }

@@ -39,7 +39,7 @@ export class ScratchEntity {
 	constructor(viewPort: ViewPort, settings: ScratchEntityOptions) {
 		this.viewPort = viewPort
 		this.settings = settings
-		this.fingerSize = settings.fingerSize || 60
+		this.fingerSize = settings.fingerSize || 75
 		this.init()
 	}
 
@@ -119,7 +119,7 @@ export class ScratchEntity {
 		})
 		this.container.addChild(this.bgSpriteEntity.sprite)
 
-		this.imageToReveal = new Sprite(this.settings.textureToReveal)
+		this.imageToReveal = new Sprite(this.settings.textureToReveal || this.settings.scratchTexture)
 		this.imageToReveal.name = 'imageToReveal'
 		this.imageToReveal.anchor.set(0.5, 0.5)
 		this.container.addChild(this.imageToReveal)
@@ -174,9 +174,9 @@ export class ScratchEntity {
 			this.fingerMask.endFill()
 
 			// console.log(this.fingerMask.geometry['dirty'])
-			console.log(this.fingerMask.geometry)
+			// console.log(this.fingerMask.geometry)
 
-			if (this.isClose) {
+			if (this.isClose) {// TODO this check is trial
 				this.onOpening()
 			}
 

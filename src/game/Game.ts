@@ -16,6 +16,7 @@ import { showModalWindowAction } from '../containers/modalWindow/actions';
 import { MODAL_WINDOW_HIDDEN } from '../containers/modalWindow/types';
 import { END_ROUND, GET_BONUS, BonusType, GET_WIN } from './types'
 import { resetScratchesAction, setInteractionScratchesAction } from '../containers/scratches/actions';
+import { TIMING } from '../core/config/types';
 
 @injectable()
 class Game {
@@ -119,7 +120,9 @@ class Game {
 		const { dispatch } = this.store
 		if (scratchesReducer.allIsOpen) {
 			this.viewPort.addTickOnce(() => {
-				dispatch(endRound())
+				_.delay(() => {
+					dispatch(endRound())
+				}, this.config.getWaitTime(TIMING.MEDIUM))
 			})
 		}
 	}
