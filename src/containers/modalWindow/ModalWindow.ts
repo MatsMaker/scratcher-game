@@ -86,8 +86,10 @@ class ModalWindowContainer extends ABaseContainer {
 	}
 
 	protected renderWinModal(): void {
-		const bgFrameAsset = this.assetsLoader.getResource('img/magic_forest_frame1')
-		const coinAsset = this.assetsLoader.getResource('img/magic_forest_coin_icon_small')
+		const {getResource} = this.assetsLoader
+		const bgFrameAsset = getResource('img/magic_forest_frame1')
+		const coinAsset = getResource('img/magic_forest_coin_icon_small')
+		const cashAsset = getResource('img/magic_forest_dollar_icon')
 		const position = [15, 230]
 		this.winModalEntity = new WinModalEntity(this.viewPort, {
 			speedAnimation: this.config.getWaitTime(TIMING.LOW_SEC),
@@ -96,6 +98,7 @@ class ModalWindowContainer extends ABaseContainer {
 			hidePosition: [position[0], -500],
 			labelCorrect: [500, 100],
 			coinTexture: coinAsset.texture,
+			cashTexture: cashAsset.texture,
 			onShow: this.onShow.bind(this),
 			onHidden: this.onHide.bind(this),
 		})

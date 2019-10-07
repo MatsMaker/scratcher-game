@@ -14,6 +14,7 @@ export interface WinModalEntityOptions {
 	hidePosition: Array<number>
 	labelCorrect: Array<number>
 	coinTexture: Texture
+	cashTexture: Texture
 	onShow: Function
 	onHidden: Function
 	speedAnimation: number
@@ -28,7 +29,9 @@ export class WinModalEntity {
 	protected bgFrame: SpriteEntity
 	protected messageEntity: TextEntity
 	protected resultCoinsEntity: TextEntity
+	protected resultCacheEntity: TextEntity
 	protected coinIco: SpriteEntity
+	protected cashIco: SpriteEntity
 	protected animation: TweenMax
 
 	constructor(viewPort: ViewPort, settings: WinModalEntityOptions) {
@@ -40,6 +43,7 @@ export class WinModalEntity {
 	public setWinValue(win: WinType): void {
 		this.win = win
 		this.resultCoinsEntity.setText(String(this.win.coin))
+		this.resultCacheEntity.setText(String(this.win.cash))
 	}
 
 	public reRender = (): void => {
@@ -47,6 +51,8 @@ export class WinModalEntity {
 		this.messageEntity.reRender()
 		this.resultCoinsEntity.reRender()
 		this.coinIco.reRender()
+		this.resultCacheEntity.reRender()
+		this.cashIco.reRender()
 	}
 
 	public show(): void {
@@ -78,23 +84,39 @@ export class WinModalEntity {
 		this.messageEntity.text.anchor.set(0.5, 0.5)
 		this.container.addChild(this.messageEntity.text)
 
-		const resultPosition = movePoint(messagePosition, [0, 120])
+		const resultCoinsPosition = movePoint(messagePosition, [-150, 120])
 		this.resultCoinsEntity = new TextEntity(this.viewPort, {
-			name: 'roundResult',
-			position: resultPosition,
+			name: 'roundCoinsResult',
+			position: resultCoinsPosition,
 			text: '',
 			style: resultWinStyle
 		})
 		this.resultCoinsEntity.text.anchor.set(0.5, 0.5)
 		this.container.addChild(this.resultCoinsEntity.text)
-
 		this.coinIco = new SpriteEntity(this.viewPort, {
 			name: 'coinIco',
 			texture: this.settings.coinTexture,
-			position: movePoint(resultPosition, [130, 0])
+			position: movePoint(resultCoinsPosition, [130, 0])
 		})
 		this.coinIco.sprite.anchor.set(0.5, 0.5)
 		this.container.addChild(this.coinIco.sprite)
+
+		const resultCachePosition = movePoint(messagePosition, [150, 120])
+		this.resultCacheEntity = new TextEntity(this.viewPort, {
+			name: 'roundCacheResult',
+			position: resultCachePosition,
+			text: '',
+			style: resultWinStyle
+		})
+		this.resultCacheEntity.text.anchor.set(0.5, 0.5)
+		this.container.addChild(this.resultCacheEntity.text)
+		this.cashIco = new SpriteEntity(this.viewPort, {
+			name: 'coinIco',
+			texture: this.settings.cashTexture,
+			position: movePoint(resultCachePosition, [130, 0])
+		})
+		this.cashIco.sprite.anchor.set(0.5, 0.5)
+		this.container.addChild(this.cashIco.sprite)
 
 		this.container.position.set(...hidePosition)
 		this.animation = new TweenMax(this.container, speedAnimation, {
