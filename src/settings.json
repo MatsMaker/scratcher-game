@@ -1,10 +1,138 @@
 {
-	"assetsImgPath": "/assets/img",
-	"assetsImages": [
-		"magic_forest_bg.jpg",
-		"magic_forest_bonfire.png",
-		"magic_forest_bow.png",
-		"magic_forest_button.png"
+	"assetsPath": "/assets",
+	"assetsList": [
+		"img/magic_forest_bg.jpg",
+		"img/magic_forest_win_up_to_100.png",
+		"img/magic_forest_winner_frame.png",
+		"img/magic_forest_scratch_frame_big.png",
+		"img/magic_forest_frame_for_text.png",
+		"img/magic_forest_shadow_40_percent.png",
+		"img/magic_forest_frame3.png",
+		"img/magic_forest_button.png",
+		"img/magic_forest_frame.png",
+		"img/magic_forest_frame1.png",
+		"img/magic_forest_scratch_frame.png",
+		"img/magic_forest_bonfire.png",
+		"img/magic_forest_bonfire_small.png",
+		"img/magic_forest_bow.png",
+		"img/magic_forest_bow_small.png",
+		"img/magic_forest_tent.png",
+		"img/magic_forest_tent_small.png",
+		"img/magic_forest_coin_icon_big.png",
+		"img/magic_forest_coin_icon_small.png",
+		"img/magic_forest_dollar_icon.png",
+		"img/magic_forest_leaf.png",
+		"img/magic_forest_leaf_small.png",
+		"img/magic_forest_rope.png",
+		"img/magic_forest_rope_small.png",
+		"spine/char_spine_v5/Red.json"
 	],
-	"size": "origin"
+	"fonts": {
+		"custom": {
+			"families": [
+				"DRAguSans"
+			],
+			"urls": [
+				"/assets/font/DRAguSans-Black.ttf"
+			]
+		}
+	},
+	"size": "origin",
+	"saveArea": {
+		"width": 1098,
+		"height": 1920
+	},
+	"specialCard": 0,
+	"winAmounts": [
+		{
+			"bonusId": 0,
+			"win": {
+				"coin": 25,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 1,
+			"win": {
+				"coin": 30,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 2,
+			"win": {
+				"coin": 35,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 3,
+			"win": {
+				"coin": 50,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 4,
+			"win": {
+				"coin": 100,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 5,
+			"win": {
+				"coin": 25,
+				"cash": 0
+			}
+		},
+		{
+			"bonusId": 6,
+			"win": {
+				"coin": 0,
+				"cash": 1
+			}
+		},
+		{
+			"bonusId": 7,
+			"win": {
+				"coin": 0,
+				"cash": 0
+			}
+		}
+	],
+	"bonusImages": [
+		[
+			"img/magic_forest_bonfire_small",
+			"img/magic_forest_bonfire"
+		],
+		[
+			"img/magic_forest_bow_small",
+			"img/magic_forest_bow"
+		],
+		[
+			"img/magic_forest_leaf_small",
+			"img/magic_forest_leaf"
+		],
+		[
+			"img/magic_forest_rope_small",
+			"img/magic_forest_rope"
+		],
+		[
+			"img/magic_forest_tent_small",
+			"img/magic_forest_tent"
+		],
+		[
+			"img/magic_forest_coin_icon_small",
+			"img/magic_forest_coin_icon_big"
+		],
+		[
+			"",
+			"img/magic_forest_dollar_icon"
+		]
+	],
+	"waitTime": {
+		"lowSec": 1, 
+		"medium": 2000 
+	}
 }

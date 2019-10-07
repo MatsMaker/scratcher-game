@@ -1,55 +1,79 @@
-import { Application, Container, Sprite } from 'pixi.js';
+import { Container, Sprite } from 'pixi.js';
 import { injectable, inject } from 'inversify';
-import TYPES from '../../types';
-import Config from '../../core/Config';
-import AssetsLoader from '../../core/AssetsLoader';
+import TYPES from '../../types/MainConfig';
+import Config from '../../core/config/Config';
+import AssetsLoader from '../../core/assetsLoader/AssetsLoader';
 import { StoreType } from 'store';
 import { onEvent } from '../../utils/store.subscribe';
-import { RENDER_BACKGROUND } from './types';
+import { RENDER_BACKGROUND, RE_RENDER_BACKGROUND } from './types';
+import ViewPort from '../../core/viewPort/ViewPort';
 
 @injectable()
 class BackgroundContainer {
 
 	protected store: StoreType;
-	protected app: Application;
 	protected config: Config;
 	protected assetsLoader: AssetsLoader;
+	protected viewPort: ViewPort;
 	protected container: Container;
 	protected baseSprite: Sprite;
 
 	constructor(
 		@inject(TYPES.Store) store: StoreType,
 		@inject(TYPES.Config) config: Config,
-		@inject(TYPES.Application) app: Application,
 		@inject(TYPES.AssetsLoader) assetsLoader: AssetsLoader,
+		@inject(TYPES.ViewPort) viewPort: ViewPort
 	) {
 		this.store = store;
 		this.config = config;
-		this.app = app;
 		this.assetsLoader = assetsLoader;
+		this.viewPort = viewPort;
 		this.init();
 	}
 
-	protected init() {
-		this.initListeners();
+	get view(): Container {
+		return this.container;
+	}
 
+	protected init = (): void => {
+		this.initContainer();
+		this.initListeners();
+	}
+
+	protected initContainer = () => {
 		this.container = new Container();
+		this.container.visible = false;
 		this.container.name = 'background';
 	}
 
-	protected initListeners(): void {
-		this.store.subscribe(onEvent(RENDER_BACKGROUND, this.render))
+	protected initListeners = (): void => {
+		const { subscribe } = this.store
+		subscribe(onEvent(RENDER_BACKGROUND, this.render.bind(this)))
+		subscribe(onEvent(RE_RENDER_BACKGROUND, this.reRender.bind(this)))
 	}
 
-	protected renderContainer = () => {
-		const bgAsset = this.assetsLoader.getResource('magic_forest_bg.jpg');
+	protected renderContent = () => {
+		const bgAsset = this.assetsLoader.getResource('img/magic_forest_bg');
 		this.baseSprite = new Sprite(bgAsset.texture);
 		this.container.addChild(this.baseSprite);
+		this.reRender();
 	}
 
-	protected render = () => {
-		this.renderContainer();
-		this.app.stage.addChild(this.container);
+	protected render(): void {
+		this.viewPort.addTickOnce(() => {
+			this.renderContent();
+			this.container.visible = true;
+		})
+	}
+
+	protected reRender(): void {
+		this.viewPort.addTickOnce(() => {
+			const { viewPort } = this.store.getState();
+			this.baseSprite.position.set(
+				...this.viewPort.convertPointToSaveArea([0, 0]),
+			);
+			this.baseSprite.scale.set(viewPort.saveRatio)
+		})
 	}
 
 }

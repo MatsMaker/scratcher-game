@@ -1,17 +1,17 @@
 import {
-  GameState,
-  GameActionTypes,
+  AssetsState,
+  AssetsActionTypes,
   ASSETS_IS_LOADED
 } from './types'
 
-const initialState: GameState = {
+const initialState: AssetsState = {
   assetsIsLoaded: false,
 }
 
-export function gameReducer(
+export function assetsReducer(
   state = initialState,
-  action: GameActionTypes
-): GameState {
+  action: AssetsActionTypes
+): AssetsState {
 
   switch (action.type) {
     case ASSETS_IS_LOADED: {

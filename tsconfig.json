@@ -5,10 +5,10 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
-    "target": "es5",
+    "target": "es6",
     "types": [
       "reflect-metadata",
-      "node",
+      "node"
     ],
     "typeRoots": [
       "node_modules/@types"
