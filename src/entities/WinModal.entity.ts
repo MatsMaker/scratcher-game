@@ -101,6 +101,7 @@ export class WinModalEntity {
 			y: 0,
 			onComplete: this.settings.onShow,
 			onReverseComplete: this.settings.onHidden,
+			paused: true,
 		})
 	}
 

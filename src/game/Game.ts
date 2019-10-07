@@ -129,7 +129,7 @@ class Game {
 
 	protected generateBonusForWinner(): BonusType {
 		const dice = this.toDice()
-		if (dice > 80) {   // 20%
+		if (dice <= 20) {   // 20%
 			return BonusType.Cash
 		} else {           // 80%
 			return BonusType.Coin
@@ -138,23 +138,26 @@ class Game {
 
 	protected generateBonusForCard(): BonusType {
 		const dice = this.toDice() // TODO move this ratio to settings
-		if (dice > 98) {   // 2%
+		if (dice <= 2) {   // 2%
 			return BonusType.Tent
-		} if (dice > 96) { // 4%
-			return BonusType.Rope
-		} if (dice > 94) { // 6%
-			return BonusType.Leaf
-		} if (dice > 92) { // 8%
-			return BonusType.Bow
-		} if (dice > 90) { // 10% 
-			return BonusType.Bonfire
-		} else {           // 70%
-			return BonusType.Lose
 		}
+		if (dice <= 4) { // 4%
+			return BonusType.Rope
+		}
+		if (dice <= 6) { // 6%
+			return BonusType.Leaf
+		}
+		if (dice <= 8) { // 8%
+			return BonusType.Bow
+		}
+		if (dice <= 10) { // 10% 
+			return BonusType.Bonfire
+		}
+		return BonusType.Lose // 70%
 	}
 
 	protected toDice(): number {
-		return _.random(1, 100)
+		return _.random(1, 100) // note this random have infelicity
 	}
 
 }

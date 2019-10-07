@@ -13,6 +13,7 @@ import { SHOW_MODAL_WINDOW, MODAL_WINDOW_HIDDEN_START } from './types';
 import { BarEntity, barEventType } from '../../entities/Bar.entity';
 import { WinModalEntity } from '../../entities/WinModal.entity';
 import { TIMING } from '../../core/config/types';
+import { TweenMax, Circ } from 'gsap';
 
 @injectable()
 class ModalWindowContainer extends ABaseContainer {
@@ -20,6 +21,7 @@ class ModalWindowContainer extends ABaseContainer {
 	protected name = 'MODAL_WINDOW'
 	protected position: Array<number> = [0, 0]
 	protected bgEntity: SpriteEntity
+	protected bgAnimation: TweenMax
 	protected barEntity: BarEntity
 	protected winModalEntity: WinModalEntity
 
@@ -44,7 +46,16 @@ class ModalWindowContainer extends ABaseContainer {
 			texture: bgAsset.texture,
 			position,
 		});
-		this.container.addChild(this.bgEntity.sprite);
+		this.container.addChild(this.bgEntity.sprite)
+
+		this.bgEntity.sprite.alpha = 0
+		this.bgAnimation = new TweenMax(this.bgEntity.sprite, this.config.getWaitTime(TIMING.LOW_SEC), {
+			alpha: 1,
+			ease: Circ.easeIn,
+			// onComplete: this.onShow,
+			// onReverseComplete: this.onHidden,
+			paused: true,
+		})
 	}
 
 	protected renderBar = (): void => {
@@ -146,6 +157,7 @@ class ModalWindowContainer extends ABaseContainer {
 			}
 
 			this.barEntity.show()
+			this.bgAnimation.play()
 		}, this)
 	}
 
@@ -153,6 +165,7 @@ class ModalWindowContainer extends ABaseContainer {
 		this.viewPort.addTickOnce(() => {
 			this.barEntity.hide()
 			this.winModalEntity.hide()
+			this.bgAnimation.reverse()
 		}, this)
 	}
 

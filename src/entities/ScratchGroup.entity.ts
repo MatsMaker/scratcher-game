@@ -29,6 +29,12 @@ export default class ScratchGroupEntity {
 		this.init()
 	}
 
+	public toClearAll(): void {
+		_.forEach(this.scratchGroup, (s: ScratchEntity) => {
+			s.clearScratch()
+		})
+	}
+
 	public toOpen = (id: number): void => {
 		const entityIndex = this.scratchGroup.findIndex((s: ScratchEntity) => s.id === id)
 		this.scratchGroup[entityIndex].toOpen()

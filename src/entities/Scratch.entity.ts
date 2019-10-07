@@ -1,4 +1,4 @@
-import { Container, Texture, Graphics, Sprite, Renderer, interaction, RenderTexture } from 'pixi.js'
+import { Container, Texture, Graphics, Sprite, Renderer, interaction } from 'pixi.js'
 import * as _ from 'lodash'
 import ViewPort from "../core/viewPort/ViewPort"
 import { SpriteEntity } from './Sprite.entity'
@@ -46,6 +46,17 @@ export class ScratchEntity {
 	get id(): number {
 		return this.settings.id
 	}
+
+
+	public clearScratch(): void {
+		const rectangle = [this.scratchEntity.sprite.texture.width, this.scratchEntity.sprite.texture.height]
+		this.fingerMask.beginFill(0x000000)
+		this.fingerMask.drawRect(0, 0, rectangle[0], rectangle[1])
+		this.fingerMask.lineStyle(0)
+		this.fingerMask.endFill()
+		this.scratchEntity.sprite.visible = false
+	}
+
 
 	public toOpen = (): void => {
 		this.imageToReveal.visible = !this.isEmpty
@@ -140,12 +151,6 @@ export class ScratchEntity {
 		sprite.on('pointerup', this.onPointerUp)
 		sprite.on('pointermove', this.onPointerMove)
 		sprite.on('mouseover', this.settings.onMouseover)
-	}
-
-	protected getNewFingerActiveTexture(): Texture {
-		const rectangle = [this.scratchEntity.sprite.texture.width, this.scratchEntity.sprite.texture.height]
-		const activeTexture = RenderTexture.create({ width: rectangle[0], height: rectangle[1] })
-		return activeTexture
 	}
 
 	protected onOpening = (): void => {

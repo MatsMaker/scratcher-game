@@ -12,7 +12,7 @@ import { openScratcherAction, scratchesRestoredAction, onMouseoverScratcherActio
 import ScratchGroupEntity from '../../entities/ScratchGroup.entity';
 import { RESET_SCRATCHES, ImageSize, SET_INTERACTION } from './types';
 import { onClearEvent } from '../../utils/store.subscribe';
-import { GET_BONUS, BonusType } from '../../game/types';
+import { GET_BONUS, BonusType, END_ROUND } from '../../game/types';
 import { SpriteEntity } from '../../entities/Sprite.entity';
 
 
@@ -94,6 +94,7 @@ class ScratchesContainer extends ABaseContainer {
 		subscribe(onClearEvent(GET_BONUS, this.onOpenedScratch.bind(this)))
 		subscribe(onClearEvent(RESET_SCRATCHES, this.resetAll.bind(this)))
 		subscribe(onClearEvent(SET_INTERACTION, this.setInteraction.bind(this)))
+		subscribe(onClearEvent(END_ROUND, this.clearAllScratches.bind(this)))
 	}
 
 	protected setInteraction(payload: { interaction: boolean }): void {
@@ -139,6 +140,11 @@ class ScratchesContainer extends ABaseContainer {
 
 	protected onOpenScratcher = (id: number): void => {
 		this.store.dispatch(openScratcherAction({ id }))
+	}
+
+	protected clearAllScratches(): void {
+		this.scratchEntity.clearScratch()
+		this.scratchGroupEntity.toClearAll()
 	}
 
 }
