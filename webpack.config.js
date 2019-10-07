@@ -11,11 +11,7 @@ module.exports = {
   entry: {
     index: './src/main.ts'
   },
-  // output: {
-  //   // your stuff
-  //   publicPath: './src/assets/'
-  // },
-  devtool: 'source-map',
+  devtool: (isDevelopment) ? 'source-map' : undefined,
   plugins: [
     new CleanWebpackPlugin(),
   ],
