@@ -1,6 +1,6 @@
 {
     "name": "getting_started_with_webpack_and_es6_modules",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "Getting started with webpack and ES6 modules",
     "scripts": {
         "start": "cross-env NODE_ENV=development webpack-dev-server --open",
